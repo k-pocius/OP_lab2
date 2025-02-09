@@ -98,12 +98,6 @@ void mediana(){
     for (int i = 0; i < m; i++) {
         sort(A[i].nd, A[i].nd + A[i].n); 
     }
-    for(int i = 0; i < m; i++){
-        for(int j = 0; j < A[i].n; j++){
-            cout << A[i].nd[j] << " ";
-        }
-        cout << endl;
-    }
 
     //medianos skaiciavimas
     for(int i = 0; i < m; i++){
