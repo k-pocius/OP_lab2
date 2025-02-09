@@ -40,22 +40,39 @@ int main(){
 void skaitom(){
     
     cout << "įveskite mokinių skaičių: ";
-    cin >> m;
+    while(!(cin >> m)){
+        cout << "klaida, įveskite skaičių: ";
+        cin.clear();
+        cin.ignore(123, '\n');
+    }
     for(int i = 0; i < m; i++){
 
         cout << "įveskite mokinio vardą: ";
         cin >> A[i].name;
         cout << "įveskite mokinio pavardę: ";
         cin >> A[i].surn;
+
         cout << "įveskite namų darbų kiekį: ";
-        cin >> A[i].n;
+        while(!(cin >> A[i].n)){
+            cout << "klaida, įveskite skaičių: ";
+            cin.clear();
+            cin.ignore(123, '\n');
+        }
 
         for(int j = 0; j < A[i].n; j++){
             cout << "įveskite " << j+1 << " namų darbo rezultatą: ";
-            cin >> A[i].nd[j];
+            while(!(cin >> A[i].nd[j])){
+                cout << "klaida, įveskite skaičių: ";
+                cin.clear();
+                cin.ignore(123, '\n');
+            }
         }
         cout << "įveskite egzamino rezultatą: ";
-        cin >> A[i].egz;
+        while(!(cin >> A[i].egz)){
+            cout << "klaida, įveskite skaičių: ";
+            cin.clear();
+            cin.ignore(123, '\n');
+        }
     }
 }
 
