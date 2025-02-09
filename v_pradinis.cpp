@@ -5,7 +5,8 @@ using namespace std;
 
 void skaitom();
 void vidurkis();
-void spausdinam();
+void mediana();
+void spausdinam(char a);
 
 struct Student {
     string name; //vardas
@@ -19,10 +20,19 @@ int m; //mokiniu sk.
 
 
 int main(){
+    char a;
 
     skaitom();
-    vidurkis();
-    spausdinam();
+
+    cout << "pasirinkite skaičiavimo būdą vidurkis(v)/mediana(m): ";
+    cin >> a;
+    if(a == 'v'){
+        vidurkis();
+    } else if(a == 'm'){
+        mediana();
+    } else cout << "klaida, įveskite v arba m";
+
+    spausdinam(a);
 
     return 0;
 }
@@ -59,10 +69,32 @@ void vidurkis(){
     }
 }
 
-void spausdinam(){
+void mediana(){
 
-    cout << left << setw(15) << "Pavardė" << setw(15) << "Vardas" << setw(20) << "Galutinis (Vid.)" << endl;
+    for (int i = 0; i < m; i++) {
+        sort(A[i].nd, A[i].nd + A[i].n);
+    }
+
+    for(int i = 0; i < m; i++){
+        if(A[i].n % 2 == 0){
+            A[i].vid = ((A[i].nd[A[i].n/2] + A[i].nd[A[i].n/2-1]) / 2)*0.4 + (A[i].egz*0.6);
+        } 
+        else {
+            A[i].vid = A[i].nd[A[i].n/2]*0.4 + (A[i].egz*0.6);
+        }
+    }
+}
+
+void spausdinam(char a){
+
+    cout << left << setw(15) << "Pavardė" << setw(15) << "Vardas" << setw(20);
+
+    if(a == 'v'){
+        cout << "Galutinis (Vid.)" << endl;
+    } else cout << "Galutinis (Med.)" << endl;
+
     cout << "-------------------------------------------------------------" << endl;
+
     cout << fixed << setprecision(2);
 
     for(int i = 0; i < m; i++){
