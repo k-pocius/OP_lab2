@@ -11,13 +11,12 @@ void spausdinam(char a);
 struct Student {
     string name; //vardas
     string surn; //pavarde
-    int nd[25], egz; //nd, egzaminu rez
-    int n; //nd kiekis 
+    int nd[20], egz; //nd, egzaminu rez
     double vid; //galutinis vidurkis
-}A[100];
+    int n; //nd kiekis
+}C[100];
 
-int m; //mokiniu sk.
-
+int m = 1; //mokiniu sk., namu darbu kiekis
 
 int main(){
     char a;
@@ -43,61 +42,75 @@ int main(){
 
 void skaitom(){
     
-    cout << "įveskite mokinių skaičių max(90): ";
-    while (true) {
-        if (cin >> m) {  
-            if (m <= 90 && m > 0) break; 
-            cout << "Klaida, įveskite natūralų skaičių mažesnį arba lygų 90: ";
-        } else {
-            cout << "Klaida, įveskite skaičių: ";
-            cin.clear();  
-        }
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    }
-
-    for(int i = 0; i < m; i++){
+    bool testi = true;
+    int i = 0;    
+    while(testi){
+        char teesti;
 
         cout << "įveskite mokinio vardą: ";
-        cin >> A[i].name;
+        cin >> C[i].name;
         cout << "įveskite mokinio pavardę: ";
-        cin >> A[i].surn;
+        cin >> C[i].surn;
 
-        cout << "įveskite namų darbų kiekį max(20): ";
-        while (true) {
-            if (cin >> A[i].n) {
-                if (A[i].n <= 20 && A[i].n > 0) break; 
-                cout << "Klaida, įveskite skaičių natūralų mažesnį arba lygų 20: ";
-            } else {
-                cout << "Klaida, įveskite skaičių: ";
-                cin.clear(); 
-            }
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        }
-
-        for(int j = 0; j < A[i].n; j++){
+        bool testi2 = true;
+        int j = 0;
+        while(testi2){
+            char teesti2;
             cout << "įveskite " << j+1 << " namų darbo rezultatą: ";
-            while(!(cin >> A[i].nd[j])){
+            while(!(cin >> C[i].nd[j])){
                 cout << "klaida, įveskite skaičių: ";
                 cin.clear();
                 cin.ignore(123, '\n');
             }
+            cout << "ar norite pridėti daugiau rezultatų? (t/n): ";
+            cin >> teesti2;
+            while(!(teesti2 == 't' || teesti2 == 'n')){
+                cout << "klaida, pasirinkite taip(t) arba ne(n): ";
+                cin.clear();
+                cin >> teesti2;
+                cin.ignore(123, '\n');
+            }
+        if(teesti2 == 'n'){
+            testi2 = false;
+        } else testi2 = true;
+        j++;
+        C[i].n = j;
         }
+
+
         cout << "įveskite egzamino rezultatą: ";
-        while(!(cin >> A[i].egz)){
+        while(!(cin >> C[i].egz)){
             cout << "klaida, įveskite skaičių: ";
             cin.clear();
             cin.ignore(123, '\n');
         }
+        
+
+        cout << "ar norite pridėti daugiau mokinių? (t/n): ";
+        cin >> teesti;
+        while(!(teesti == 't' || teesti == 'n')){
+            cout << "klaida, pasirinkite taip(t) arba ne(n): ";
+            cin.clear();
+            cin >> teesti;
+            cin.ignore(123, '\n');
+        }
+        if(teesti == 'n'){
+            testi = false;
+        } else{
+            testi = true;
+        }
+        i++;
+        m = i;   
     }
 }
 
 void vidurkis(){
     for(int i = 0; i < m; i++){
         double sum = 0;
-        for(int j = 0; j < A[i].n; j++){
-            sum += A[i].nd[j];
+        for(int j = 0; j < C[i].n; j++){
+            sum += C[i].nd[j];
         }
-        A[i].vid = (sum / A[i].n)*0.4 + (A[i].egz*0.6);
+        C[i].vid = (sum / C[i].n)*0.4 + (C[i].egz*0.6);
     }
 }
 
@@ -105,16 +118,16 @@ void mediana(){
 
     //nd rezultatu rikiavimas didejimo tvarka
     for (int i = 0; i < m; i++) {
-        sort(A[i].nd, A[i].nd + A[i].n); 
+        sort(C[i].nd, C[i].nd + C[i].n); 
     }
 
     //medianos skaiciavimas
     for(int i = 0; i < m; i++){
-        if(A[i].n % 2 == 0){
-            A[i].vid = ((A[i].nd[A[i].n/2] + A[i].nd[(A[i].n/2)-1]) / 2.0)*0.4 + (A[i].egz*0.6);
+        if(C[i].n % 2 == 0){
+            C[i].vid = ((C[i].nd[C[i].n/2] + C[i].nd[(C[i].n/2)-1]) / 2.0)*0.4 + (C[i].egz*0.6);
         } 
         else {
-            A[i].vid = A[i].nd[A[i].n/2]*0.4 + (A[i].egz*0.6);
+            C[i].vid = C[i].nd[C[i].n/2]*0.4 + (C[i].egz*0.6);
         }
     }
 }
@@ -132,6 +145,6 @@ void spausdinam(char a){
     cout << fixed << setprecision(2);
 
     for(int i = 0; i < m; i++){
-        cout << left << setw(15) << A[i].surn << setw(15) << A[i].name << setw(20) << A[i].vid << endl;
+        cout << left << setw(15) << C[i].surn << setw(15) << C[i].name << setw(20) << C[i].vid << endl;
     }
 }
