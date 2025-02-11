@@ -16,7 +16,7 @@ struct Student {
     int n; //nd kiekis
 }C[100];
 
-int m = 1; //mokiniu sk., namu darbu kiekis
+int m; //mokiniu sk., namu darbu kiekis
 
 int main(){
     char a;
@@ -75,6 +75,7 @@ void skaitom(){
         } else testi2 = true;
         j++;
         C[i].n = j;
+        if(j == 20) break;
         }
 
 
@@ -96,11 +97,10 @@ void skaitom(){
         }
         if(teesti == 'n'){
             testi = false;
-        } else{
-            testi = true;
         }
         i++;
-        m = i;   
+        m = i;
+        if(i == 15) break;
     }
 }
 
