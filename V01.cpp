@@ -3,25 +3,61 @@
 
 using namespace std;
 
-void skaitom();
-void vidurkis();
-void mediana();
-void spausdinam(char a);
+
+struct Homework {
+    int score; //nd rezultatai
+    Homework* next;
+};
 
 struct Student {
     string name; //vardas
     string surn; //pavarde
-    int nd[25], egz; //nd, egzaminu rez
+    int egz; //egzaminu rez
     double vid; //galutinis vidurkis
-    int n; //nd kiekis
-}C[20];
+    Homework* homeworkHead;
+    Student* next;
+};
 
-int m; //mokiniu sk., namu darbu kiekis
+string A[] = {"Jonas", "Petras", "Antanas", "Kazys", "Juozas", "Tomas", "Mantas", "Marius", "Mindaugas", "Gintaras"};
+string B[] = {"Jonaitis", "Petraitis", "Antanaitis", "Kazaitis", "Ugninis", "Trumpulis", "Galiunas", "Gajusis", "Gandras", "Malūnas"};
+
+void skaitom(Student*& studentHead);
+void vidurkis(Student*& studentHead);
+void mediana(Student*& studentHead);
+void insertStudent(Student*& studentHead, string name, string surn, int egz);
+void insertHomework(Homework*& homeworkHead, int score);
+void spausdinam(Student*& studentHead, char a);
+
+void sortHomework(Homework*& head) {
+    if (head == nullptr) return;
+
+    bool swapped;
+    Homework* ptr1;
+    Homework* lptr = nullptr;
+
+    do {
+        swapped = false;
+        ptr1 = head;
+
+        while (ptr1->next != lptr) {
+            if (ptr1->score > ptr1->next->score) {
+                swap(ptr1->score, ptr1->next->score);
+                swapped = true;
+            }
+            ptr1 = ptr1->next;
+        }
+        lptr = ptr1;
+    } while (swapped);
+}
+
 
 int main(){
+
+    Student* studentHead = nullptr;
+
     char a;
 
-    skaitom();
+    skaitom(studentHead);
 
     cout << "pasirinkite skaičiavimo būdą vidurkis(v)/mediana(m): ";
     cin >> a;
@@ -32,107 +68,165 @@ int main(){
         cin.ignore(123, '\n');
     }
     if(a == 'v'){
-        vidurkis();
-    } else mediana();
+        vidurkis(studentHead);
+    }else mediana(studentHead);
 
-    spausdinam(a);
+    spausdinam(studentHead, a);
 
     return 0;
 }
 
-void skaitom(){
-    
+void skaitom(Student*& studentHead) {
+    string tempName;
+    string tempSurn;
+    int tempEgz;
+    int tempNd;
+
     bool testi = true;
-    int i = 0;    
-    while(testi){
+
+    while (testi) {
         char teesti;
 
         cout << "įveskite mokinio vardą: ";
-        cin >> C[i].name;
+        cin >> tempName;
         cout << "įveskite mokinio pavardę: ";
-        cin >> C[i].surn;
-
-        bool testi2 = true;
-        int j = 0;
-        while(testi2){
-            char teesti2;
-            cout << "įveskite " << j+1 << " namų darbo rezultatą: ";
-            while(!(cin >> C[i].nd[j])){
-                cout << "klaida, įveskite skaičių: ";
-                cin.clear();
-                cin.ignore(123, '\n');
-            }
-            cout << "ar norite pridėti daugiau rezultatų? (t/n): ";
-            cin >> teesti2;
-            while(!(teesti2 == 't' || teesti2 == 'n')){
-                cout << "klaida, pasirinkite taip(t) arba ne(n): ";
-                cin.clear();
-                cin >> teesti2;
-                cin.ignore(123, '\n');
-            }
-        if(teesti2 == 'n'){
-            testi2 = false;
-        } else testi2 = true;
-        j++;
-        C[i].n = j;
-        if(j == 20) break;
-        }
-
+        cin >> tempSurn;
 
         cout << "įveskite egzamino rezultatą: ";
-        while(!(cin >> C[i].egz)){
+        while (!(cin >> tempEgz)) {
             cout << "klaida, įveskite skaičių: ";
             cin.clear();
             cin.ignore(123, '\n');
         }
-        
+
+        insertStudent(studentHead, tempName, tempSurn, tempEgz);
+
+        Student* currentStudent = studentHead;
+        while (currentStudent->next != nullptr) {
+            currentStudent = currentStudent->next;
+        }
+
+        bool testi2 = true;
+        while (testi2) {
+            char teesti2;
+            cout << "įveskite namų darbo rezultatą: ";
+            while (!(cin >> tempNd)) {
+                cout << "klaida, įveskite skaičių: ";
+                cin.clear();
+                cin.ignore(123, '\n');
+            }
+
+            insertHomework(currentStudent->homeworkHead, tempNd);
+
+            cout << "ar norite pridėti daugiau rezultatų? (t/n): ";
+            cin >> teesti2;
+            while (!(teesti2 == 't' || teesti2 == 'n')) {
+                cout << "klaida, pasirinkite taip(t) arba ne(n): ";
+                cin.clear();
+                cin.ignore(123, '\n');
+                cin >> teesti2;
+            }
+            if (teesti2 == 'n') testi2 = false;
+        }
 
         cout << "ar norite pridėti daugiau mokinių? (t/n): ";
         cin >> teesti;
-        while(!(teesti == 't' || teesti == 'n')){
+        while (!(teesti == 't' || teesti == 'n')) {
             cout << "klaida, pasirinkite taip(t) arba ne(n): ";
             cin.clear();
-            cin >> teesti;
             cin.ignore(123, '\n');
+            cin >> teesti;
         }
-        if(teesti == 'n'){
-            testi = false;
-        }
-        i++;
-        m = i;
-        if(i == 15) break;
+        if (teesti == 'n') testi = false;
     }
 }
 
-void vidurkis(){
-    for(int i = 0; i < m; i++){
-        double sum = 0;
-        for(int j = 0; j < C[i].n; j++){
-            sum += C[i].nd[j];
+void insertStudent(Student*& studentHead, string name, string surn, int egz){
+    struct Student* newStudent = new Student;
+    struct Student* temp = studentHead;
+
+    newStudent->name = name;
+    newStudent->surn = surn;
+    newStudent->egz = egz;
+
+    if(studentHead == nullptr){
+        studentHead = newStudent;
+        return;
+    }
+
+    while(temp->next != nullptr){
+        temp = temp->next;
+    }
+    temp->next = newStudent;
+}
+
+
+void insertHomework(Homework*& homeworkHead, int score){
+    Homework* newHomework = new Homework;
+
+    newHomework->score = score;
+
+    if (homeworkHead == nullptr) {
+        homeworkHead = newHomework;
+    } else {
+        Homework* temp = homeworkHead;
+        while (temp->next != nullptr) {
+            temp = temp->next;
         }
-        C[i].vid = (sum / C[i].n)*0.4 + (C[i].egz*0.6);
+        temp->next = newHomework;
     }
 }
 
-void mediana(){
 
-    //nd rezultatu rikiavimas didejimo tvarka
-    for (int i = 0; i < m; i++) {
-        sort(C[i].nd, C[i].nd + C[i].n); 
-    }
+void vidurkis(Student*& studentHead){
 
-    //medianos skaiciavimas
-    for(int i = 0; i < m; i++){
-        if(C[i].n % 2 == 0){
-            C[i].vid = ((C[i].nd[C[i].n/2] + C[i].nd[(C[i].n/2)-1]) / 2.0)*0.4 + (C[i].egz*0.6);
-        } 
-        else {
-            C[i].vid = C[i].nd[C[i].n/2]*0.4 + (C[i].egz*0.6);
+    double sum = 0;
+    Student* currentStudent = studentHead;
+    while(currentStudent != nullptr){
+        int n = 0;
+        Homework* currentHomework = currentStudent->homeworkHead;
+        while(currentHomework != nullptr){
+            sum += currentHomework->score;
+            currentHomework = currentHomework->next;
+            n++;
         }
+        currentStudent->vid = (sum / n)*0.4 + (currentStudent->egz*0.6);
+        currentStudent = currentStudent->next;
     }
 }
 
-void spausdinam(char a){
+void mediana(Student*& studentHead) {
+    Student* currentStudent = studentHead;
+    while (currentStudent != nullptr) {
+        // Sort the homework results for the current student
+        sortHomework(currentStudent->homeworkHead);
+
+        // Calculate the median
+        Homework* currentHomework = currentStudent->homeworkHead;
+        int count = 0;
+        while (currentHomework != nullptr) {
+            count++;
+            currentHomework = currentHomework->next;
+        }
+
+        currentHomework = currentStudent->homeworkHead;
+        for (int i = 0; i < count / 2 - 1; i++) {
+            currentHomework = currentHomework->next;
+        }
+
+        double median;
+        if (count % 2 == 0) {
+            median = (currentHomework->score + currentHomework->next->score) / 2.0;
+        } else {
+            median = currentHomework->next->score;
+        }
+
+        currentStudent->vid = median * 0.4 + (currentStudent->egz * 0.6);
+        currentStudent = currentStudent->next;
+    }
+}
+
+void spausdinam(Student*& studentHead, char a){
 
     cout << left << setw(15) << "Pavardė" << setw(15) << "Vardas" << setw(20);
 
@@ -144,7 +238,12 @@ void spausdinam(char a){
 
     cout << fixed << setprecision(2);
 
-    for(int i = 0; i < m; i++){
-        cout << left << setw(15) << C[i].surn << setw(15) << C[i].name << setw(20) << C[i].vid << endl;
+
+    Student* currentStudent = studentHead;
+    while (currentStudent != nullptr) {
+        cout << left << setw(15) << currentStudent->surn << setw(15) << currentStudent->name;
+        cout << setw(20) << currentStudent->vid<< endl;
+
+        currentStudent = currentStudent->next;
     }
 }
