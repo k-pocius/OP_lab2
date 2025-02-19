@@ -4,26 +4,46 @@
 
 using namespace std;
 
-void skaitom();
-void vidurkis();
-void mediana();
-void spausdinam(char a);
-
 struct Student {
     string name; //vardas
     string surn; //pavarde
     vector<int> nd; //nd rezultatai 
     int egz; //egzaminu rez
     double vid; //galutinis vidurkis
-    int n; //nd kiekis
 };
 
 vector<Student> students;
 
+
+string A[] = {"Jonas", "Petras", "Antanas", "Kazys", "Juozas", "Tomas", "Mantas", "Marius", "Mindaugas", "Gintaras"};
+string B[] = {"Jonaitis", "Petraitis", "Antanaitis", "Kazaitis", "Ugninis", "Trumpulis", "Galiunas", "Gajusis", "Gandras", "Malūnas"};
+
+
+void skaitom(int pasirinkimas);
+void vidurkis();
+void mediana();
+void spausdinam(char a);
+
+
 int main(){
     char a;
 
-    skaitom();
+    cout << "Pasirinkite duomenų įvedimo būdą:" << endl;            
+    cout << "1 - Įvesti visus duomenis ranka" << endl;
+    cout << "2 - Įvesti pažymių duomenis automatiškai" << endl;
+    cout << "3 - Įvesti visus duomenis automatiškai" << endl; 
+    int pasirinkimas; // pasirinkimas kaip įvesti duomenis
+    cin >> pasirinkimas;
+
+    // patikrinimas ar įvestas tinkamas skaičius
+    while(pasirinkimas != 1 && pasirinkimas != 2 && pasirinkimas != 3){
+        cout << "klaida, įveskite skaičių 1, 2 arba 3: ";
+        cin.clear();
+        cin.ignore(123, '\n');
+        cin >> pasirinkimas;
+    }
+
+    skaitom(pasirinkimas);
 
     cout << "pasirinkite skaičiavimo būdą vidurkis(v)/mediana(m): ";
     cin >> a;
@@ -42,7 +62,7 @@ int main(){
     return 0;
 }
 
-void skaitom(){
+void skaitom(int pasirinkimas){
     
     bool testi = true;
     int i = 0;    
@@ -51,10 +71,15 @@ void skaitom(){
         char teesti;
 
         //mokinio vardas pavarde
-        cout << "įveskite mokinio vardą: ";
-        cin >> temp.name;
-        cout << "įveskite mokinio pavardę: ";
-        cin >> temp.surn;
+        if(pasirinkimas == 1 || pasirinkimas == 2){
+            cout << "įveskite mokinio vardą: ";
+            cin >> temp.name;
+            cout << "įveskite mokinio pavardę: ";
+            cin >> temp.surn; 
+        }else if(pasirinkimas == 3){
+            temp.name = A[rand() % 10];
+            temp.surn = B[rand() % 10];
+        }
 
 
         temp.nd.clear();
@@ -65,15 +90,17 @@ void skaitom(){
         while(testi2){
             char teesti2;
             int nd_result;
-            cout << "įveskite " << j+1 << " namų darbo rezultatą: ";
-            while(!(cin >> nd_result)){
-                cout << "klaida, įveskite skaičių: ";
-                cin.clear();
-                cin.ignore(123, '\n');
-            }
+            if(pasirinkimas == 1){
+                cout << "įveskite " << j+1 << " namų darbo rezultatą: ";
+                while(!(cin >> nd_result)){
+                    cout << "klaida, įveskite skaičių: ";
+                    cin.clear();
+                    cin.ignore(123, '\n');
+                } 
+            }else if(pasirinkimas == 2 || pasirinkimas == 3) nd_result = rand() % 10 + 1;
             temp.nd.push_back(nd_result);
 
-            cout << "ar norite pridėti daugiau rezultatų? (t/n): ";
+            cout << "ar norite pridėti daugiau namų darbų rezultatų? (t/n): ";
             cin >> teesti2;
             while(!(teesti2 == 't' || teesti2 == 'n')){
                 cout << "klaida, pasirinkite taip(t) arba ne(n): ";
@@ -90,13 +117,16 @@ void skaitom(){
 
 
         //egzamino rezultatas
-        cout << "įveskite egzamino rezultatą: ";
-        while(!(cin >> temp.egz)){
-            cout << "klaida, įveskite skaičių: ";
-            cin.clear();
-            cin.ignore(123, '\n');
-        }
+        if(pasirinkimas == 1){
+            cout << "įveskite egzamino rezultatą: ";
+            while (!(cin >> temp.egz)) {
+                cout << "klaida, įveskite skaičių: ";
+                cin.clear();
+                cin.ignore(123, '\n');
+            }
+        }else if(pasirinkimas == 2 || pasirinkimas == 3) temp.egz = rand() % 10 + 1;
         students.push_back(temp);
+
         
         
         cout << "ar norite pridėti daugiau mokinių? (t/n): ";
