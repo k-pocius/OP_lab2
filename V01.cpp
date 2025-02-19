@@ -89,6 +89,18 @@ int main(){
 
     spausdinam(studentHead, a);
 
+    //atlaisvinama dinaminė atmintis
+    while (studentHead != nullptr) {
+        Student* tempStudent = studentHead;
+        while (studentHead->homeworkHead != nullptr) {
+            Homework* tempHomework = studentHead->homeworkHead;
+            studentHead->homeworkHead = studentHead->homeworkHead->next;
+            delete tempHomework; // atlaisvinama dabartinio studento namu darbu atmintis
+        }
+        studentHead = studentHead->next;
+        delete tempStudent; // atlaisvinama dabartinio studento atmintis
+    }
+
     return 0;
 }
 
