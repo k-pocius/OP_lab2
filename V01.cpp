@@ -229,6 +229,7 @@ void vidurkis(Student*& studentHead){
     double sum = 0;
     Student* currentStudent = studentHead;
     while(currentStudent != nullptr){
+        sum = 0;
         int n = 0;
         Homework* currentHomework = currentStudent->homeworkHead;
         while(currentHomework != nullptr){
