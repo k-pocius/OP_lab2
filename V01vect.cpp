@@ -1,6 +1,7 @@
 #include <iostream>
 #include <iomanip>
 #include <vector>
+#include <time.h>
 
 using namespace std;
 
@@ -26,6 +27,7 @@ void spausdinam(char a);
 
 
 int main(){
+    srand(time(NULL));
     char a;
 
     cout << "Pasirinkite duomenų įvedimo būdą:" << endl;            
@@ -173,19 +175,20 @@ void mediana(){
     }
 }
 
-void spausdinam(char a){
+void spausdinam(char a) {
+    cout << left << setw(20) << "Pavardė" << setw(15) << "Vardas" << setw(20);
 
-    cout << left << setw(15) << "Pavardė" << setw(15) << "Vardas" << setw(20);
-
-    if(a == 'v'){
+    if (a == 'v') {
         cout << "Galutinis (Vid.)" << endl;
-    } else cout << "Galutinis (Med.)" << endl;
+    } else {
+        cout << "Galutinis (Med.)" << endl;
+    }
 
     cout << "-------------------------------------------------------------" << endl;
 
     cout << fixed << setprecision(2);
 
-    for(int i = 0; i < students.size(); i++){
-        cout << left << setw(15) << students[i].surn << setw(15) << students[i].name << setw(20) << students[i].vid << endl;
+    for (int i = 0; i < students.size(); i++) {
+        cout << left << setw(20) << students[i].surn << setw(14) << students[i].name << setw(20) << students[i].vid << endl;
     }
 }
