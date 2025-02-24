@@ -176,6 +176,10 @@ void mediana(){
 }
 
 void spausdinam(char a) {
+
+    cout << "Kaip norite matyti rezultatus?" << endl;
+    cout << 
+
     cout << left << setw(20) << "Pavardė" << setw(15) << "Vardas" << setw(20);
 
     if (a == 'v') {
