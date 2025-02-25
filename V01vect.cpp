@@ -1,65 +1,99 @@
 #include <iostream>
 #include <iomanip>
 #include <vector>
-#include <time.h>
+#include <chrono>
+#include <ctime>
+#include <fstream>
+#include <sstream>
 
 using namespace std;
 
 struct Student {
-    string name; //vardas
-    string surn; //pavarde
-    vector<int> nd; //nd rezultatai 
-    int egz; //egzaminu rez
-    double vid; //galutinis vidurkis
+    string name; // vardas
+    string surn; // pavarde
+    vector<int> nd; // nd rezultatai 
+    int egz; // egzaminu rez
+    double vid; // galutinis vidurkis
 };
 
 vector<Student> students;
 
-
 string A[] = {"Jonas", "Petras", "Antanas", "Kazys", "Juozas", "Tomas", "Mantas", "Marius", "Mindaugas", "Gintaras"};
 string B[] = {"Jonaitis", "Petraitis", "Antanaitis", "Kazaitis", "Ugninis", "Trumpulis", "Galiunas", "Gajusis", "Gandras", "Malūnas"};
-
 
 void skaitom(int pasirinkimas);
 void vidurkis();
 void mediana();
 void spausdinam(char a);
 
-
-int main(){
+int main() {
     srand(time(NULL));
     char a;
 
-    cout << "Pasirinkite duomenų įvedimo būdą:" << endl;            
-    cout << "1 - Įvesti visus duomenis ranka" << endl;
-    cout << "2 - Įvesti pažymių duomenis automatiškai" << endl;
-    cout << "3 - Įvesti visus duomenis automatiškai" << endl; 
-    int pasirinkimas; // pasirinkimas kaip įvesti duomenis
-    cin >> pasirinkimas;
-
-    // patikrinimas ar įvestas tinkamas skaičius
-    while(pasirinkimas != 1 && pasirinkimas != 2 && pasirinkimas != 3){
-        cout << "klaida, įveskite skaičių 1, 2 arba 3: ";
+    cout << "Ar norite duomenis skaityti iš failo? (t/n): ";
+    cin >> a;
+    while (!(a == 't' || a == 'n')) {
+        cout << "klaida, įveskite t arba n: ";
         cin.clear();
         cin.ignore(123, '\n');
-        cin >> pasirinkimas;
+        cin >> a;
     }
+    auto start = chrono::high_resolution_clock::now(); // Start timing
+    int pasirinkimas;
+    if (a == 't') {
+        ifstream file1("kursiokai1000000.txt");
+        string line;
+        getline(file1, line); // Skip the header line
 
-    skaitom(pasirinkimas);
+        while (getline(file1, line)) {
+            istringstream iss(line);
+            Student student;
+            iss >> student.name >> student.surn;
+            int score;
+            while (iss >> score) {
+                student.nd.push_back(score);
+            }
+            student.egz = student.nd.back();
+            student.nd.pop_back();
+            students.push_back(student);
+        }
+        file1.close();
+
+    } else {
+        cout << "Pasirinkite duomenų įvedimo būdą:" << endl;
+        cout << "1 - Įvesti visus duomenis ranka" << endl;
+        cout << "2 - Įvesti pažymių duomenis automatiškai" << endl;
+        cout << "3 - Įvesti visus duomenis automatiškai" << endl;
+        cin >> pasirinkimas;
+
+        while (pasirinkimas != 1 && pasirinkimas != 2 && pasirinkimas != 3) {
+            cout << "klaida, įveskite skaičių 1, 2 arba 3: ";
+            cin.clear();
+            cin.ignore(123, '\n');
+            cin >> pasirinkimas;
+        }
+
+        skaitom(pasirinkimas);
+    }
+    auto end = chrono::high_resolution_clock::now(); // End timing
 
     cout << "pasirinkite skaičiavimo būdą vidurkis(v)/mediana(m): ";
     cin >> a;
-    while(!(a == 'v' || a == 'm')){
+    while (!(a == 'v' || a == 'm')) {
         cout << "klaida, pasirinkite v arba m: ";
         cin.clear();
-        cin >> a;
         cin.ignore(123, '\n');
+        cin >> a;
     }
-    if(a == 'v'){
+    if (a == 'v') {
         vidurkis();
-    } else mediana();
-
+    } else {
+        mediana();
+    }
     spausdinam(a);
+
+    chrono::duration<double> duration = end - start;
+    cout << "Program execution time: " << duration.count() << " seconds" << endl;
 
     return 0;
 }
@@ -177,8 +211,7 @@ void mediana(){
 
 void spausdinam(char a) {
 
-    cout << "Kaip norite matyti rezultatus?" << endl;
-    cout << 
+    cout << "įveskite 3 simbolius iš eilės, Kaip norite matyti rezultatus" << endl;
 
     cout << left << setw(20) << "Pavardė" << setw(15) << "Vardas" << setw(20);
 
