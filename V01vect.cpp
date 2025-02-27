@@ -26,6 +26,19 @@ void vidurkis();
 void mediana();
 void spausdinam(char a);
 
+bool compareByName(const Student& a, const Student& b) {
+    return a.name < b.name;
+}
+
+bool compareBySurname(const Student& a, const Student& b) {
+    return a.surn < b.surn;
+}
+
+bool compareByVid(const Student& a, const Student& b) {
+    return a.vid < b.vid;
+}
+
+
 int main() {
     srand(time(NULL));
     char a;
@@ -211,21 +224,71 @@ void mediana(){
 
 void spausdinam(char a) {
 
-    cout << "įveskite 3 simbolius iš eilės, Kaip norite matyti rezultatus" << endl;
-
-    cout << left << setw(20) << "Pavardė" << setw(15) << "Vardas" << setw(20);
-
-    if (a == 'v') {
-        cout << "Galutinis (Vid.)" << endl;
-    } else {
-        cout << "Galutinis (Med.)" << endl;
+    cout << "Kur norite matyti rezultatus?" << endl;
+    cout << "1 - ekrane" << endl;
+    cout << "2 - faile" << endl;
+    int pasirinkimas;
+    cin >> pasirinkimas;
+    while (pasirinkimas != 1 && pasirinkimas != 2) {
+        cout << "klaida, įveskite skaičių 1 arba 2: ";
+        cin.clear();
+        cin.ignore(123, '\n');
+        cin >> pasirinkimas;
+    }
+    int rusiavimas;
+    cout << "Kaip norite surūšiuoti rezultatus?" << endl;
+    cout << "1 - pagal vardą" << endl;
+    cout << "2 - pagal pavardę" << endl;
+    cout << "3 - pagal galutinį balą" << endl;
+    cin >> rusiavimas;
+    while (rusiavimas != 1 && rusiavimas != 2 && rusiavimas != 3) {
+        cout << "klaida, įveskite skaičių 1, 2 arba 3: ";
+        cin.clear();
+        cin.ignore(123, '\n');
+        cin >> rusiavimas;
     }
 
-    cout << "-------------------------------------------------------------" << endl;
+    if(rusiavimas == 1){
+        sort(students.begin(), students.end(), compareByName);
+    } else if(rusiavimas == 2){
+        sort(students.begin(), students.end(), compareBySurname);
+    } else{
+        sort(students.begin(), students.end(), compareByVid);
+    }
 
-    cout << fixed << setprecision(2);
+    if(pasirinkimas == 1){
+        cout << left << setw(20) << "Pavardė" << setw(15) << "Vardas" << setw(20);
 
-    for (int i = 0; i < students.size(); i++) {
-        cout << left << setw(20) << students[i].surn << setw(14) << students[i].name << setw(20) << students[i].vid << endl;
+        if (a == 'v') {
+            cout << "Galutinis (Vid.)" << endl;
+        } else {
+            cout << "Galutinis (Med.)" << endl;
+        }
+
+        cout << "-------------------------------------------------------------" << endl;
+
+        cout << fixed << setprecision(2);
+
+        for (int i = 0; i < students.size(); i++) {
+            cout << left << setw(20) << students[i].surn << setw(14) << students[i].name << setw(20) << students[i].vid << endl;
+        }
+    } else {
+        ofstream file2("rezultatai.txt");
+        file2 << left << setw(20) << "Vardas" << setw(15) << "Pavardė" << setw(20);
+
+        if (a == 'v') {
+            file2 << "Galutinis (Vid.)" << endl;
+        } else {
+            file2 << "Galutinis (Med.)" << endl;
+        }
+
+        file2 << "-------------------------------------------------------------" << endl;
+
+        file2 << fixed << setprecision(2);
+
+        for (int i = 0; i < students.size(); i++) {
+            file2 << left << setw(20) << students[i].name << setw(14) << students[i].surn << setw(20) << students[i].vid << endl;
+        }
+        file2.close();
     }
 }
