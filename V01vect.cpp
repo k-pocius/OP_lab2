@@ -1,35 +1,50 @@
 #include "lib.h"
-#include <V01vect.h>
+#include "V01vect.h"
 
 
 int main() {
     srand(time(NULL));
     char a;
-
-    cout << "Ar norite duomenis skaityti iš failo? (t/n): ";
-    cin >> a;
-    while (!(a == 't' || a == 'n')) {
-        cout << "klaida, įveskite t arba n: ";
-        cin.clear();
-        cin.ignore(123, '\n');
-        cin >> a;
-    }
-    auto start = std::chrono::high_resolution_clock::now(); // Start timing
     int pasirinkimas;
-    if (a == 't') {
-        int file;
-        cout << "pasirinkite failą: " << endl;
-        cout << "1 - kursiokai10000.txt" << endl;
-        cout << "2 - kursiokai100000.txt" << endl;
-        cout << "3 - kursiokai1000000.txt" << endl;
-        cin >> file;
-        while (file != 1 && file != 2 && file != 3) {
-            cout << "klaida, įveskite skaičių 1, 2 arba 3: ";
+    int file;
+
+
+    while (true) {
+        try {
+            cout << "Ar norite duomenis skaityti iš failo? (t/n): ";
+            cin >> a;
+            if (a != 't' && a != 'n') {
+                throw std::runtime_error("klaida, įveskite t arba n");
+            }
+            break; // Exit the loop if input is valid
+        } catch (const std::runtime_error& e) {
+            cout << e.what() << endl;
             cin.clear();
             cin.ignore(123, '\n');
+        }
+    }
+
+    auto start = std::chrono::high_resolution_clock::now(); // Start timing
+
+    while(true){
+        try{
+            cout << "pasirinkite failą: " << endl;
+            cout << "1 - kursiokai10000.txt" << endl;
+            cout << "2 - kursiokai100000.txt" << endl;
+            cout << "3 - kursiokai1000000.txt" << endl; 
             cin >> file;
+            if(file != 1 && file != 2 && file != 3){
+                throw std::runtime_error("klaida, įveskite skaičių 1, 2 arba 3");
+            }
+            break;
+        } catch (const std::runtime_error& e){
+            cout << e.what() << endl;
+            cin.clear();
+            cin.ignore(123, '\n');
         }
 
+    }
+    if (a == 't') {
         string filename;
         if(file == 1){
             filename = "kursiokai10000.txt";
@@ -56,31 +71,44 @@ int main() {
         file1.close();
 
     } else {
-        cout << "Pasirinkite duomenų įvedimo būdą:" << endl;
-        cout << "1 - Įvesti visus duomenis ranka" << endl;
-        cout << "2 - Įvesti pažymių duomenis automatiškai" << endl;
-        cout << "3 - Įvesti visus duomenis automatiškai" << endl;
-        cin >> pasirinkimas;
-
-        while (pasirinkimas != 1 && pasirinkimas != 2 && pasirinkimas != 3) {
-            cout << "klaida, įveskite skaičių 1, 2 arba 3: ";
-            cin.clear();
-            cin.ignore(123, '\n');
-            cin >> pasirinkimas;
+        while(true){
+            try{
+                cout << "Pasirinkite duomenų įvedimo būdą:" << endl;
+                cout << "1 - Įvesti visus duomenis ranka" << endl;
+                cout << "2 - Įvesti pažymių duomenis automatiškai" << endl;
+                cout << "3 - Įvesti visus duomenis automatiškai" << endl;
+                cin >> pasirinkimas; 
+                if(pasirinkimas != 1 && pasirinkimas != 2 && pasirinkimas != 3){
+                    throw std::runtime_error("klaida, įveskite skaičių 1, 2 arba 3");
+                }
+                break;
+            }
+            catch(const std::runtime_error& e){
+                cout << e.what() << endl;
+                cin.clear();
+                cin.ignore(123, '\n');
+            }
         }
-
         skaitom(pasirinkimas);
     }
     auto end = std::chrono::high_resolution_clock::now(); // End timing
 
-    cout << "pasirinkite skaičiavimo būdą vidurkis(v)/mediana(m): ";
-    cin >> a;
-    while (!(a == 'v' || a == 'm')) {
-        cout << "klaida, pasirinkite v arba m: ";
-        cin.clear();
-        cin.ignore(123, '\n');
-        cin >> a;
+    while(true){
+        try{
+            cout << "pasirinkite skaičiavimo būdą vidurkis(v)/mediana(m): ";
+            cin >> a;
+            if(a != 'v' && a != 'm'){
+                throw std::runtime_error("klaida, pasirinkite v arba m");
+            }
+            break;
+        }
+        catch(const std::runtime_error& e){
+            cout << e.what() << endl;
+            cin.clear();
+            cin.ignore(123, '\n');
+        }
     }
+
     if (a == 'v') {
         vidurkis();
     } else {

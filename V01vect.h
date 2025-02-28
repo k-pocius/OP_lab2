@@ -1,4 +1,4 @@
-#include <lib.h>
+#include "lib.h"
 
 struct Student {
     string name; // vardas
