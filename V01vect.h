@@ -64,11 +64,11 @@ void skaitom(int pasirinkimas){
                         cout << "įveskite " << j+1 << " namų darbo rezultatą: ";
                         cin >> nd_result;
                         if(nd_result < 0 || nd_result > 10){
-                            throw std::runtime_error ("klaida, įveskite skaičių nuo 0 iki 10");
+                            throw std::invalid_argument ("klaida, įveskite skaičių nuo 0 iki 10");
                         }
                         break;
                     }
-                    catch(const std::runtime_error& e){
+                    catch(const std::invalid_argument& e){
                     cout << e.what() << endl;
                     cin.clear();
                     cin.ignore(123, '\n');
@@ -82,10 +82,10 @@ void skaitom(int pasirinkimas){
                     cout << "ar norite pridėti daugiau namų darbų rezultatų? (t/n): ";
                     cin >> teesti2; 
                     if(!(teesti2 == 't' && teesti2 == 'n')){
-                        throw std::runtime_error("klaida, pasirinkite taip(t) arba ne(n)");
+                        throw std::invalid_argument("klaida, pasirinkite taip(t) arba ne(n)");
                     }
                 }
-                catch(const std::runtime_error& e){
+                catch(const std::invalid_argument& e){
                     cout << e.what() << endl;
                     cin.clear();
                     cin.ignore(123, '\n');
@@ -107,11 +107,11 @@ void skaitom(int pasirinkimas){
                     cout << "įveskite egzamino rezultatą: ";
                     cin >> temp.egz;
                     if(temp.egz < 0 || temp.egz > 10){
-                        throw std::runtime_error ("klaida, įveskite skaičių nuo 0 iki 10");
+                        throw std::invalid_argument ("klaida, įveskite skaičių nuo 0 iki 10");
                     }
                     break;
                 }
-                catch(const std::runtime_error& e){
+                catch(const std::invalid_argument& e){
                     cout << e.what() << endl;
                     cin.clear();
                     cin.ignore(123, '\n');
@@ -127,11 +127,11 @@ void skaitom(int pasirinkimas){
                 cout << "ar norite pridėti daugiau mokinių? (t/n): ";
                 cin >> teesti;
                 if(!(teesti == 't' || teesti == 'n')){
-                    throw std::runtime_error("klaida, pasirinkite taip(t) arba ne(n)");
+                    throw std::invalid_argument("klaida, pasirinkite taip(t) arba ne(n)");
                 }
                 break;
             }
-            catch(const std::runtime_error& e){
+            catch(const std::invalid_argument& e){
                 cout << e.what() << endl;
                 cin.clear();
                 cin.ignore(123, '\n');
@@ -184,11 +184,11 @@ void spausdinam(char a) {
             cout << "2 - faile" << endl;
             cin >> pasirinkimas;
             if(pasirinkimas != 1 && pasirinkimas != 2){
-                throw std::runtime_error("klaida, įveskite skaičių 1 arba 2");
+                throw std::invalid_argument("klaida, įveskite skaičių 1 arba 2");
             }
             break;
         }
-        catch(const std::runtime_error& e){
+        catch(const std::invalid_argument& e){
             cout << e.what() << endl;
             cin.clear();
             cin.ignore(123, '\n');
@@ -204,11 +204,11 @@ void spausdinam(char a) {
             cout << "3 - pagal galutinį balą" << endl;
             cin >> rusiavimas;
             if(rusiavimas != 1 && rusiavimas != 2 && rusiavimas != 3){
-                throw std::runtime_error("klaida, įveskite skaičių 1, 2 arba 3");
+                throw std::invalid_argument("klaida, įveskite skaičių 1, 2 arba 3");
             }
             break;
         }
-        catch(const std::runtime_error& e){
+        catch(const std::invalid_argument& e){
             cout << e.what() << endl;
             cin.clear();
             cin.ignore(123, '\n');

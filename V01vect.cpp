@@ -12,10 +12,10 @@ int main() {
             cout << "Ar norite duomenis skaityti iš failo? (t/n): ";
             cin >> a;
             if (a != 't' && a != 'n') {
-                throw std::runtime_error("klaida, įveskite t arba n");
+                throw std::invalid_argument("klaida, įveskite t arba n");
             }
             break; 
-        } catch (const std::runtime_error& e) {
+        } catch (const std::invalid_argument& e) {
             cout << e.what() << endl;
             cin.clear();
             cin.ignore(123, '\n');
@@ -32,10 +32,10 @@ int main() {
                 cout << "3 - kursiokai1000000.txt" << endl; 
                 cin >> file;
                 if(file != 1 && file != 2 && file != 3){
-                    throw std::runtime_error("klaida, įveskite skaičių 1, 2 arba 3");
+                    throw std::invalid_argument("klaida, įveskite skaičių 1, 2 arba 3");
                 }
                 break;
-            } catch (const std::runtime_error& e){
+            } catch (const std::invalid_argument& e){
                 cout << e.what() << endl;
                 cin.clear();
                 cin.ignore(123, '\n');
@@ -52,7 +52,7 @@ int main() {
         try {
             ifstream file1(filename);
             if (!file1.is_open()) {
-                throw std::runtime_error("Failed to open file: " + filename);
+                throw std::invalid_argument("Failed to open file: " + filename);
             }
         
             string line;
@@ -85,11 +85,11 @@ int main() {
                 cout << "3 - Įvesti visus duomenis automatiškai" << endl;
                 cin >> pasirinkimas; 
                 if(pasirinkimas != 1 && pasirinkimas != 2 && pasirinkimas != 3){
-                    throw std::runtime_error("klaida, įveskite skaičių 1, 2 arba 3");
+                    throw std::invalid_argument("klaida, įveskite skaičių 1, 2 arba 3");
                 }
                 break;
             }
-            catch(const std::runtime_error& e){
+            catch(const std::invalid_argument& e){
                 cout << e.what() << endl;
                 cin.clear();
                 cin.ignore(123, '\n');
@@ -104,11 +104,11 @@ int main() {
             cout << "pasirinkite skaičiavimo būdą vidurkis(v)/mediana(m): ";
             cin >> a;
             if(a != 'v' && a != 'm'){
-                throw std::runtime_error("klaida, pasirinkite v arba m");
+                throw std::invalid_argument("klaida, pasirinkite v arba m");
             }
             break;
         }
-        catch(const std::runtime_error& e){
+        catch(const std::invalid_argument& e){
             cout << e.what() << endl;
             cin.clear();
             cin.ignore(123, '\n');
