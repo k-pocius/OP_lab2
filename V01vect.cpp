@@ -54,7 +54,27 @@ int main() {
     auto start = chrono::high_resolution_clock::now(); // Start timing
     int pasirinkimas;
     if (a == 't') {
-        ifstream file1("kursiokai1000000.txt");
+        int file;
+        cout << "pasirinkite failą: " << endl;
+        cout << "1 - kursiokai10000.txt" << endl;
+        cout << "2 - kursiokai100000.txt" << endl;
+        cout << "3 - kursiokai1000000.txt" << endl;
+        cin >> file;
+        while (file != 1 && file != 2 && file != 3) {
+            cout << "klaida, įveskite skaičių 1, 2 arba 3: ";
+            cin.clear();
+            cin.ignore(123, '\n');
+            cin >> file;
+        }
+
+        string filename;
+        if(file == 1){
+            filename = "kursiokai10000.txt";
+        } else if(file == 2){
+            filename = "kursiokai100000.txt";
+        } else filename = "kursiokai1000000.txt";
+        
+        ifstream file1(filename);
         string line;
         getline(file1, line); // Skip the header line
 
