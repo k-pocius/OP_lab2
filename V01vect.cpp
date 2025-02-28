@@ -1,7 +1,5 @@
 #include "lib.h"
 
-using namespace std;
-
 struct Student {
     string name; // vardas
     string surn; // pavarde

@@ -1,5 +1,4 @@
 #include "lib.h"
-using namespace std;
 
 void skaitom();
 void vidurkis();
