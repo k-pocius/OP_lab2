@@ -42,7 +42,7 @@ int main() {
         cin.ignore(123, '\n');
         cin >> a;
     }
-    auto start = chrono::high_resolution_clock::now(); // Start timing
+    auto start = std::chrono::high_resolution_clock::now(); // Start timing
     int pasirinkimas;
     if (a == 't') {
         int file;
@@ -99,7 +99,7 @@ int main() {
 
         skaitom(pasirinkimas);
     }
-    auto end = chrono::high_resolution_clock::now(); // End timing
+    auto end = std::chrono::high_resolution_clock::now(); // End timing
 
     cout << "pasirinkite skaičiavimo būdą vidurkis(v)/mediana(m): ";
     cin >> a;
@@ -116,7 +116,7 @@ int main() {
     }
     spausdinam(a);
 
-    chrono::duration<double> duration = end - start;
+    std::chrono::duration<double> duration = end - start;
     cout << "Program execution time: " << duration.count() << " seconds" << endl;
 
     return 0;
