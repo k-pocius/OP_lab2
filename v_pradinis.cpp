@@ -1,6 +1,4 @@
-#include <iostream>
-#include <iomanip>
-
+#include "lib.h"
 using namespace std;
 
 void skaitom();

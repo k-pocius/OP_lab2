@@ -1,6 +1,4 @@
-#include <iostream>
-#include <iomanip>
-#include <time.h>
+#include "lib.h"
 
 using namespace std;
 

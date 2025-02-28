@@ -1,10 +1,4 @@
-#include <iostream>
-#include <iomanip>
-#include <vector>
-#include <chrono>
-#include <ctime>
-#include <fstream>
-#include <sstream>
+#include "lib.h"
 
 using namespace std;
 
@@ -37,7 +31,6 @@ bool compareBySurname(const Student& a, const Student& b) {
 bool compareByVid(const Student& a, const Student& b) {
     return a.vid < b.vid;
 }
-
 
 int main() {
     srand(time(NULL));
