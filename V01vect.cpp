@@ -1,13 +1,11 @@
 #include "lib.h"
 #include "V01vect.h"
 
-
 int main() {
     srand(time(NULL));
     char a;
     int pasirinkimas;
     int file;
-
 
     while (true) {
         try {
@@ -23,7 +21,6 @@ int main() {
             cin.ignore(123, '\n');
         }
     }
-
     auto start = std::chrono::high_resolution_clock::now(); // Start timing
 
     if(a == 't'){
@@ -44,6 +41,7 @@ int main() {
                 cin.ignore(123, '\n');
             }
         }
+        
         string filename;
         if(file == 1){
             filename = "kursiokai10000.txt";
