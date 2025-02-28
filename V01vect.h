@@ -59,23 +59,39 @@ void skaitom(int pasirinkimas){
             char teesti2;
             int nd_result;
             if(pasirinkimas == 1){
-                cout << "įveskite " << j+1 << " namų darbo rezultatą: ";
-                while(!(cin >> nd_result)){
-                    cout << "klaida, įveskite skaičių: ";
+                while (true){
+                    try{
+                        cout << "įveskite " << j+1 << " namų darbo rezultatą: ";
+                        cin >> nd_result;
+                        if(nd_result < 0 || nd_result > 10){
+                            throw std::runtime_error ("klaida, įveskite skaičių nuo 0 iki 10");
+                        }
+                        break;
+                    }
+                    catch(const std::runtime_error& e){
+                    cout << e.what() << endl;
                     cin.clear();
                     cin.ignore(123, '\n');
-                } 
+                    }
+                }
             }else if(pasirinkimas == 2 || pasirinkimas == 3) nd_result = rand() % 10 + 1;
             temp.nd.push_back(nd_result);
 
-            cout << "ar norite pridėti daugiau namų darbų rezultatų? (t/n): ";
-            cin >> teesti2;
-            while(!(teesti2 == 't' || teesti2 == 'n')){
-                cout << "klaida, pasirinkite taip(t) arba ne(n): ";
-                cin.clear();
-                cin >> teesti2;
-                cin.ignore(123, '\n');
+            while(true){
+                try{
+                    cout << "ar norite pridėti daugiau namų darbų rezultatų? (t/n): ";
+                    cin >> teesti2; 
+                    if(!(teesti2 == 't' && teesti2 == 'n')){
+                        throw std::runtime_error("klaida, pasirinkite taip(t) arba ne(n)");
+                    }
+                }
+                catch(const std::runtime_error& e){
+                    cout << e.what() << endl;
+                    cin.clear();
+                    cin.ignore(123, '\n');
+                }
             }
+
             if(teesti2 == 'n'){
                 testi2 = false;
             } else testi2 = true;
@@ -86,25 +102,42 @@ void skaitom(int pasirinkimas){
 
         //egzamino rezultatas
         if(pasirinkimas == 1){
-            cout << "įveskite egzamino rezultatą: ";
-            while (!(cin >> temp.egz)) {
-                cout << "klaida, įveskite skaičių: ";
-                cin.clear();
-                cin.ignore(123, '\n');
+            while (true){
+                try{
+                    cout << "įveskite egzamino rezultatą: ";
+                    cin >> temp.egz;
+                    if(temp.egz < 0 || temp.egz > 10){
+                        throw std::runtime_error ("klaida, įveskite skaičių nuo 0 iki 10");
+                    }
+                    break;
+                }
+                catch(const std::runtime_error& e){
+                    cout << e.what() << endl;
+                    cin.clear();
+                    cin.ignore(123, '\n');
+                }
             }
         }else if(pasirinkimas == 2 || pasirinkimas == 3) temp.egz = rand() % 10 + 1;
         students.push_back(temp);
 
         
         
-        cout << "ar norite pridėti daugiau mokinių? (t/n): ";
-        cin >> teesti;
-        while(!(teesti == 't' || teesti == 'n')){
-            cout << "klaida, pasirinkite taip(t) arba ne(n): ";
-            cin.clear();
-            cin >> teesti;
-            cin.ignore(123, '\n');
+        while(true){
+            try{
+                cout << "ar norite pridėti daugiau mokinių? (t/n): ";
+                cin >> teesti;
+                if(!(teesti == 't' || teesti == 'n')){
+                    throw std::runtime_error("klaida, pasirinkite taip(t) arba ne(n)");
+                }
+                break;
+            }
+            catch(const std::runtime_error& e){
+                cout << e.what() << endl;
+                cin.clear();
+                cin.ignore(123, '\n');
+            }
         }
+
         if(teesti == 'n'){
             testi = false;
         }
@@ -143,28 +176,43 @@ void mediana(){
 
 void spausdinam(char a) {
 
-    cout << "Kur norite matyti rezultatus?" << endl;
-    cout << "1 - ekrane" << endl;
-    cout << "2 - faile" << endl;
     int pasirinkimas;
-    cin >> pasirinkimas;
-    while (pasirinkimas != 1 && pasirinkimas != 2) {
-        cout << "klaida, įveskite skaičių 1 arba 2: ";
-        cin.clear();
-        cin.ignore(123, '\n');
-        cin >> pasirinkimas;
+    while(true){
+        try{
+            cout << "Kur norite matyti rezultatus?" << endl;
+            cout << "1 - ekrane" << endl;
+            cout << "2 - faile" << endl;
+            cin >> pasirinkimas;
+            if(pasirinkimas != 1 && pasirinkimas != 2){
+                throw std::runtime_error("klaida, įveskite skaičių 1 arba 2");
+            }
+            break;
+        }
+        catch(const std::runtime_error& e){
+            cout << e.what() << endl;
+            cin.clear();
+            cin.ignore(123, '\n');
+        }
     }
+
     int rusiavimas;
-    cout << "Kaip norite surūšiuoti rezultatus?" << endl;
-    cout << "1 - pagal vardą" << endl;
-    cout << "2 - pagal pavardę" << endl;
-    cout << "3 - pagal galutinį balą" << endl;
-    cin >> rusiavimas;
-    while (rusiavimas != 1 && rusiavimas != 2 && rusiavimas != 3) {
-        cout << "klaida, įveskite skaičių 1, 2 arba 3: ";
-        cin.clear();
-        cin.ignore(123, '\n');
-        cin >> rusiavimas;
+    while(true){
+        try{
+            cout << "Kaip norite surūšiuoti rezultatus?" << endl;
+            cout << "1 - pagal vardą" << endl;
+            cout << "2 - pagal pavardę" << endl;
+            cout << "3 - pagal galutinį balą" << endl;
+            cin >> rusiavimas;
+            if(rusiavimas != 1 && rusiavimas != 2 && rusiavimas != 3){
+                throw std::runtime_error("klaida, įveskite skaičių 1, 2 arba 3");
+            }
+            break;
+        }
+        catch(const std::runtime_error& e){
+            cout << e.what() << endl;
+            cin.clear();
+            cin.ignore(123, '\n');
+        }
     }
 
     if(rusiavimas == 1){

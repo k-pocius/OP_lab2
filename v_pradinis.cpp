@@ -1,5 +1,5 @@
 #include "lib.h"
-#include <v_pradinis.h>
+#include "v_pradinis.h"
 
 int main(){
     char a;

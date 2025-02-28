@@ -1,4 +1,4 @@
-#include <lib.h>
+#include "lib.h"
 
 void skaitom();
 void vidurkis();

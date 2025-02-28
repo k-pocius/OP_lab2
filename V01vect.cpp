@@ -16,7 +16,7 @@ int main() {
             if (a != 't' && a != 'n') {
                 throw std::runtime_error("klaida, įveskite t arba n");
             }
-            break; // Exit the loop if input is valid
+            break; 
         } catch (const std::runtime_error& e) {
             cout << e.what() << endl;
             cin.clear();
@@ -26,49 +26,57 @@ int main() {
 
     auto start = std::chrono::high_resolution_clock::now(); // Start timing
 
-    while(true){
-        try{
-            cout << "pasirinkite failą: " << endl;
-            cout << "1 - kursiokai10000.txt" << endl;
-            cout << "2 - kursiokai100000.txt" << endl;
-            cout << "3 - kursiokai1000000.txt" << endl; 
-            cin >> file;
-            if(file != 1 && file != 2 && file != 3){
-                throw std::runtime_error("klaida, įveskite skaičių 1, 2 arba 3");
+    if(a == 't'){
+        while(true){
+            try{
+                cout << "pasirinkite failą: " << endl;
+                cout << "1 - kursiokai10000.txt" << endl;
+                cout << "2 - kursiokai100000.txt" << endl;
+                cout << "3 - kursiokai1000000.txt" << endl; 
+                cin >> file;
+                if(file != 1 && file != 2 && file != 3){
+                    throw std::runtime_error("klaida, įveskite skaičių 1, 2 arba 3");
+                }
+                break;
+            } catch (const std::runtime_error& e){
+                cout << e.what() << endl;
+                cin.clear();
+                cin.ignore(123, '\n');
             }
-            break;
-        } catch (const std::runtime_error& e){
-            cout << e.what() << endl;
-            cin.clear();
-            cin.ignore(123, '\n');
         }
-
-    }
-    if (a == 't') {
         string filename;
         if(file == 1){
             filename = "kursiokai10000.txt";
         } else if(file == 2){
             filename = "kursiokai100000.txt";
         } else filename = "kursiokai1000000.txt";
-        
-        ifstream file1(filename);
-        string line;
-        getline(file1, line); // Skip the header line
 
-        while (getline(file1, line)) {
-            istringstream iss(line);
-            Student student;
-            iss >> student.name >> student.surn;
-            int score;
-            while (iss >> score) {
-                student.nd.push_back(score);
+        try {
+            ifstream file1(filename);
+            if (!file1.is_open()) {
+                throw std::runtime_error("Failed to open file: " + filename);
             }
-            student.egz = student.nd.back();
-            student.nd.pop_back();
-            students.push_back(student);
+        
+            string line;
+            getline(file1, line); // Skip the header line
+
+            while (getline(file1, line)) {
+                istringstream iss(line);
+                Student student;
+                iss >> student.name >> student.surn;
+                int score;
+                while (iss >> score) {
+                    student.nd.push_back(score);
+                }
+                student.egz = student.nd.back();
+                student.nd.pop_back();
+                students.push_back(student);
+            }
+            file1.close();
+        } catch (const std::runtime_error& e) {
+            cout << e.what() << endl;
+            return 1;
         }
-        file1.close();
 
     } else {
         while(true){
