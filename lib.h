@@ -25,6 +25,7 @@ using std::sort;
 using std::swap;
 using std::numeric_limits;
 using std::streamsize;
+using std:: ostringstream;
 
 
 #endif

@@ -2,6 +2,7 @@
 #include "V03vect.h"
 
 int main() {
+
     srand(time(NULL));
     char a;
     int pasirinkimas;
@@ -63,6 +64,7 @@ int main() {
             n = 10000000;
         }
 
+        
         ifstream file1(filename);
         if (!file1.is_open()) {
             generuojam(filename, n); 
@@ -144,6 +146,7 @@ int main() {
 
     std::chrono::duration<double> duration = end - start;
     cout << "Program execution time: " << duration.count() << " seconds" << endl;
+    cout << "File generation time: " << generationTime.count() << " seconds" << endl;
 
     return 0;
 }
