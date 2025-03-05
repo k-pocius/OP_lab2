@@ -17,6 +17,7 @@ void skaitom(int pasirinkimas);
 void vidurkis();
 void mediana();
 void spausdinam(char a);
+void generuojam(string b, int n);
 
 bool compareByName(const Student& a, const Student& b) {
     return a.name < b.name;
@@ -28,6 +29,26 @@ bool compareBySurname(const Student& a, const Student& b) {
 
 bool compareByVid(const Student& a, const Student& b) {
     return a.vid < b.vid;
+}
+
+void generuojam(string b, int n){
+
+    ofstream fr(b);
+    fr << left << setw(20) << "Vardas" << setw(20) << "Pavardė";
+    for(int i = 1; i <= 15; i++){
+        fr << "ND" << setw(5) << i;
+    }
+    fr << "Egz." << endl;
+
+    for(int i = 0; i < n; i++){
+        fr << left << "Vardas" << setw(14) << i+1 << "Pavardė" << setw(12) << i+1;
+        for(int j = 0; j < 15; j++){
+            fr << setw(7) << rand() % 10 + 1;
+        }
+        fr << rand() % 10 + 1 << endl;
+    }
+
+    fr.close();
 }
 
 void skaitom(int pasirinkimas){
@@ -240,7 +261,9 @@ void spausdinam(char a) {
             cout << left << setw(20) << students[i].surn << setw(14) << students[i].name << setw(20) << students[i].vid << endl;
         }
     } else {
-        ofstream file2("rezultatai.txt");
+
+
+        ofstream file2("alfos.txt");
         file2 << left << setw(20) << "Vardas" << setw(15) << "Pavardė" << setw(20);
 
         if (a == 'v') {
@@ -251,11 +274,32 @@ void spausdinam(char a) {
 
         file2 << "-------------------------------------------------------------" << endl;
 
-        file2 << fixed << setprecision(2);
 
+
+
+        ofstream file3("susmukeliai.txt");
+                
+        file3 << left << setw(20) << "Vardas" << setw(15) << "Pavardė" << setw(20);
+
+        if (a == 'v') {
+            file3 << "Galutinis (Vid.)" << endl;
+        } else {
+            file3 << "Galutinis (Med.)" << endl;
+        }
+
+        file3 << "-------------------------------------------------------------" << endl;
+
+        file2 << fixed << setprecision(2);
+        file3 << fixed << setprecision(2);
+
+        
         for (int i = 0; i < students.size(); i++) {
+            if(students[i].vid < 5){
+                file3 << left << setw(20) << students[i].name << setw(14) << students[i].surn << setw(20) << students[i].vid << endl;
+            } else
             file2 << left << setw(20) << students[i].name << setw(14) << students[i].surn << setw(20) << students[i].vid << endl;
         }
         file2.close();
+        file3.close();
     }
 }
