@@ -2,6 +2,8 @@
 #include "V03vect.h"
 
 int main() {
+    
+    auto start = std::chrono::high_resolution_clock::now(); // Start timing
 
     srand(time(NULL));
     char a;
@@ -22,7 +24,7 @@ int main() {
             cin.ignore(123, '\n');
         }
     }
-    auto start = std::chrono::high_resolution_clock::now(); // Start timing
+
 
     if(a == 't'){
         while(true){
