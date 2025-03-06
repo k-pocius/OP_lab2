@@ -74,7 +74,11 @@ int main() {
         
         ifstream file1(filename);
         if (!file1) {
+
+            auto start = std::chrono::high_resolution_clock::now();
             generuojam(filename, n); 
+            auto end = std::chrono::high_resolution_clock::now();
+            generationTime = end - start;
             file1.open(filename); // Reopen the file after generating it
         }
 

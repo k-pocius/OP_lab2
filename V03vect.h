@@ -35,8 +35,6 @@ bool compareByVid(const Student& a, const Student& b) {
 
 void generuojam(string b, int n){
 
-    auto start = std::chrono::high_resolution_clock::now(); // Start timing
-
     ofstream fr(b);
     fr << left << setw(20) << "Vardas" << setw(20) << "Pavardė";
     for(int i = 1; i <= 15; i++){
@@ -53,10 +51,7 @@ void generuojam(string b, int n){
     }
 
     
-    fr.close();
-
-    auto end = std::chrono::high_resolution_clock::now(); // End timing
-    generationTime = end - start;
+    fr.close();  // Close file
 }
 
 void skaitom(int pasirinkimas){
