@@ -47,26 +47,33 @@ int main() {
         
         int n = 0; // studentu skaicius
         string filename; // failo pavadinimas
-        if(file == 1){
-            filename = "kursiokai1000.txt";
-            n = 1000;
-        } else if(file == 2){
-            filename = "kursiokai10000.txt";
-            n = 10000;
-        } else if(file == 3){
-            filename = "kursiokai100000.txt";
-            n = 100000;
-        } else if(file == 4){
-            filename = "kursiokai1000000.txt";
-            n = 1000000;
-        } else {
-            filename = "kursiokai10000000.txt";
-            n = 10000000;
+
+        switch(file){
+            case 1:
+                filename = "kursiokai1000.txt";
+                n = 1000;
+                break;
+            case 2:
+                filename = "kursiokai10000.txt";
+                n = 10000;
+                break;
+            case 3:
+                filename = "kursiokai100000.txt";
+                n = 100000;
+                break;
+            case 4:
+                filename = "kursiokai1000000.txt";
+                n = 1000000;
+                break;
+            case 5:
+                filename = "kursiokai10000000.txt";
+                n = 10000000;   
+                break;             
         }
 
         
         ifstream file1(filename);
-        if (!file1.is_open()) {
+        if (!file1) {
             generuojam(filename, n); 
             file1.open(filename); // Reopen the file after generating it
         }
