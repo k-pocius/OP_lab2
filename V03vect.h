@@ -13,7 +13,7 @@ std::chrono::duration<double> readTime;
 
 using hrClock = std::chrono::high_resolution_clock;
 std::mt19937 mt(static_cast<long unsigned int>(hrClock::now().time_since_epoch().count()));
-std::uniform_int_distribution<int> dist(0, 99);
+std::uniform_int_distribution<int> dist(1, 10);
 
 vector<Student> students;
 
@@ -40,22 +40,22 @@ bool compareByVid(const Student& a, const Student& b) {
 
 void generuojam(string b, int n){
 
-    ofstream fr(b);
-    fr << left << setw(20) << "Vardas" << setw(20) << "Pavardė";
+    ostringstream oss;
+    oss << left << setw(20) << "Vardas" << setw(20) << "Pavardė";
     for(int i = 1; i <= 15; i++){
-        fr << "ND" << setw(5) << i;
+        oss << "ND" << setw(5) << i;
     }
-    fr << "Egz." << endl;
+    oss << "Egz." << endl;
 
     for(int i = 0; i < n; i++){
-        fr << left << "Vardas" << setw(14) << i+1 << "Pavardė" << setw(12) << i+1;
+        oss << left << "Vardas" << setw(14) << i+1 << "Pavardė" << setw(12) << i+1;
         for(int j = 0; j < 15; j++){
-            fr << setw(7) << dist(mt) % 10 + 1;
+            oss << setw(7) << dist(mt);
         }
-        fr << dist(mt) % 10 + 1 << endl;
+        oss << dist(mt)<< endl;
     }
-
-    
+    ofstream fr(b);
+    fr << oss.str();
     fr.close();  // Close file
 }
 
@@ -74,8 +74,8 @@ void skaitom(int pasirinkimas){
             cout << "įveskite mokinio pavardę: ";
             cin >> temp.surn; 
         }else if(pasirinkimas == 3){
-            temp.name = A[dist(mt) % 10];
-            temp.surn = B[dist(mt) % 10];
+            temp.name = A[dist(mt)];
+            temp.surn = B[dist(mt)];
         }
 
 
@@ -103,7 +103,7 @@ void skaitom(int pasirinkimas){
                     cin.ignore(123, '\n');
                     }
                 }
-            }else if(pasirinkimas == 2 || pasirinkimas == 3) nd_result = dist(mt) % 10 + 1;
+            }else if(pasirinkimas == 2 || pasirinkimas == 3) nd_result = dist(mt);
             temp.nd.push_back(nd_result);
 
             while(true){
@@ -146,7 +146,7 @@ void skaitom(int pasirinkimas){
                     cin.ignore(123, '\n');
                 }
             }
-        }else if(pasirinkimas == 2 || pasirinkimas == 3) temp.egz = dist(mt) % 10 + 1;
+        }else if(pasirinkimas == 2 || pasirinkimas == 3) temp.egz = dist(mt);
         students.push_back(temp);
 
         

@@ -10,7 +10,7 @@
 #include <time.h>
 #include <random>
 
-using std:: string;
+using std::string;
 using std::vector;
 using std::cout;
 using std::cin;
@@ -26,7 +26,7 @@ using std::sort;
 using std::swap;
 using std::numeric_limits;
 using std::streamsize;
-using std:: ostringstream;
+using std::ostringstream;
 
 
 #endif

@@ -84,7 +84,7 @@ int main() {
         }
 
         try {
-            if (!file1.is_open()) {
+            if (!file1) {
                 throw std::invalid_argument("Failed to open file: " + filename);
             }
         
