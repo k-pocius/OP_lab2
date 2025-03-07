@@ -8,18 +8,27 @@ struct Student {
     double vid; // galutinis vidurkis
 };
 
-std::chrono::duration<double> generationTime;
-std::chrono::duration<double> readTime;
 
+
+std::chrono::duration<double> generationTime; // generavimo laikas
+std::chrono::duration<double> readTime; // skaitymo laikas
+std::chrono::duration<double> sortTime; // rusiavimo laikas
+std::chrono::duration<double> writeTime; // rasymo laikas
+
+
+//random skaiciu generavimas
 using hrClock = std::chrono::high_resolution_clock;
 std::mt19937 mt(static_cast<long unsigned int>(hrClock::now().time_since_epoch().count()));
 std::uniform_int_distribution<int> dist(1, 10);
 
+
+
 vector<Student> BadStudents;
 vector<Student> GoodStudents;
 
-string A[] = {"Jonas", "Petras", "Antanas", "Kazys", "Juozas", "Tomas", "Mantas", "Marius", "Mindaugas", "Gintaras"};
-string B[] = {"Jonaitis", "Petraitis", "Antanaitis", "Kazaitis", "Ugninis", "Trumpulis", "Galiunas", "Gajusis", "Gandras", "Malūnas"};
+string A[] = {"","Jonas", "Petras", "Antanas", "Kazys", "Juozas", "Tomas", "Mantas", "Marius", "Mindaugas", "Gintaras"};
+string B[] = {"","Jonaitis", "Petraitis", "Antanaitis", "Kazaitis", "Ugninis", "Trumpulis", "Galiunas", "Gajusis", "Gandras", "Malūnas"};
+
 
 void skaitom(int pasirinkimas);
 void vidurkis();
@@ -27,30 +36,32 @@ void mediana();
 void spausdinam(char a);
 void generuojam(string b, int n);
 void rusiuojam();
-
 bool compareByName(const Student& a, const Student& b) {
     return a.name < b.name;
 }
-
 bool compareBySurname(const Student& a, const Student& b) {
     return a.surn < b.surn;
 }
-
 bool compareByVid(const Student& a, const Student& b) {
     return a.vid < b.vid;
 }
 
+
 void rusiuojam(){
-    // Sort BadStudents by vid from low to high
+    // surusiuojam studentus pagal galutini bala
     sort(BadStudents.begin(), BadStudents.end(), compareByVid);
 
-    // Iterate from the back of the sorted BadStudents vector
+    auto startSort = std::chrono::high_resolution_clock::now();
+    // iteruojam nuo galo
     for (int i = BadStudents.size() - 1; i >= 0; --i) {
         if (BadStudents[i].vid < 5) break;
         GoodStudents.push_back({BadStudents[i].name, BadStudents[i].surn, {}, 0, BadStudents[i].vid});
-        BadStudents.erase(BadStudents.begin() + i); // Remove the student from BadStudents
+        BadStudents.erase(BadStudents.begin() + i); // istrinam paskutini studenta
     }
+    auto endSort = std::chrono::high_resolution_clock::now();
+    sortTime = endSort - startSort;
 }
+
 
 void generuojam(string b, int n){
 
@@ -72,6 +83,7 @@ void generuojam(string b, int n){
     fr << oss.str();
     fr.close();  // Close file
 }
+
 
 void skaitom(int pasirinkimas){
     
@@ -190,6 +202,7 @@ void skaitom(int pasirinkimas){
     }
 }
 
+
 void vidurkis(){
     for(int i = 0; i < BadStudents.size(); i++){
         double sum = 0;
@@ -199,6 +212,7 @@ void vidurkis(){
         BadStudents[i].vid = (sum / BadStudents[i].nd.size())*0.4 + (BadStudents[i].egz*0.6);
     }
 }
+
 
 void mediana(){
 
@@ -217,6 +231,7 @@ void mediana(){
         }
     }
 }
+
 
 void spausdinam(char a) {
 
@@ -288,8 +303,9 @@ void spausdinam(char a) {
         }
     } else {
 
-
         // geri mokiniai
+
+        auto startWrite = std::chrono::high_resolution_clock::now();        
         ostringstream oss;
         oss << left << setw(20) << "Vardas" << setw(15) << "Pavardė" << setw(20);
 
@@ -329,5 +345,7 @@ void spausdinam(char a) {
         ofstream file3("alfos.txt");
         file3 << oss.str();
         file3.close();
+        auto endWrite = std::chrono::high_resolution_clock::now();
+        writeTime = endWrite - startWrite;
     }
 }

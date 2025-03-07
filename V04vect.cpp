@@ -1,5 +1,5 @@
 #include "lib.h"
-#include "V03vect.h"
+#include "V04vect.h"
 
 int main() {
 
@@ -24,8 +24,8 @@ int main() {
         }
     }
 
-
-    if(a == 't'){
+    string filename; // failo pavadinimas
+    if(a == 't'){ // skaitymas is failo
         while(true){
             try{
                 cout << "pasirinkite failą: " << endl;
@@ -47,7 +47,6 @@ int main() {
         }
         
         int n = 0; // studentu skaicius
-        string filename; // failo pavadinimas
 
         switch(file){
             case 1:
@@ -73,17 +72,19 @@ int main() {
         }
 
         
-        ifstream file1(filename);
-        if (!file1) {
+        ifstream file1(filename); // bandoma atidaryti failą
+        if (!file1) { // jei nepavyksta, sukuriamas failas, ir atidaromas
 
             auto startt = std::chrono::high_resolution_clock::now();
             generuojam(filename, n); 
             auto endd = std::chrono::high_resolution_clock::now();
             generationTime = endd - startt;
-            file1.open(filename); // Reopen the file after generating it
+
+
+            file1.open(filename);
         }
 
-        try {
+        try { // tikrinam ar atsidare failas
             if (!file1) {
                 throw std::invalid_argument("Failed to open file: " + filename);
             }
@@ -93,7 +94,7 @@ int main() {
 
 
             auto startRead = std::chrono::high_resolution_clock::now();
-            getline(file1, line); // Skip the header line
+            getline(file1, line); // praleidziam primaja eilute
 
             while (getline(file1, line)) {
                 istringstream iss(line);
@@ -117,7 +118,8 @@ int main() {
             return 1;
         }
 
-    } else {
+
+    } else { // duomenu ivedimas ranka, ar automatiskai
         while(true){
             try{
                 cout << "Pasirinkite duomenų įvedimo būdą:" << endl;
@@ -136,8 +138,9 @@ int main() {
                 cin.ignore(123, '\n');
             }
         }
-        skaitom(pasirinkimas);
+        skaitom(pasirinkimas); // skaitymas
     }
+
 
     while(true){
         try{
@@ -155,21 +158,29 @@ int main() {
         }
     }
 
+
     if (a == 'v') {
         vidurkis();
     } else {
         mediana();
     }
-    rusiuojam();
-    spausdinam(a);
+    rusiuojam(); // studentu rusiavimas i skirtingus failus
+    spausdinam(a); // spausdinimas
 
 
     auto end = std::chrono::high_resolution_clock::now(); // End timing
     std::chrono::duration<double> programTime = end - start;
 
-    cout << "Visos programos laikas: " << programTime.count() << "s" << endl;
+    cout << "--------------------------------------" << endl;
+    cout << endl;
+    cout << "failas: " << filename << endl;
     cout << "Failo kūrimo laikas: " << generationTime.count() << "s" << endl;
-    cout << "Duomenų nuskaitymo laikas: " << readTime.count() << "s" << endl;
+    cout << "Duomenų nuskaitymo laikas: " << readTime.count() << "s" << endl;     
+    cout << "Rūšiavimo laikas: " << sortTime.count() << "s" << endl;
+    cout << "Rezultatų išvedimo laikas: " << writeTime.count() << "s" << endl;
+    cout << "Visos programos laikas: " << programTime.count() << "s" << endl;
+    cout << endl;
+    cout << "--------------------------------------" << endl;
 
     return 0;
 }
