@@ -2,7 +2,7 @@
 #include "V03vect.h"
 
 int main() {
-    
+
     auto start = std::chrono::high_resolution_clock::now(); // Start timing
 
     srand(time(NULL));
@@ -77,10 +77,10 @@ int main() {
         ifstream file1(filename);
         if (!file1) {
 
-            auto start = std::chrono::high_resolution_clock::now();
+            auto startt = std::chrono::high_resolution_clock::now();
             generuojam(filename, n); 
-            auto end = std::chrono::high_resolution_clock::now();
-            generationTime = end - start;
+            auto endd = std::chrono::high_resolution_clock::now();
+            generationTime = endd - startt;
             file1.open(filename); // Reopen the file after generating it
         }
 
@@ -91,6 +91,9 @@ int main() {
         
         
             string line;
+
+
+            auto startRead = std::chrono::high_resolution_clock::now();
             getline(file1, line); // Skip the header line
 
             while (getline(file1, line)) {
@@ -106,6 +109,10 @@ int main() {
                 students.push_back(student);
             }
             file1.close();
+            auto endRead = std::chrono::high_resolution_clock::now();
+            readTime = endRead - startRead;
+
+            
         } catch (const std::runtime_error& e) {
             cout << e.what() << endl;
             return 1;
@@ -132,7 +139,6 @@ int main() {
         }
         skaitom(pasirinkimas);
     }
-    auto end = std::chrono::high_resolution_clock::now(); // End timing
 
     while(true){
         try{
@@ -157,9 +163,13 @@ int main() {
     }
     spausdinam(a);
 
-    std::chrono::duration<double> duration = end - start;
-    cout << "Program execution time: " << duration.count() << " seconds" << endl;
-    cout << "File generation time: " << generationTime.count() << " seconds" << endl;
+
+    auto end = std::chrono::high_resolution_clock::now(); // End timing
+    std::chrono::duration<double> programTime = end - start;
+
+    cout << "Visos programos laikas: " << programTime.count() << " s" << endl;
+    cout << "Failo kūrimo laikas: " << generationTime.count() << " s" << endl;
+    cout << "Duomenų nuskaitymo laikas: " << readTime.count() << " s" << endl;
 
     return 0;
 }

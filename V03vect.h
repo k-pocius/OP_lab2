@@ -9,6 +9,7 @@ struct Student {
 };
 
 std::chrono::duration<double> generationTime;
+std::chrono::duration<double> readTime;
 
 vector<Student> students;
 
