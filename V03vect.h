@@ -11,6 +11,10 @@ struct Student {
 std::chrono::duration<double> generationTime;
 std::chrono::duration<double> readTime;
 
+using hrClock = std::chrono::high_resolution_clock;
+std::mt19937 mt(static_cast<long unsigned int>(hrClock::now().time_since_epoch().count()));
+std::uniform_int_distribution<int> dist(0, 99);
+
 vector<Student> students;
 
 string A[] = {"Jonas", "Petras", "Antanas", "Kazys", "Juozas", "Tomas", "Mantas", "Marius", "Mindaugas", "Gintaras"};
@@ -46,9 +50,9 @@ void generuojam(string b, int n){
     for(int i = 0; i < n; i++){
         fr << left << "Vardas" << setw(14) << i+1 << "Pavardė" << setw(12) << i+1;
         for(int j = 0; j < 15; j++){
-            fr << setw(7) << rand() % 10 + 1;
+            fr << setw(7) << dist(mt) % 10 + 1;
         }
-        fr << rand() % 10 + 1 << endl;
+        fr << dist(mt) % 10 + 1 << endl;
     }
 
     
@@ -70,8 +74,8 @@ void skaitom(int pasirinkimas){
             cout << "įveskite mokinio pavardę: ";
             cin >> temp.surn; 
         }else if(pasirinkimas == 3){
-            temp.name = A[rand() % 10];
-            temp.surn = B[rand() % 10];
+            temp.name = A[dist(mt) % 10];
+            temp.surn = B[dist(mt) % 10];
         }
 
 
@@ -99,7 +103,7 @@ void skaitom(int pasirinkimas){
                     cin.ignore(123, '\n');
                     }
                 }
-            }else if(pasirinkimas == 2 || pasirinkimas == 3) nd_result = rand() % 10 + 1;
+            }else if(pasirinkimas == 2 || pasirinkimas == 3) nd_result = dist(mt) % 10 + 1;
             temp.nd.push_back(nd_result);
 
             while(true){
@@ -142,7 +146,7 @@ void skaitom(int pasirinkimas){
                     cin.ignore(123, '\n');
                 }
             }
-        }else if(pasirinkimas == 2 || pasirinkimas == 3) temp.egz = rand() % 10 + 1;
+        }else if(pasirinkimas == 2 || pasirinkimas == 3) temp.egz = dist(mt) % 10 + 1;
         students.push_back(temp);
 
         

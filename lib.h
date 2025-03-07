@@ -8,6 +8,7 @@
 #include <fstream>
 #include <sstream>
 #include <time.h>
+#include <random>
 
 using std:: string;
 using std::vector;

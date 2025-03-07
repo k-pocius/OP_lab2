@@ -5,7 +5,6 @@ int main() {
 
     auto start = std::chrono::high_resolution_clock::now(); // Start timing
 
-    srand(time(NULL));
     char a;
     int pasirinkimas;
     int file;
@@ -161,15 +160,16 @@ int main() {
     } else {
         mediana();
     }
+
     spausdinam(a);
 
 
     auto end = std::chrono::high_resolution_clock::now(); // End timing
     std::chrono::duration<double> programTime = end - start;
 
-    cout << "Visos programos laikas: " << programTime.count() << " s" << endl;
-    cout << "Failo kūrimo laikas: " << generationTime.count() << " s" << endl;
-    cout << "Duomenų nuskaitymo laikas: " << readTime.count() << " s" << endl;
+    cout << "Visos programos laikas: " << programTime.count() << "s" << endl;
+    cout << "Failo kūrimo laikas: " << generationTime.count() << "s" << endl;
+    cout << "Duomenų nuskaitymo laikas: " << readTime.count() << "s" << endl;
 
     return 0;
 }
