@@ -105,7 +105,7 @@ int main() {
                 }
                 student.egz = student.nd.back();
                 student.nd.pop_back();
-                students.push_back(student);
+                BadStudents.push_back(student);
             }
             file1.close();
             auto endRead = std::chrono::high_resolution_clock::now();
@@ -160,7 +160,7 @@ int main() {
     } else {
         mediana();
     }
-
+    rusiuojam();
     spausdinam(a);
 
 

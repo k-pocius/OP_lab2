@@ -15,7 +15,8 @@ using hrClock = std::chrono::high_resolution_clock;
 std::mt19937 mt(static_cast<long unsigned int>(hrClock::now().time_since_epoch().count()));
 std::uniform_int_distribution<int> dist(1, 10);
 
-vector<Student> students;
+vector<Student> BadStudents;
+vector<Student> GoodStudents;
 
 string A[] = {"Jonas", "Petras", "Antanas", "Kazys", "Juozas", "Tomas", "Mantas", "Marius", "Mindaugas", "Gintaras"};
 string B[] = {"Jonaitis", "Petraitis", "Antanaitis", "Kazaitis", "Ugninis", "Trumpulis", "Galiunas", "Gajusis", "Gandras", "Malūnas"};
@@ -25,6 +26,7 @@ void vidurkis();
 void mediana();
 void spausdinam(char a);
 void generuojam(string b, int n);
+void rusiuojam();
 
 bool compareByName(const Student& a, const Student& b) {
     return a.name < b.name;
@@ -36,6 +38,18 @@ bool compareBySurname(const Student& a, const Student& b) {
 
 bool compareByVid(const Student& a, const Student& b) {
     return a.vid < b.vid;
+}
+
+void rusiuojam(){
+    // Sort BadStudents by vid from low to high
+    sort(BadStudents.begin(), BadStudents.end(), compareByVid);
+
+    // Iterate from the back of the sorted BadStudents vector
+    for (int i = BadStudents.size() - 1; i >= 0; --i) {
+        if (BadStudents[i].vid < 5) break;
+        GoodStudents.push_back({BadStudents[i].name, BadStudents[i].surn, {}, 0, BadStudents[i].vid});
+        BadStudents.erase(BadStudents.begin() + i); // Remove the student from BadStudents
+    }
 }
 
 void generuojam(string b, int n){
@@ -110,9 +124,10 @@ void skaitom(int pasirinkimas){
                 try{
                     cout << "ar norite pridėti daugiau namų darbų rezultatų? (t/n): ";
                     cin >> teesti2; 
-                    if(!(teesti2 == 't' && teesti2 == 'n')){
+                    if(!(teesti2 == 't' || teesti2 == 'n')){
                         throw std::invalid_argument("klaida, pasirinkite taip(t) arba ne(n)");
                     }
+                    break;
                 }
                 catch(const std::invalid_argument& e){
                     cout << e.what() << endl;
@@ -147,7 +162,7 @@ void skaitom(int pasirinkimas){
                 }
             }
         }else if(pasirinkimas == 2 || pasirinkimas == 3) temp.egz = dist(mt);
-        students.push_back(temp);
+        BadStudents.push_back(temp);
 
         
         
@@ -176,29 +191,29 @@ void skaitom(int pasirinkimas){
 }
 
 void vidurkis(){
-    for(int i = 0; i < students.size(); i++){
+    for(int i = 0; i < BadStudents.size(); i++){
         double sum = 0;
-        for(int j = 0; j < students[i].nd.size(); j++){
-            sum += students[i].nd[j];
+        for(int j = 0; j < BadStudents[i].nd.size(); j++){
+            sum += BadStudents[i].nd[j];
         }
-        students[i].vid = (sum / students[i].nd.size())*0.4 + (students[i].egz*0.6);
+        BadStudents[i].vid = (sum / BadStudents[i].nd.size())*0.4 + (BadStudents[i].egz*0.6);
     }
 }
 
 void mediana(){
 
     //nd rezultatu rikiavimas didejimo tvarka
-    for (int i = 0; i < students.size(); i++) {
-        sort(students[i].nd.begin(), students[i].nd.end()); 
+    for (int i = 0; i < BadStudents.size(); i++) {
+        sort(BadStudents[i].nd.begin(), BadStudents[i].nd.end()); 
     }
 
     //medianos skaiciavimas
-    for(int i = 0; i < students.size(); i++){
-        if(students[i].nd.size() % 2 == 0){
-            students[i].vid = ((students[i].nd[students[i].nd.size()/2] + students[i].nd[students[i].nd.size()/2 - 1]) / 2.0)*0.4 + (students[i].egz*0.6);
+    for(int i = 0; i < BadStudents.size(); i++){
+        if(BadStudents[i].nd.size() % 2 == 0){
+            BadStudents[i].vid = ((BadStudents[i].nd[BadStudents[i].nd.size()/2] + BadStudents[i].nd[BadStudents[i].nd.size()/2 - 1]) / 2.0)*0.4 + (BadStudents[i].egz*0.6);
         } 
         else {
-            students[i].vid = students[i].nd[students[i].nd.size()/2]*0.4 + (students[i].egz*0.6);
+            BadStudents[i].vid = BadStudents[i].nd[BadStudents[i].nd.size()/2]*0.4 + (BadStudents[i].egz*0.6);
         }
     }
 }
@@ -245,11 +260,14 @@ void spausdinam(char a) {
     }
 
     if(rusiavimas == 1){
-        sort(students.begin(), students.end(), compareByName);
+        sort(BadStudents.begin(), BadStudents.end(), compareByName);
+        sort(GoodStudents.begin(), GoodStudents.end(), compareByName);
     } else if(rusiavimas == 2){
-        sort(students.begin(), students.end(), compareBySurname);
+        sort(BadStudents.begin(), BadStudents.end(), compareBySurname);
+        sort(GoodStudents.begin(), GoodStudents.end(), compareBySurname);
     } else{
-        sort(students.begin(), students.end(), compareByVid);
+        sort(BadStudents.begin(), BadStudents.end(), compareByVid);
+        sort(GoodStudents.begin(), GoodStudents.end(), compareByVid);
     }
 
     if(pasirinkimas == 1){
@@ -265,49 +283,51 @@ void spausdinam(char a) {
 
         cout << fixed << setprecision(2);
 
-        for (int i = 0; i < students.size(); i++) {
-            cout << left << setw(20) << students[i].surn << setw(14) << students[i].name << setw(20) << students[i].vid << endl;
+        for (int i = 0; i < BadStudents.size(); i++) {
+            cout << left << setw(20) << BadStudents[i].surn << setw(14) << BadStudents[i].name << setw(20) << BadStudents[i].vid << endl;
         }
     } else {
 
 
-        ofstream file2("alfos.txt");
-        file2 << left << setw(20) << "Vardas" << setw(15) << "Pavardė" << setw(20);
+        // geri mokiniai
+        ostringstream oss;
+        oss << left << setw(20) << "Vardas" << setw(15) << "Pavardė" << setw(20);
 
         if (a == 'v') {
-            file2 << "Galutinis (Vid.)" << endl;
+            oss << "Galutinis (Vid.)" << endl;
         } else {
-            file2 << "Galutinis (Med.)" << endl;
+            oss << "Galutinis (Med.)" << endl;
         }
 
-        file2 << "-------------------------------------------------------------" << endl;
-
-
-
-
-        ofstream file3("susmukeliai.txt");
-                
-        file3 << left << setw(20) << "Vardas" << setw(15) << "Pavardė" << setw(20);
-
-        if (a == 'v') {
-            file3 << "Galutinis (Vid.)" << endl;
-        } else {
-            file3 << "Galutinis (Med.)" << endl;
+        oss << "-------------------------------------------------------------" << endl;
+        oss << fixed << setprecision(2);
+        for (int i = 0; i < BadStudents.size(); i++) {
+            oss << left << setw(20) << BadStudents[i].name << setw(16) << BadStudents[i].surn << BadStudents[i].vid << endl;
         }
-
-        file3 << "-------------------------------------------------------------" << endl;
-
-        file2 << fixed << setprecision(2);
-        file3 << fixed << setprecision(2);
-
-        
-        for (int i = 0; i < students.size(); i++) {
-            if(students[i].vid < 5){
-                file3 << left << setw(20) << students[i].name << setw(14) << students[i].surn << setw(20) << students[i].vid << endl;
-            } else
-            file2 << left << setw(20) << students[i].name << setw(14) << students[i].surn << setw(20) << students[i].vid << endl;
-        }
+        ofstream file2("susmukeliai.txt");
+        file2 << oss.str();
         file2.close();
+
+        oss.str("");
+        oss.clear();
+
+        //blogi mokiniai
+        oss << left << setw(20) << "Vardas" << setw(15) << "Pavardė" << setw(20);
+
+        if (a == 'v') {
+            oss << "Galutinis (Vid.)" << endl;
+        } else {
+            oss << "Galutinis (Med.)" << endl;
+        }
+
+        oss << "-------------------------------------------------------------" << endl;
+
+        oss << fixed << setprecision(2);
+        for (int i = 0; i < GoodStudents.size(); i++) {
+            oss << left << setw(20) << GoodStudents[i].name << setw(16) << GoodStudents[i].surn << GoodStudents[i].vid << endl;
+        }
+        ofstream file3("alfos.txt");
+        file3 << oss.str();
         file3.close();
     }
 }
