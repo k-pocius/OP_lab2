@@ -51,12 +51,13 @@ void rusiuojam(){
     // surusiuojam studentus pagal galutini bala
     sort(BadStudents.begin(), BadStudents.end(), compareByVid);
 
+
+
     auto startSort = std::chrono::high_resolution_clock::now();
     // iteruojam nuo galo
-    for (int i = BadStudents.size() - 1; i >= 0; --i) {
-        if (BadStudents[i].vid < 5) break;
-        GoodStudents.push_back({BadStudents[i].name, BadStudents[i].surn, {}, 0, BadStudents[i].vid});
-        BadStudents.erase(BadStudents.begin() + i); // istrinam paskutini studenta
+    while(BadStudents.back().vid >= 5) {
+        GoodStudents.push_back({BadStudents.back().name, BadStudents.back().surn, {}, 0, BadStudents.back().vid});
+        BadStudents.pop_back(); // istrinam paskutini studenta~
     }
     auto endSort = std::chrono::high_resolution_clock::now();
     sortTime = endSort - startSort;
