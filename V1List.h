@@ -35,7 +35,7 @@ void vidurkis();
 void mediana();
 void spausdinam(char a);
 void generuojam(string b, int n);
-void rusiuojam();
+void rusiuojam(char a);
 bool compareByName(const Student& a, const Student& b) {
     return a.name < b.name;
 }
@@ -47,20 +47,21 @@ bool compareByVid(const Student& a, const Student& b) {
 }
 
 
-void rusiuojam(){
+void rusiuojam(char a){
     // surusiuojam studentus pagal galutini bala
     sort(BadStudents.begin(), BadStudents.end(), compareByVid);
 
 
-
-    auto startSort = std::chrono::high_resolution_clock::now();
-    // iteruojam nuo galo
-    while(BadStudents.back().vid >= 5) {
-        GoodStudents.push_back({BadStudents.back().name, BadStudents.back().surn, {}, 0, BadStudents.back().vid});
-        BadStudents.pop_back(); // istrinam paskutini studenta~
+    if(a == 'n'){
+        auto startSort = std::chrono::high_resolution_clock::now();
+        // iteruojam nuo galo
+        while(BadStudents.back().vid >= 5) {
+            GoodStudents.push_back({BadStudents.back().name, BadStudents.back().surn, {}, 0, BadStudents.back().vid});
+            BadStudents.pop_back(); // istrinam paskutini studenta~
+        }
+        auto endSort = std::chrono::high_resolution_clock::now();
+        sortTime = endSort - startSort;    
     }
-    auto endSort = std::chrono::high_resolution_clock::now();
-    sortTime = endSort - startSort;
 }
 
 
