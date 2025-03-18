@@ -9,6 +9,8 @@
 #include <sstream>
 #include <time.h>
 #include <random>
+#include <list>
+#include <deque>
 
 using std::string;
 using std::vector;
@@ -27,6 +29,8 @@ using std::swap;
 using std::numeric_limits;
 using std::streamsize;
 using std::ostringstream;
+using std::list;
+using std::deque;
 
 
 #endif
