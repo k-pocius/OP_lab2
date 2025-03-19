@@ -3,7 +3,7 @@
 struct Student {
     string name; // vardas
     string surn; // pavarde
-    vector<int> nd; // nd rezultatai 
+    deque<int> nd; // nd rezultatai 
     int egz; // egzaminu rez
     double vid; // galutinis vidurkis
 };
@@ -23,8 +23,8 @@ std::uniform_int_distribution<int> dist(1, 10);
 
 
 
-vector<Student> BadStudents;
-vector<Student> GoodStudents;
+deque<Student> BadStudents;
+deque<Student> GoodStudents;
 
 string A[] = {"","Jonas", "Petras", "Antanas", "Kazys", "Juozas", "Tomas", "Mantas", "Marius", "Mindaugas", "Gintaras"};
 string B[] = {"","Jonaitis", "Petraitis", "Antanaitis", "Kazaitis", "Ugninis", "Trumpulis", "Galiunas", "Gajusis", "Gandras", "Malūnas"};
