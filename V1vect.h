@@ -52,7 +52,7 @@ void rusiuojam(char a){
     sort(BadStudents.begin(), BadStudents.end(), compareByVid);
 
 
-    if(a == 'n'){ // jei pasirenkamas spausdinimas faile 
+   if(a == 't'){ // jei pasirenkamas spausdinimas faile 
         auto startSort = std::chrono::high_resolution_clock::now();
         // iteruojam nuo galo
         while(BadStudents.back().vid >= 5) {
@@ -62,7 +62,6 @@ void rusiuojam(char a){
         auto endSort = std::chrono::high_resolution_clock::now();
         sortTime = endSort - startSort;  
     }
-
 }
 
 

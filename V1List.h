@@ -52,7 +52,7 @@ void rusiuojam(char a){
     sort(BadStudents.begin(), BadStudents.end(), compareByVid);
 
 
-    if(a == 'n'){
+    if(a == 't'){
         auto startSort = std::chrono::high_resolution_clock::now();
         // iteruojam nuo galo
         while(BadStudents.back().vid >= 5) {

@@ -5,15 +5,16 @@ int main() {
 
     auto start = std::chrono::high_resolution_clock::now(); // Start timing
 
-    char a;
+    char b; // ar nori skaityti is failo
+    char a; // ar vidurkis ar mediana
     int pasirinkimas;
     int file;
 
     while (true) {
         try {
             cout << "Ar norite duomenis skaityti iš failo? (t/n): ";
-            cin >> a;
-            if (a != 't' && a != 'n') {
+            cin >> b;
+            if (b != 't' && b != 'n') {
                 throw std::invalid_argument("klaida, įveskite t arba n");
             }
             break; 
@@ -25,7 +26,7 @@ int main() {
     }
 
     string filename; // failo pavadinimas
-    if(a == 't'){ // skaitymas is failo
+    if(b == 't'){ // skaitymas is failo
         while(true){
             try{
                 cout << "pasirinkite failą: " << endl;
@@ -164,7 +165,7 @@ int main() {
     } else {
         mediana();
     }
-    rusiuojam(a); // studentu rusiavimas i skirtingus failus
+    rusiuojam(b); // studentu rusiavimas i skirtingus failus
     spausdinam(a); // spausdinimas
 
 
