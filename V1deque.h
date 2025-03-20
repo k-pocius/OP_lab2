@@ -22,7 +22,7 @@ std::mt19937 mt(static_cast<long unsigned int>(hrClock::now().time_since_epoch()
 std::uniform_int_distribution<int> dist(1, 10);
 
 
-
+deque<Student> BadStudents2; // studentai rusiuojam1 funkcijai
 deque<Student> BadStudents;
 deque<Student> GoodStudents;
 
@@ -35,7 +35,8 @@ void vidurkis();
 void mediana();
 void spausdinam(char a);
 void generuojam(string b, int n);
-void rusiuojam(char a);
+void rusiuojam2(char a); // skaidymas per puse
+void rusiuojam1(char a); // skaidymas is vieno konteinerio i du
 bool compareByName(const Student& a, const Student& b) {
     return a.name < b.name;
 }
@@ -46,8 +47,24 @@ bool compareByVid(const Student& a, const Student& b) {
     return a.vid < b.vid;
 }
 
+void rusiuojam1(char a){
+    // nukopijuojam visus elementus i atskira konteineri, kad nereiktu keist toliau esancios programos
+    BadStudents2.assign(BadStudents.begin(), BadStudents.end()); 
+    BadStudents.clear();
 
-void rusiuojam(char a){
+    auto startSort = std::chrono::high_resolution_clock::now();
+    for(int i = 0; i < BadStudents2.size(); i++){
+        if(BadStudents2[i].vid >= 5){
+            GoodStudents.push_back({BadStudents2[i].name, BadStudents2[i].surn, {}, 0, BadStudents2[i].vid});
+        } else{
+            BadStudents.push_back({BadStudents2[i].name, BadStudents2[i].surn, {}, 0, BadStudents2[i].vid});
+        }
+    }
+    auto endSort = std::chrono::high_resolution_clock::now();
+    sortTime = endSort - startSort;  
+}
+
+void rusiuojam2(char a){
     // surusiuojam studentus pagal galutini bala
     sort(BadStudents.begin(), BadStudents.end(), compareByVid);
 

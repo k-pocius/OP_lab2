@@ -12,8 +12,9 @@ struct Student {
 
 std::chrono::duration<double> generationTime; // generavimo laikas
 std::chrono::duration<double> readTime; // skaitymo laikas
-std::chrono::duration<double> sortTime; // rusiavimo laikas
+std::chrono::duration<double> sortTime; // skirstymo laikas
 std::chrono::duration<double> writeTime; // rasymo laikas
+std::chrono::duration<double> rusiavimoLaikas; // rusiavimo laikas
 
 
 //random skaiciu generavimas
@@ -25,6 +26,7 @@ std::uniform_int_distribution<int> dist(1, 10);
 
 vector<Student> BadStudents;
 vector<Student> GoodStudents;
+vector<Student> BadStudents2; // studentai rusiuojam1 funkcijai
 
 string A[] = {"","Jonas", "Petras", "Antanas", "Kazys", "Juozas", "Tomas", "Mantas", "Marius", "Mindaugas", "Gintaras"};
 string B[] = {"","Jonaitis", "Petraitis", "Antanaitis", "Kazaitis", "Ugninis", "Trumpulis", "Galiunas", "Gajusis", "Gandras", "Malūnas"};
@@ -35,7 +37,8 @@ void vidurkis();
 void mediana();
 void spausdinam(char a);
 void generuojam(string b, int n);
-void rusiuojam(char a);
+void rusiuojam2(char a); // skaidymas per puse
+void rusiuojam1(char a); // skaidymas is vieno konteinerio i du
 bool compareByName(const Student& a, const Student& b) {
     return a.name < b.name;
 }
@@ -47,7 +50,24 @@ bool compareByVid(const Student& a, const Student& b) {
 }
 
 
-void rusiuojam(char a){
+void rusiuojam1(char a){
+    // nukopijuojam visus elementus i atskira konteineri, kad nereiktu keist toliau esancios programos
+    BadStudents2.assign(BadStudents.begin(), BadStudents.end()); 
+    BadStudents.clear();
+
+    auto startSort = std::chrono::high_resolution_clock::now();
+    for(int i = 0; i < BadStudents2.size(); i++){
+        if(BadStudents2[i].vid >= 5){
+            GoodStudents.push_back({BadStudents2[i].name, BadStudents2[i].surn, {}, 0, BadStudents2[i].vid});
+        } else{
+            BadStudents.push_back({BadStudents2[i].name, BadStudents2[i].surn, {}, 0, BadStudents2[i].vid});
+        }
+    }
+    auto endSort = std::chrono::high_resolution_clock::now();
+    sortTime = endSort - startSort;  
+}
+
+void rusiuojam2(char a){
     // surusiuojam studentus pagal galutini bala
     sort(BadStudents.begin(), BadStudents.end(), compareByVid);
 
@@ -276,6 +296,7 @@ void spausdinam(char a) {
         }
     }
 
+    auto startRusiavimas = std::chrono::high_resolution_clock::now();
     if(rusiavimas == 1){
         sort(BadStudents.begin(), BadStudents.end(), compareByName);
         sort(GoodStudents.begin(), GoodStudents.end(), compareByName);
@@ -286,6 +307,8 @@ void spausdinam(char a) {
         sort(BadStudents.begin(), BadStudents.end(), compareByVid);
         sort(GoodStudents.begin(), GoodStudents.end(), compareByVid);
     }
+    auto endRusiavimas = std::chrono::high_resolution_clock::now();
+    rusiavimoLaikas = endRusiavimas - startRusiavimas;
 
     if(pasirinkimas == 1){
         cout << left << setw(20) << "Pavardė" << setw(15) << "Vardas" << setw(20);

@@ -11,6 +11,7 @@
 #include <random>
 #include <list>
 #include <deque>
+#include <algorithm>
 
 using std::string;
 using std::vector;
@@ -31,6 +32,7 @@ using std::streamsize;
 using std::ostringstream;
 using std::list;
 using std::deque;
+using std::copy;
 
 
 #endif

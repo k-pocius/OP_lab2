@@ -165,7 +165,9 @@ int main() {
     } else {
         mediana();
     }
-    rusiuojam(b); // studentu rusiavimas i skirtingus failus
+    int e;
+//    rusiuojam1(b);// studentu rusiavimas(skaidymas is vieno i du konteinerius)
+    rusiuojam2(b); // studentu rusiavimas i skirtingus failus
     spausdinam(a); // spausdinimas
 
 
@@ -177,8 +179,9 @@ int main() {
     cout << "failas: " << filename << endl;
     cout << "Failo kūrimo laikas: " << generationTime.count() << "s" << endl;
     cout << "Duomenų nuskaitymo laikas: " << readTime.count() << "s" << endl;     
-    cout << "Rūšiavimo laikas: " << sortTime.count() << "s" << endl;
+    cout << "Skirstymo laikas į blogus ir gerus: " << sortTime.count() << "s" << endl;
     cout << "Rezultatų išvedimo laikas: " << writeTime.count() << "s" << endl;
+    cout << "Rusiavimo laikas didejimo tvarka: " << rusiavimoLaikas.count() << "s" << endl;
     cout << "Visos programos laikas: " << programTime.count() << "s" << endl;
     cout << endl;
     cout << "--------------------------------------" << endl;

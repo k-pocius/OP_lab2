@@ -1,5 +1,5 @@
 #include "lib.h"
-#include "V1vect.h"
+#include "V1List.h"
 
 int main() {
 
@@ -177,7 +177,7 @@ int main() {
     cout << "failas: " << filename << endl;
     cout << "Failo kūrimo laikas: " << generationTime.count() << "s" << endl;
     cout << "Duomenų nuskaitymo laikas: " << readTime.count() << "s" << endl;     
-    cout << "Rūšiavimo laikas: " << sortTime.count() << "s" << endl;
+    cout << "Skirstymo laikas į blogus ir gerus: " << sortTime.count() << "s" << endl;
     cout << "Rezultatų išvedimo laikas: " << writeTime.count() << "s" << endl;
     cout << "Visos programos laikas: " << programTime.count() << "s" << endl;
     cout << endl;
