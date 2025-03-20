@@ -49,7 +49,8 @@ bool compareByVid(const Student& a, const Student& b) {
 
 void rusiuojam1(char a){
     // nukopijuojam visus elementus i atskira konteineri, kad nereiktu keist toliau esancios programos
-    BadStudents2.assign(BadStudents.begin(), BadStudents.end()); 
+    BadStudents2.resize(BadStudents.size());
+    copy(BadStudents.begin(), BadStudents.end(), BadStudents2.begin()); 
     BadStudents.clear();
 
     auto startSort = std::chrono::high_resolution_clock::now();
@@ -66,8 +67,7 @@ void rusiuojam1(char a){
 
 void rusiuojam2(char a){
     // surusiuojam studentus pagal galutini bala
-    sort(BadStudents.begin(), BadStudents.end(), compareByVid);
-
+    BadStudents.sort(compareByVid);
 
     if(a == 't'){
         auto startSort = std::chrono::high_resolution_clock::now();
@@ -226,7 +226,7 @@ void vidurkis(){
     for(auto &x : BadStudents){
         double sum = 0;
         for(auto &y : x.nd){
-            sum += sum + y;
+            sum += y;
         }
         x.vid = (sum / x.nd.size())*0.4 + (x.egz*0.6);
     }
@@ -298,14 +298,14 @@ void spausdinam(char a) {
     }
 
     if(rusiavimas == 1){
-        sort(BadStudents.begin(), BadStudents.end(), compareByName);
-        sort(GoodStudents.begin(), GoodStudents.end(), compareByName);
+        BadStudents.sort(compareByName);
+        GoodStudents.sort(compareByName);
     } else if(rusiavimas == 2){
-        sort(BadStudents.begin(), BadStudents.end(), compareBySurname);
-        sort(GoodStudents.begin(), GoodStudents.end(), compareBySurname);
+        BadStudents.sort(compareBySurname);
+        GoodStudents.sort(compareBySurname);
     } else{
-        sort(BadStudents.begin(), BadStudents.end(), compareByVid);
-        sort(GoodStudents.begin(), GoodStudents.end(), compareByVid);
+        BadStudents.sort(compareByVid);
+        GoodStudents.sort(compareByVid);
     }
 
     if(pasirinkimas == 1){
