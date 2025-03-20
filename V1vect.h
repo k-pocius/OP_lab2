@@ -52,7 +52,8 @@ bool compareByVid(const Student& a, const Student& b) {
 
 void rusiuojam1(char a){
     // nukopijuojam visus elementus i atskira konteineri, kad nereiktu keist toliau esancios programos
-    BadStudents2.assign(BadStudents.begin(), BadStudents.end()); 
+    BadStudents2.resize(BadStudents.size());
+    copy(BadStudents.begin(), BadStudents.end(), BadStudents2.begin()); 
     BadStudents.clear();
 
     auto startSort = std::chrono::high_resolution_clock::now();
