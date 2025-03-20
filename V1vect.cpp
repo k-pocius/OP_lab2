@@ -173,7 +173,7 @@ int main() {
 
     auto end = std::chrono::high_resolution_clock::now(); // End timing
     std::chrono::duration<double> programTime = end - start;
-
+    cout << fixed << setprecision(2);
     cout << "--------------------------------------" << endl;
     cout << endl;
     cout << "failas: " << filename << endl;
