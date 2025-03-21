@@ -55,14 +55,21 @@ void rusiuojam1(char a){
     copy(BadStudents.begin(), BadStudents.end(), BadStudents2.begin()); 
     BadStudents.clear();
 
+
     auto startSort = std::chrono::high_resolution_clock::now();
-    for(int i = 0; i < BadStudents2.size(); i++){
-        if(BadStudents2[i].vid >= 5){
-            GoodStudents.push_back({BadStudents2[i].name, BadStudents2[i].surn, {}, 0, BadStudents2[i].vid});
+    sort(BadStudents2.begin(), BadStudents2.end(), compareByVid);
+    remove_if(BadStudents2.begin(), BadStudents2.end(), [&](const Student& a) {
+        int i = 0;
+        if(a.vid >= 5){
+            GoodStudents.push_back(a);
+            return true;
         } else{
-            BadStudents.push_back({BadStudents2[i].name, BadStudents2[i].surn, {}, 0, BadStudents2[i].vid});
+            BadStudents.push_back(a);
+            return false;
         }
-    }
+        BadStudents2.clear();
+    });
+
     auto endSort = std::chrono::high_resolution_clock::now();
     sortTime = endSort - startSort;  
 }
@@ -76,7 +83,7 @@ void rusiuojam2(char a){
         auto startSort = std::chrono::high_resolution_clock::now();
         // iteruojam nuo galo
         while(BadStudents.back().vid >= 5) {
-            GoodStudents.push_back({BadStudents.back().name, BadStudents.back().surn, {}, 0, BadStudents.back().vid});
+            GoodStudents.push_back(BadStudents.back());
             BadStudents.pop_back(); // istrinam paskutini studenta
         }
         auto endSort = std::chrono::high_resolution_clock::now();

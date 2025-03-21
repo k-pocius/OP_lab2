@@ -43,6 +43,8 @@ deque: <br>
 
 
 Greičiausiai veikianti strategija: <br>
+
+vect: <br>
 ![alt text](vect1.png)
 
 
