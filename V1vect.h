@@ -9,7 +9,6 @@ struct Student {
 };
 
 
-
 std::chrono::duration<double> generationTime; // generavimo laikas
 std::chrono::duration<double> readTime; // skaitymo laikas
 std::chrono::duration<double> sortTime; // skirstymo laikas
