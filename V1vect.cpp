@@ -166,7 +166,7 @@ int main() {
         mediana();
     }
     int e;
-//    rusiuojam1(b);// studentu rusiavimas(skaidymas is vieno i du konteinerius)
+    rusiuojam1(b);// studentu rusiavimas(skaidymas is vieno i du konteinerius)
     rusiuojam2(b); // studentu rusiavimas i skirtingus failus
     spausdinam(a); // spausdinimas
 

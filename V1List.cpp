@@ -165,8 +165,8 @@ int main() {
     } else {
         mediana();
     }
- //   rusiuojam2(b);
-   rusiuojam1(b); // studentu rusiavimas i skirtingus failus
+    rusiuojam2(b);
+    rusiuojam1(b); // studentu rusiavimas i skirtingus failus
     spausdinam(a); // spausdinimas
 
 

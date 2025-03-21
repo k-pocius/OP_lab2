@@ -36,5 +36,3 @@ deque: $(OBJS_DEQUE)
 clean:
 	rm -f $(TARGETS) $(OBJS_VECT) $(OBJS_LIST) $(OBJS_DEQUE)
 
-# Phony targets
-.PHONY: all clean
