@@ -197,6 +197,7 @@ int main() {
     cout << "Duomenų nuskaitymo laikas: " << readTime.count() << "s" << endl;     
     cout << "Skirstymo laikas į blogus ir gerus: " << sortTime.count() << "s" << endl;
     cout << "Rezultatų išvedimo laikas: " << writeTime.count() << "s" << endl;
+    cout << "Rusiavimo didejimo tvarka laikas: " << rusiavimoLaikas.count() << "s" << endl;
     cout << "Visos programos laikas: " << programTime.count() << "s" << endl;
     cout << endl;
     cout << "--------------------------------------" << endl;

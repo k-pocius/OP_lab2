@@ -14,6 +14,7 @@ std::chrono::duration<double> generationTime; // generavimo laikas
 std::chrono::duration<double> readTime; // skaitymo laikas
 std::chrono::duration<double> sortTime; // rusiavimo laikas
 std::chrono::duration<double> writeTime; // rasymo laikas
+std::chrono::duration<double> rusiavimoLaikas; // rusiavimo laikas
 
 
 //random skaiciu generavimas
@@ -297,6 +298,7 @@ void spausdinam(char a) {
         }
     }
 
+    auto startRusiavimas = std::chrono::high_resolution_clock::now();
     if(rusiavimas == 1){
         BadStudents.sort(compareByName);
         GoodStudents.sort(compareByName);
@@ -307,6 +309,8 @@ void spausdinam(char a) {
         BadStudents.sort(compareByVid);
         GoodStudents.sort(compareByVid);
     }
+    auto endRusiavimas = std::chrono::high_resolution_clock::now();
+    rusiavimoLaikas = endRusiavimas - startRusiavimas;
 
     if(pasirinkimas == 1){
         cout << left << setw(20) << "Pavardė" << setw(15) << "Vardas" << setw(20);
