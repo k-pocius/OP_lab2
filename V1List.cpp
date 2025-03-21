@@ -165,8 +165,24 @@ int main() {
     } else {
         mediana();
     }
-    rusiuojam2(b);
-    rusiuojam1(b); // studentu rusiavimas i skirtingus failus
+    int p;
+    while (true) {
+        try {
+            cout << "Kuria rusiavimo strategija norite naudoti, 3 konteineriu - 1, 2 konteineriu - 2: ";
+            cin >> p;
+            if (p != 1 && p != 2) {
+                throw std::invalid_argument("klaida, įveskite 1 arba 2");
+            }
+            break; 
+        } catch (const std::invalid_argument& e) {
+            cout << e.what() << endl;
+            cin.clear();
+            cin.ignore(123, '\n');
+        }
+    }
+    if(p == 2){
+        rusiuojam2(b);
+    } else rusiuojam1(b); // studentu rusiavimas i skirtingus failus
     spausdinam(a); // spausdinimas
 
 
