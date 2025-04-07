@@ -4,7 +4,7 @@
 int main() {
 
     auto start = std::chrono::high_resolution_clock::now(); // Start timing
-
+    
     char b; // ar nori skaityti is failo
     char a; // ar vidurkis ar mediana
     int pasirinkimas;
@@ -139,7 +139,7 @@ int main() {
                 cin.ignore(123, '\n');
             }
         }
-        skaitom(pasirinkimas); // skaitymas
+        skaitom(pasirinkimas, A, B); // skaitymas
     }
 
 

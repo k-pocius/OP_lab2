@@ -48,6 +48,12 @@
         "unordered_map": "cpp",
         "variant": "cpp",
         "vector": "cpp",
-        "fstream": "cpp"
-    }
+        "fstream": "cpp",
+        "charconv": "cpp",
+        "forward_list": "cpp",
+        "list": "cpp",
+        "sstream": "cpp",
+        "algorithm": "cpp"
+    },
+    "C_Cpp.errorSquiggles": "enabled"
 }

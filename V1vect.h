@@ -1,43 +1,165 @@
 #include "lib.h"
 
-struct Student {
-    string name; // vardas
-    string surn; // pavarde
-    vector<int> nd; // nd rezultatai 
-    int egz; // egzaminu rez
-    double vid; // galutinis vidurkis
-};
-
-
 std::chrono::duration<double> generationTime; // generavimo laikas
 std::chrono::duration<double> readTime; // skaitymo laikas
 std::chrono::duration<double> sortTime; // skirstymo laikas
 std::chrono::duration<double> writeTime; // rasymo laikas
 std::chrono::duration<double> rusiavimoLaikas; // rusiavimo laikas
 
-
 //random skaiciu generavimas
 using hrClock = std::chrono::high_resolution_clock;
 std::mt19937 mt(static_cast<long unsigned int>(hrClock::now().time_since_epoch().count()));
 std::uniform_int_distribution<int> dist(1, 10);
 
-
-
-vector<Student> BadStudents;
-vector<Student> GoodStudents;
-vector<Student> BadStudents2; // studentai rusiuojam1 funkcijai
-
 string A[] = {"","Jonas", "Petras", "Antanas", "Kazys", "Juozas", "Tomas", "Mantas", "Marius", "Mindaugas", "Gintaras"};
 string B[] = {"","Jonaitis", "Petraitis", "Antanaitis", "Kazaitis", "Ugninis", "Trumpulis", "Galiunas", "Gajusis", "Gandras", "Malūnas"};
 
-
-void skaitom(int pasirinkimas);
+void skaitom(int pasirinkimas, string A[], string B[]);
 void vidurkis();
 void mediana();
 void spausdinam(char a);
 void generuojam(string b, int n);
 void rusiuojam2(char a); // skaidymas per puse
 void rusiuojam1(char a); // skaidymas is vieno konteinerio i du
+
+class Student {
+private:
+    string name; // vardas
+    string surn; // pavarde
+    vector <int> nd; // nd rezultatai 
+    int egz; // egzaminu rez
+    double vid; // galutinis vidurkis
+
+public:
+    Student() : name(""), surn(""), nd(), egz(0), vid(0.0) {} // konstruktorius su parametrais
+
+    void setName(string Name) { // vardas
+        name = Name;
+    }
+    void setSurn(string Surn) { // pavarde
+        surn = Surn;
+    }
+
+    void skaitom(int pasirinkimas, string A[], string B[]){
+        vector<int> nd;
+        int egz;
+        bool testi = true;
+        int i = 0;    
+        while(testi){
+            char teesti;
+
+            //mokinio vardas pavarde
+            if(pasirinkimas == 1 || pasirinkimas == 2){
+                cout << "įveskite mokinio vardą: ";
+                cin >> name;
+                cout << "įveskite mokinio pavardę: ";
+                cin >> surn; 
+            }else if(pasirinkimas == 3){
+                name = A[dist(mt)];
+                surn = B[dist(mt)];
+            }
+            setName(name);
+            setSurn(surn);
+
+            //nd rezultatai
+            bool testi2 = true;
+            int j = 0;
+            while(testi2){
+                char teesti2;
+                int nd_result;
+                if(pasirinkimas == 1){
+                    while (true){
+                        try{
+                            cout << "įveskite " << j+1 << " namų darbo rezultatą: ";
+                            cin >> nd_result;
+                            if(nd_result < 0 || nd_result > 10){
+                                throw std::invalid_argument ("klaida, įveskite skaičių nuo 0 iki 10");
+                            }
+                            break;
+                        }
+                        catch(const std::invalid_argument& e){
+                        cout << e.what() << endl;
+                        cin.clear();
+                        cin.ignore(123, '\n');
+                        }
+                    }
+                }else if(pasirinkimas == 2 || pasirinkimas == 3) nd_result = dist(mt);
+                nd.push_back(nd_result);
+
+                while(true){
+                    try{
+                        cout << "ar norite pridėti daugiau namų darbų rezultatų? (t/n): ";
+                        cin >> teesti2; 
+                        if(!(teesti2 == 't' || teesti2 == 'n')){
+                            throw std::invalid_argument("klaida, pasirinkite taip(t) arba ne(n)");
+                        }
+                        break;
+                    }
+                    catch(const std::invalid_argument& e){
+                        cout << e.what() << endl;
+                        cin.clear();
+                        cin.ignore(123, '\n');
+                    }
+                }
+
+                if(teesti2 == 'n'){
+                    testi2 = false;
+                } else testi2 = true;
+                j++;
+                if(j == 20) break;
+            }
+
+
+            //egzamino rezultatas
+            if(pasirinkimas == 1){
+                while (true){
+                    try{
+                        cout << "įveskite egzamino rezultatą: ";
+                        cin >> egz;
+                        if(egz < 0 || egz > 10){
+                            throw std::invalid_argument ("klaida, įveskite skaičių nuo 0 iki 10");
+                        }
+                        break;
+                    }
+                    catch(const std::invalid_argument& e){
+                        cout << e.what() << endl;
+                        cin.clear();
+                        cin.ignore(123, '\n');
+                    }
+                }
+            }else if(pasirinkimas == 2 || pasirinkimas == 3) egz = dist(mt);
+            Student BadStudents(name, surn, nd, egz, 0); 
+
+            
+            
+            while(true){
+                try{
+                    cout << "ar norite pridėti daugiau mokinių? (t/n): ";
+                    cin >> teesti;
+                    if(!(teesti == 't' || teesti == 'n')){
+                        throw std::invalid_argument("klaida, pasirinkite taip(t) arba ne(n)");
+                    }
+                    break;
+                }
+                catch(const std::invalid_argument& e){
+                    cout << e.what() << endl;
+                    cin.clear();
+                    cin.ignore(123, '\n');
+                }
+            }
+
+            if(teesti == 'n'){
+                testi = false;
+            }
+            i++;
+            if(i == 15) break;
+        }
+    }
+};
+Student GoodStudents;
+Student BadStudents2;
+
+
 bool compareByName(const Student& a, const Student& b) {
     return a.name < b.name;
 }
@@ -48,6 +170,15 @@ bool compareByVid(const Student& a, const Student& b) {
     return a.vid < b.vid;
 }
 
+void vidurkis(){
+    for(int i = 0; i < BadStudents.size(); i++){
+        double sum = 0;
+        for(int j = 0; j < BadStudents[i].nd.size(); j++){
+            sum += BadStudents[i].nd[j];
+        }
+        BadStudents[i].vid = (sum / BadStudents[i].nd.size())*0.4 + (BadStudents[i].egz*0.6);
+    }
+}
 
 void rusiuojam1(char a){
     // nukopijuojam visus elementus i atskira konteineri, kad nereiktu keist toliau esancios programos
@@ -111,135 +242,6 @@ void generuojam(string b, int n){
     ofstream fr(b);
     fr << oss.str();
     fr.close();  // Close file
-}
-
-
-void skaitom(int pasirinkimas){
-    
-    bool testi = true;
-    int i = 0;    
-    Student temp;
-    while(testi){
-        char teesti;
-
-        //mokinio vardas pavarde
-        if(pasirinkimas == 1 || pasirinkimas == 2){
-            cout << "įveskite mokinio vardą: ";
-            cin >> temp.name;
-            cout << "įveskite mokinio pavardę: ";
-            cin >> temp.surn; 
-        }else if(pasirinkimas == 3){
-            temp.name = A[dist(mt)];
-            temp.surn = B[dist(mt)];
-        }
-
-
-        temp.nd.clear();
-
-        //nd rezultatai
-        bool testi2 = true;
-        int j = 0;
-        while(testi2){
-            char teesti2;
-            int nd_result;
-            if(pasirinkimas == 1){
-                while (true){
-                    try{
-                        cout << "įveskite " << j+1 << " namų darbo rezultatą: ";
-                        cin >> nd_result;
-                        if(nd_result < 0 || nd_result > 10){
-                            throw std::invalid_argument ("klaida, įveskite skaičių nuo 0 iki 10");
-                        }
-                        break;
-                    }
-                    catch(const std::invalid_argument& e){
-                    cout << e.what() << endl;
-                    cin.clear();
-                    cin.ignore(123, '\n');
-                    }
-                }
-            }else if(pasirinkimas == 2 || pasirinkimas == 3) nd_result = dist(mt);
-            temp.nd.push_back(nd_result);
-
-            while(true){
-                try{
-                    cout << "ar norite pridėti daugiau namų darbų rezultatų? (t/n): ";
-                    cin >> teesti2; 
-                    if(!(teesti2 == 't' || teesti2 == 'n')){
-                        throw std::invalid_argument("klaida, pasirinkite taip(t) arba ne(n)");
-                    }
-                    break;
-                }
-                catch(const std::invalid_argument& e){
-                    cout << e.what() << endl;
-                    cin.clear();
-                    cin.ignore(123, '\n');
-                }
-            }
-
-            if(teesti2 == 'n'){
-                testi2 = false;
-            } else testi2 = true;
-            j++;
-            if(j == 20) break;
-        }
-
-
-        //egzamino rezultatas
-        if(pasirinkimas == 1){
-            while (true){
-                try{
-                    cout << "įveskite egzamino rezultatą: ";
-                    cin >> temp.egz;
-                    if(temp.egz < 0 || temp.egz > 10){
-                        throw std::invalid_argument ("klaida, įveskite skaičių nuo 0 iki 10");
-                    }
-                    break;
-                }
-                catch(const std::invalid_argument& e){
-                    cout << e.what() << endl;
-                    cin.clear();
-                    cin.ignore(123, '\n');
-                }
-            }
-        }else if(pasirinkimas == 2 || pasirinkimas == 3) temp.egz = dist(mt);
-        BadStudents.push_back(temp);
-
-        
-        
-        while(true){
-            try{
-                cout << "ar norite pridėti daugiau mokinių? (t/n): ";
-                cin >> teesti;
-                if(!(teesti == 't' || teesti == 'n')){
-                    throw std::invalid_argument("klaida, pasirinkite taip(t) arba ne(n)");
-                }
-                break;
-            }
-            catch(const std::invalid_argument& e){
-                cout << e.what() << endl;
-                cin.clear();
-                cin.ignore(123, '\n');
-            }
-        }
-
-        if(teesti == 'n'){
-            testi = false;
-        }
-        i++;
-        if(i == 15) break;
-    }
-}
-
-
-void vidurkis(){
-    for(int i = 0; i < BadStudents.size(); i++){
-        double sum = 0;
-        for(int j = 0; j < BadStudents[i].nd.size(); j++){
-            sum += BadStudents[i].nd[j];
-        }
-        BadStudents[i].vid = (sum / BadStudents[i].nd.size())*0.4 + (BadStudents[i].egz*0.6);
-    }
 }
 
 
