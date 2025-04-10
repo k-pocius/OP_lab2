@@ -1,65 +1,36 @@
 #include "lib.h"
 
-std::chrono::duration<double> generationTime; // generavimo laikas
-std::chrono::duration<double> readTime; // skaitymo laikas
-std::chrono::duration<double> sortTime; // skirstymo laikas
-std::chrono::duration<double> writeTime; // rasymo laikas
-std::chrono::duration<double> rusiavimoLaikas; // rusiavimo laikas
-
-//random skaiciu generavimas
-using hrClock = std::chrono::high_resolution_clock;
-std::mt19937 mt(static_cast<long unsigned int>(hrClock::now().time_since_epoch().count()));
-std::uniform_int_distribution<int> dist(1, 10);
-
-string A[] = {"","Jonas", "Petras", "Antanas", "Kazys", "Juozas", "Tomas", "Mantas", "Marius", "Mindaugas", "Gintaras"};
-string B[] = {"","Jonaitis", "Petraitis", "Antanaitis", "Kazaitis", "Ugninis", "Trumpulis", "Galiunas", "Gajusis", "Gandras", "Malūnas"};
-
-void skaitom(int pasirinkimas, string A[], string B[]);
-void vidurkis();
-void mediana();
-void spausdinam(char a);
-void generuojam(string b, int n);
-void rusiuojam2(char a); // skaidymas per puse
-void rusiuojam1(char a); // skaidymas is vieno konteinerio i du
-
 class Student {
-private:
-    string name; // vardas
-    string surn; // pavarde
-    vector <int> nd; // nd rezultatai 
-    int egz; // egzaminu rez
-    double vid; // galutinis vidurkis
+    private:
+        string name; // vardas
+        string surn; // pavarde
+        vector<int> nd; // nd rezultatai 
+        int egz; // egzaminu rez
+        double vid; // galutinis vidurkis
 
-public:
-    Student() : name(""), surn(""), nd(), egz(0), vid(0.0) {} // konstruktorius su parametrais
+    public:
+        Student() : name(""), surn(""), egz(0), vid(0) {} // konstruktorius
 
-    void setName(string Name) { // vardas
-        name = Name;
-    }
-    void setSurn(string Surn) { // pavarde
-        surn = Surn;
-    }
-
-    void skaitom(int pasirinkimas, string A[], string B[]){
-        vector<int> nd;
-        int egz;
+        void skaitom(int pasirinkimas){
         bool testi = true;
         int i = 0;    
+        Student temp;
         while(testi){
             char teesti;
 
             //mokinio vardas pavarde
             if(pasirinkimas == 1 || pasirinkimas == 2){
                 cout << "įveskite mokinio vardą: ";
-                cin >> name;
+                cin >> temp.name;
                 cout << "įveskite mokinio pavardę: ";
-                cin >> surn; 
+                cin >> temp.surn; 
             }else if(pasirinkimas == 3){
-                name = A[dist(mt)];
-                surn = B[dist(mt)];
+                temp.name = A[dist(mt)];
+                temp.surn = B[dist(mt)];
             }
-            setName(name);
-            setSurn(surn);
+
+
+            temp.nd.clear();
 
             //nd rezultatai
             bool testi2 = true;
@@ -84,7 +55,7 @@ public:
                         }
                     }
                 }else if(pasirinkimas == 2 || pasirinkimas == 3) nd_result = dist(mt);
-                nd.push_back(nd_result);
+                temp.nd.push_back(nd_result);
 
                 while(true){
                     try{
@@ -115,8 +86,8 @@ public:
                 while (true){
                     try{
                         cout << "įveskite egzamino rezultatą: ";
-                        cin >> egz;
-                        if(egz < 0 || egz > 10){
+                        cin >> temp.egz;
+                        if(temp.egz < 0 || temp.egz > 10){
                             throw std::invalid_argument ("klaida, įveskite skaičių nuo 0 iki 10");
                         }
                         break;
@@ -127,8 +98,8 @@ public:
                         cin.ignore(123, '\n');
                     }
                 }
-            }else if(pasirinkimas == 2 || pasirinkimas == 3) egz = dist(mt);
-            Student BadStudents(name, surn, nd, egz, 0); 
+            }else if(pasirinkimas == 2 || pasirinkimas == 3) temp.egz = dist(mt);
+            BadStudents.push_back(temp);
 
             
             
@@ -155,30 +126,61 @@ public:
             if(i == 15) break;
         }
     }
-};
-Student GoodStudents;
-Student BadStudents2;
 
+    //geteriai
+    double getVid() const {
+        return vid;
+    }
+
+    string getName() const {
+        return name;
+    }
+
+    string getSurn() const {
+        return surn;
+    }
+};
+
+std::chrono::duration<double> generationTime; // generavimo laikas
+std::chrono::duration<double> readTime; // skaitymo laikas
+std::chrono::duration<double> sortTime; // skirstymo laikas
+std::chrono::duration<double> writeTime; // rasymo laikas
+std::chrono::duration<double> rusiavimoLaikas; // rusiavimo laikas
+
+
+//random skaiciu generavimas
+using hrClock = std::chrono::high_resolution_clock;
+std::mt19937 mt(static_cast<long unsigned int>(hrClock::now().time_since_epoch().count()));
+std::uniform_int_distribution<int> dist(1, 10);
+
+
+
+vector<Student> BadStudents;
+vector<Student> GoodStudents;
+vector<Student> BadStudents2; // studentai rusiuojam1 funkcijai
+
+string A[] = {"","Jonas", "Petras", "Antanas", "Kazys", "Juozas", "Tomas", "Mantas", "Marius", "Mindaugas", "Gintaras"};
+string B[] = {"","Jonaitis", "Petraitis", "Antanaitis", "Kazaitis", "Ugninis", "Trumpulis", "Galiunas", "Gajusis", "Gandras", "Malūnas"};
+
+
+void skaitom(int pasirinkimas);
+void vidurkis();
+void mediana();
+void spausdinam(char a);
+void generuojam(string b, int n);
+void rusiuojam2(char a); // skaidymas per puse
+void rusiuojam1(char a); // skaidymas is vieno konteinerio i du
 
 bool compareByName(const Student& a, const Student& b) {
-    return a.name < b.name;
+    return a.getName() < b.getName();
 }
 bool compareBySurname(const Student& a, const Student& b) {
-    return a.surn < b.surn;
+    return a.getSurn() < b.getSurn();
 }
 bool compareByVid(const Student& a, const Student& b) {
-    return a.vid < b.vid;
+    return a.getVid() < b.getVid();
 }
 
-void vidurkis(){
-    for(int i = 0; i < BadStudents.size(); i++){
-        double sum = 0;
-        for(int j = 0; j < BadStudents[i].nd.size(); j++){
-            sum += BadStudents[i].nd[j];
-        }
-        BadStudents[i].vid = (sum / BadStudents[i].nd.size())*0.4 + (BadStudents[i].egz*0.6);
-    }
-}
 
 void rusiuojam1(char a){
     // nukopijuojam visus elementus i atskira konteineri, kad nereiktu keist toliau esancios programos
@@ -189,17 +191,14 @@ void rusiuojam1(char a){
 
     auto startSort = std::chrono::high_resolution_clock::now();
     sort(BadStudents2.begin(), BadStudents2.end(), compareByVid);
-    remove_if(BadStudents2.begin(), BadStudents2.end(), [&](const Student& a) {
-        int i = 0;
-        if(a.vid >= 5){
-            GoodStudents.push_back(a);
-            return true;
-        } else{
-            BadStudents.push_back(a);
-            return false;
+    while(!BadStudents2.empty()){
+        if(BadStudents2.back().getVid() >= 5){
+            GoodStudents.push_back(BadStudents2.back());
+        } else {
+            BadStudents.push_back(BadStudents2.back());
         }
-        BadStudents2.clear();
-    });
+    }
+    BadStudents2.clear();
 
     auto endSort = std::chrono::high_resolution_clock::now();
     sortTime = endSort - startSort;  
@@ -213,7 +212,7 @@ void rusiuojam2(char a){
    if(a == 't'){ // jei pasirenkamas spausdinimas faile 
         auto startSort = std::chrono::high_resolution_clock::now();
         // iteruojam nuo galo
-        while(BadStudents.back().vid >= 5) {
+        while(BadStudents.back().getVid() >= 5) {
             GoodStudents.push_back(BadStudents.back());
             BadStudents.pop_back(); // istrinam paskutini studenta
         }
@@ -242,6 +241,17 @@ void generuojam(string b, int n){
     ofstream fr(b);
     fr << oss.str();
     fr.close();  // Close file
+}
+
+
+void vidurkis(){
+    for(int i = 0; i < BadStudents.size(); i++){
+        double sum = 0;
+        for(int j = 0; j < BadStudents[i].nd.size(); j++){
+            sum += BadStudents[i].nd[j];
+        }
+        BadStudents[i].vid = (sum / BadStudents[i].nd.size())*0.4 + (BadStudents[i].egz*0.6);
+    }
 }
 
 
@@ -333,7 +343,7 @@ void spausdinam(char a) {
         cout << fixed << setprecision(2);
 
         for (int i = 0; i < BadStudents.size(); i++) {
-            cout << left << setw(20) << BadStudents[i].surn << setw(14) << BadStudents[i].name << setw(20) << BadStudents[i].vid << endl;
+            cout << left << setw(20) << BadStudents[i].getSurn() << setw(14) << BadStudents[i].getName() << setw(20) << BadStudents[i].getVid() << endl;
         }
     } else {
 
@@ -352,7 +362,7 @@ void spausdinam(char a) {
         oss << "-------------------------------------------------------------" << endl;
         oss << fixed << setprecision(2);
         for (int i = 0; i < BadStudents.size(); i++) {
-            oss << left << setw(20) << BadStudents[i].name << setw(16) << BadStudents[i].surn << BadStudents[i].vid << endl;
+            oss << left << setw(20) << BadStudents[i].getSurn() << setw(16) << BadStudents[i].getName() << BadStudents[i].getVid() << endl;
         }
         ofstream file2("susmukeliai.txt");
         file2 << oss.str();
@@ -374,7 +384,7 @@ void spausdinam(char a) {
 
         oss << fixed << setprecision(2);
         for (int i = 0; i < GoodStudents.size(); i++) {
-            oss << left << setw(20) << GoodStudents[i].name << setw(16) << GoodStudents[i].surn << GoodStudents[i].vid << endl;
+            oss << left << setw(20) << GoodStudents[i].getSurn() << setw(16) << GoodStudents[i].getName() << GoodStudents[i].getVid() << endl;
         }
         ofstream file3("alfos.txt");
         file3 << oss.str();

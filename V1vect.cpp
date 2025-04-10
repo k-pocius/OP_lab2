@@ -139,7 +139,7 @@ int main() {
                 cin.ignore(123, '\n');
             }
         }
-        skaitom(pasirinkimas, A, B); // skaitymas
+        skaitom(pasirinkimas); // skaitymas
     }
 
 
