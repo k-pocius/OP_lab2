@@ -127,6 +127,11 @@ class Student {
         }
     }
 
+    //seteriai
+    void setVid(double Vid) {
+        vid = Vid;
+    }
+
     //geteriai
     double getVid() const {
         return vid;
