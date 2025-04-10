@@ -100,10 +100,14 @@ int main() {
             while (getline(file1, line)) {
                 istringstream iss(line);
                 Student student;
-                iss >> student.name >> student.surn;
+                string name, surname;
+                iss >> name >> surname;
+                student.setName(name);  
+                student.setSurn(surname);   
                 int score;
+                vector<int> homeworkScores;
                 while (iss >> score) {
-                    student.nd.push_back(score);
+                    homeworkScores.push_back(score); // Collect all scores
                 }
                 student.egz = student.nd.back();
                 student.nd.pop_back();

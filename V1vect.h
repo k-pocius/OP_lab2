@@ -132,6 +132,23 @@ class Student {
         vid = Vid;
     }
 
+    void setEgz(int Egz) {
+        egz = Egz;
+    }
+
+    void setName(const string& Name) {
+        name = Name;
+    }
+
+    void setSurn(const string& Surn) {
+        surn = Surn;
+    }
+
+    void setNd(const vector<int>& Nd) {
+        nd = Nd;
+    }
+
+
     //geteriai
     double getVid() const {
         return vid;
@@ -143,6 +160,14 @@ class Student {
 
     string getSurn() const {
         return surn;
+    }
+
+    int getEgz() const {
+        return egz;
+    }
+
+    const vector<int>& getNd() const {
+        return nd;
     }
 };
 
@@ -252,10 +277,12 @@ void generuojam(string b, int n){
 void vidurkis(){
     for(int i = 0; i < BadStudents.size(); i++){
         double sum = 0;
-        for(int j = 0; j < BadStudents[i].nd.size(); j++){
-            sum += BadStudents[i].nd[j];
+        for(int j = 0; j < BadStudents[i].getNd().size(); j++){
+            sum += BadStudents[i].getNd()[j];
         }
-        BadStudents[i].vid = (sum / BadStudents[i].nd.size())*0.4 + (BadStudents[i].egz*0.6);
+        double average;
+        average = (sum / BadStudents[i].getNd().size())*0.4 + (BadStudents[i].getEgz()*0.6);
+        BadStudents[i].setVid(average);
     }
 }
 
@@ -264,16 +291,19 @@ void mediana(){
 
     //nd rezultatu rikiavimas didejimo tvarka
     for (int i = 0; i < BadStudents.size(); i++) {
-        sort(BadStudents[i].nd.begin(), BadStudents[i].nd.end()); 
+        sort(BadStudents[i].getNd().begin(), BadStudents[i].getNd().end()); 
     }
 
     //medianos skaiciavimas
     for(int i = 0; i < BadStudents.size(); i++){
-        if(BadStudents[i].nd.size() % 2 == 0){
-            BadStudents[i].vid = ((BadStudents[i].nd[BadStudents[i].nd.size()/2] + BadStudents[i].nd[BadStudents[i].nd.size()/2 - 1]) / 2.0)*0.4 + (BadStudents[i].egz*0.6);
+        double average;
+        if(BadStudents[i].getNd().size() % 2 == 0){
+            average = ((BadStudents[i].getNd()[BadStudents[i].getNd().size()/2] + BadStudents[i].getNd()[BadStudents[i].getNd().size()/2 - 1]) / 2.0)*0.4 + (BadStudents[i].getEgz()*0.6);
+            BadStudents[i].setVid(average);
         } 
         else {
-            BadStudents[i].vid = BadStudents[i].nd[BadStudents[i].nd.size()/2]*0.4 + (BadStudents[i].egz*0.6);
+            average = BadStudents[i].getNd()[BadStudents[i].getNd().size()/2]*0.4 + (BadStudents[i].getEgz()*0.6);
+            BadStudents[i].setVid(average);
         }
     }
 }
