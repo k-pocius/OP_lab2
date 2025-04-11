@@ -16,6 +16,10 @@ class Student {
     public:
         Student() : name(""), surn(""), egz(0), vid(0) {} // konstruktorius
 
+        ~Student() {
+            nd.clear(); 
+        }
+
         //seteriai
         void setVid(double Vid) {
             vid = Vid;
