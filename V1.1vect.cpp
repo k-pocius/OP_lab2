@@ -3,6 +3,9 @@
 
 int main() {
 
+    string A[] = {"","Jonas", "Petras", "Antanas", "Kazys", "Juozas", "Tomas", "Mantas", "Marius", "Mindaugas", "Gintaras"};
+    string B[] = {"","Jonaitis", "Petraitis", "Antanaitis", "Kazaitis", "Ugninis", "Trumpulis", "Galiunas", "Gajusis", "Gandras", "Malūnas"};
+
     auto start = std::chrono::high_resolution_clock::now(); // Start timing
     
     char b; // ar nori skaityti is failo
@@ -109,8 +112,9 @@ int main() {
                 while (iss >> score) {
                     homeworkScores.push_back(score); // Collect all scores
                 }
-                student.egz = student.nd.back();
-                student.nd.pop_back();
+                student.setEgz(homeworkScores.back());
+                homeworkScores.pop_back();
+                student.setNd(homeworkScores);
                 BadStudents.push_back(student);
             }
             file1.close();
@@ -143,7 +147,7 @@ int main() {
                 cin.ignore(123, '\n');
             }
         }
-        skaitom(pasirinkimas); // skaitymas
+        skaitom(pasirinkimas, A, B); // skaitymas
     }
 
 
@@ -172,7 +176,7 @@ int main() {
     int p;
     while (true) {
         try {
-            cout << "Kuria rusiavimo strategija norite naudoti, 3 konteineriu - 1, 2 konteineriu - 2: ";
+            cout << "Kuria rusiavimo strategija norite naudoti: konteineriu - 1, konteineriu - 2: ";
             cin >> p;
             if (p != 1 && p != 2) {
                 throw std::invalid_argument("klaida, įveskite 1 arba 2");
