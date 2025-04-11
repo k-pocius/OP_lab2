@@ -1,5 +1,5 @@
 #include "lib.h"
-#include "V1vect.h"
+#include "V1.1vect.h"
 
 int main() {
 
@@ -176,7 +176,7 @@ int main() {
     int p;
     while (true) {
         try {
-            cout << "Kuria rusiavimo strategija norite naudoti: konteineriu - 1, konteineriu - 2: ";
+            cout << "Kuria rusiavimo strategija norite naudoti: dvieju konteineriu - 1, vieno konteinerio - 2: ";
             cin >> p;
             if (p != 1 && p != 2) {
                 throw std::invalid_argument("klaida, įveskite 1 arba 2");
@@ -189,8 +189,8 @@ int main() {
         }
     }
     if(p == 2){
-        rusiuojam2(b);
-    } else rusiuojam1(b); // studentu rusiavimas i skirtingus failus
+        rusiuojam2();
+    } else rusiuojam1(); // studentu rusiavimas i skirtingus failus
     spausdinam(a); // spausdinimas
 
 
