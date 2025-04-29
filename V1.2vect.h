@@ -35,6 +35,39 @@ class Student {
             return *this;
         }
 
+       // move constructor
+        Student(Student&& other)
+            : name(move(other.name)),
+            surn(move(other.surn)),
+            nd(move(other.nd)),
+            egz(move(other.egz)),
+            vid(move(other.vid))
+        {
+            other.egz = 0;
+            other.vid = 0.0;
+            other.name = ""; 
+            other.surn = ""; 
+            other.nd.clear();
+        }
+
+        // move assignment operator
+        Student& operator=(Student&& other) {
+            if (this != &other) {
+                name = move(other.name);
+                surn = move(other.surn);
+                nd = move(other.nd);
+                egz = move(other.egz);
+                vid = move(other.vid);
+
+                other.egz = 0;
+                other.vid = 0.0;
+                other.name = ""; 
+                other.surn = ""; 
+                other.nd.clear();
+            }
+            return *this;
+        }
+
         //seteriai
         void setVid(double Vid) {
             vid = Vid;
@@ -116,9 +149,9 @@ void rusiuojam1(){
     sort(BadStudents2.begin(), BadStudents2.end(), compareByVid);
     while(!BadStudents2.empty()){
         if(BadStudents2.back().getVid() >= 5){
-            GoodStudents.push_back(BadStudents2.back());
+            GoodStudents.push_back(move(BadStudents2.back()));
         } else {
-            BadStudents.push_back(BadStudents2.back());
+            BadStudents.push_back(move(BadStudents2.back()));
         }
         BadStudents2.pop_back(); // istrinam paskutini studenta
     }
@@ -133,7 +166,7 @@ void rusiuojam2(){
         auto startSort = std::chrono::high_resolution_clock::now();
         // iteruojam nuo galo
         while(BadStudents.back().getVid() >= 5) {
-            GoodStudents.push_back(BadStudents.back());
+            GoodStudents.push_back(move(BadStudents.back()));
             BadStudents.pop_back(); // istrinam paskutini studenta
         }
         auto endSort = std::chrono::high_resolution_clock::now();
