@@ -16,8 +16,23 @@ class Student {
     public:
         Student() : name(""), surn(""), egz(0), vid(0) {} // konstruktorius
 
-        ~Student() {
-            nd.clear(); 
+        ~Student(){} // destruktorius
+
+        // copy constructor 
+        Student(const Student& other)
+        : name(other.name), surn(other.surn), nd(other.nd), egz(other.egz), vid(other.vid){
+        }
+
+        // copy assignment operator
+        Student& operator=(const Student& other){
+            if(this != &other) {
+                name = other.name;
+                surn = other.surn;
+                nd = other.nd;
+                egz = other.egz;
+                vid = other.vid;
+            }
+            return *this;
         }
 
         //seteriai
@@ -72,7 +87,6 @@ std::chrono::duration<double> rusiavimoLaikas; // rusiavimo laikas
 
 vector<Student> BadStudents;
 vector<Student> GoodStudents;
-vector<Student> BadStudents2; // studentai rusiuojam1 funkcijai
 
 void skaitom(int pasirinkimas, string A[], string B[]);
 void vidurkis();
@@ -95,10 +109,8 @@ bool compareByVid(const Student& a, const Student& b) {
 
 void rusiuojam1(){
     // nukopijuojam visus elementus i atskira konteineri, kad nereiktu keist toliau esancios programos
-    BadStudents2.resize(BadStudents.size());
-    copy(BadStudents.begin(), BadStudents.end(), BadStudents2.begin()); 
+    vector<Student> BadStudents2(BadStudents);
     BadStudents.clear();
-
 
     auto startSort = std::chrono::high_resolution_clock::now();
     sort(BadStudents2.begin(), BadStudents2.end(), compareByVid);
