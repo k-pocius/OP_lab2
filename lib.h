@@ -12,6 +12,7 @@
 #include <list>
 #include <deque>
 #include <algorithm>
+#include <utility>
 
 using std::string;
 using std::vector;
@@ -33,7 +34,7 @@ using std::ostringstream;
 using std::list;
 using std::deque;
 using std::copy;
-using std::move;
+using std::ostream;
 
 
 #endif

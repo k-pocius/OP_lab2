@@ -37,11 +37,11 @@ class Student {
 
        // move constructor
         Student(Student&& other)
-            : name(move(other.name)),
-            surn(move(other.surn)),
-            nd(move(other.nd)),
-            egz(move(other.egz)),
-            vid(move(other.vid))
+            : name(std::move(other.name)),
+            surn(std::move(other.surn)),
+            nd(std::move(other.nd)),
+            egz(std::move(other.egz)),
+            vid(std::move(other.vid))
         {
             other.egz = 0;
             other.vid = 0.0;
@@ -53,11 +53,11 @@ class Student {
         // move assignment operator
         Student& operator=(Student&& other) {
             if (this != &other) {
-                name = move(other.name);
-                surn = move(other.surn);
-                nd = move(other.nd);
-                egz = move(other.egz);
-                vid = move(other.vid);
+                name = std::move(other.name);
+                surn = std::move(other.surn);
+                nd = std::move(other.nd);
+                egz = std::move(other.egz);
+                vid = std::move(other.vid);
 
                 other.egz = 0;
                 other.vid = 0.0;
@@ -110,6 +110,11 @@ class Student {
         vector<int>& getNd(){
             return nd;
         }
+
+    friend ostream& operator<<(ostream& os, const Student& s){
+        os << left << setw(20) << s.name << setw(16) << s.surn << s.vid << endl;
+        return os;
+    }
 };
 
 std::chrono::duration<double> generationTime; // generavimo laikas
@@ -139,6 +144,36 @@ bool compareByVid(const Student& a, const Student& b) {
     return a.getVid() < b.getVid();
 }
 
+void testas() {
+    string v = "Jonas";
+    string p = "Jonaitis";
+    Student s1;
+    s1.setName(v);
+    s1.setSurn(p);
+    s1.setEgz(8);
+    vector<int> nd = {7, 8, 9};
+    s1.setNd(nd);
+    s1.setVid(8.2);
+
+    // Test copy constructor
+    Student s2 = s1;
+    cout << "Student 2 (copied from Student 1):\n" << s2;
+
+    // Test copy assignment operator
+    Student s3;
+    s3 = s1; 
+    cout << "Student 3 (assigned from Student 1):\n" << s3;
+
+    // Test move constructor
+    Student s4 = std::move(s1); 
+    cout << "Student 4 (moved from Student 1):\n" << s4;
+
+    // Test move assignment operator
+    Student s5;
+    s5 = std::move(s2); 
+    cout << "Student 5 (moved from Student 2):\n" << s5;
+}
+
 
 void rusiuojam1(){
     // nukopijuojam visus elementus i atskira konteineri, kad nereiktu keist toliau esancios programos
@@ -149,9 +184,9 @@ void rusiuojam1(){
     sort(BadStudents2.begin(), BadStudents2.end(), compareByVid);
     while(!BadStudents2.empty()){
         if(BadStudents2.back().getVid() >= 5){
-            GoodStudents.push_back(move(BadStudents2.back()));
+            GoodStudents.push_back(std::move(BadStudents2.back()));
         } else {
-            BadStudents.push_back(move(BadStudents2.back()));
+            BadStudents.push_back(std::move(BadStudents2.back()));
         }
         BadStudents2.pop_back(); // istrinam paskutini studenta
     }
@@ -166,7 +201,7 @@ void rusiuojam2(){
         auto startSort = std::chrono::high_resolution_clock::now();
         // iteruojam nuo galo
         while(BadStudents.back().getVid() >= 5) {
-            GoodStudents.push_back(move(BadStudents.back()));
+            GoodStudents.push_back(std::move(BadStudents.back()));
             BadStudents.pop_back(); // istrinam paskutini studenta
         }
         auto endSort = std::chrono::high_resolution_clock::now();
@@ -427,7 +462,7 @@ void spausdinam(char a) {
         }
     } else {
 
-        // geri mokiniai
+        // blogi mokiniai
 
         auto startWrite = std::chrono::high_resolution_clock::now();        
         ostringstream oss;
@@ -441,9 +476,7 @@ void spausdinam(char a) {
 
         oss << "-------------------------------------------------------------" << endl;
         oss << fixed << setprecision(2);
-        for (int i = 0; i < BadStudents.size(); i++) {
-            oss << left << setw(20) << BadStudents[i].getSurn() << setw(16) << BadStudents[i].getName() << BadStudents[i].getVid() << endl;
-        }
+       
         ofstream file2("susmukeliai.txt");
         file2 << oss.str();
         file2.close();
@@ -451,7 +484,7 @@ void spausdinam(char a) {
         oss.str("");
         oss.clear();
 
-        //blogi mokiniai
+        //geri mokiniai
         oss << left << setw(20) << "Vardas" << setw(15) << "Pavardė" << setw(20);
 
         if (a == 'v') {
