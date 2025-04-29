@@ -99,23 +99,12 @@ int main() {
 
             auto startRead = std::chrono::high_resolution_clock::now();
             getline(file1, line); // praleidziam primaja eilute
-
+            Student s;
             while (getline(file1, line)) {
-                istringstream iss(line);
-                Student student;
-                string name, surname;
-                iss >> name >> surname;
-                student.setName(name);  
-                student.setSurn(surname);   
-                int score;
-                vector<int> homeworkScores;
-                while (iss >> score) {
-                    homeworkScores.push_back(score); // Collect all scores
+                std::istringstream iss(line);
+                if (iss >> s) {
+                    BadStudents.push_back(s);
                 }
-                student.setEgz(homeworkScores.back());
-                homeworkScores.pop_back();
-                student.setNd(homeworkScores);
-                BadStudents.push_back(student);
             }
             file1.close();
             auto endRead = std::chrono::high_resolution_clock::now();

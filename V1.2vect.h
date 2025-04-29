@@ -111,6 +111,32 @@ class Student {
             return nd;
         }
 
+        friend istream& operator>>(std::istream& in, Student& s) {
+            std::string name, surname;
+            std::vector<int> nd;
+            int temp, egz;
+
+            in >> name >> surname;
+            s.setName(name);
+            s.setSurn(surname);
+
+            while (in >> temp) {
+                nd.push_back(temp);
+            }
+
+            if (!nd.empty()) {
+                egz = nd.back();
+                nd.pop_back();  // Remove last element, which is egz
+                s.setEgz(egz);
+                s.setNd(nd);
+            }
+
+            in.clear();  // Clear stream state if end of line or error
+            return in;
+        }
+
+
+        // isvesties operatorius 
     friend ostream& operator<<(ostream& os, const Student& s){
         os << left << setw(20) << s.name << setw(16) << s.surn << s.vid << endl;
         return os;
@@ -454,15 +480,15 @@ void spausdinam(char a) {
 
         cout << fixed << setprecision(2);
 
-        for (int i = 0; i < BadStudents.size(); i++) {
-            cout << left << setw(20) << BadStudents[i].getSurn() << setw(14) << BadStudents[i].getName() << setw(20) << BadStudents[i].getVid() << endl;
+        for (const auto& student : BadStudents) {
+            cout << student << endl;
         }
-        for (int i = 0; i < GoodStudents.size(); i++) {
-            cout << left << setw(20) << GoodStudents[i].getSurn() << setw(14) << GoodStudents[i].getName() << setw(20) << GoodStudents[i].getVid() << endl;
+        for (const auto& student : GoodStudents) {
+            cout << student << endl;
         }
     } else {
 
-        // blogi mokiniai
+        // geri mokiniai
 
         auto startWrite = std::chrono::high_resolution_clock::now();        
         ostringstream oss;
@@ -476,7 +502,9 @@ void spausdinam(char a) {
 
         oss << "-------------------------------------------------------------" << endl;
         oss << fixed << setprecision(2);
-       
+        for (const auto& student : BadStudents) {
+            oss << student;
+        }
         ofstream file2("susmukeliai.txt");
         file2 << oss.str();
         file2.close();
@@ -484,7 +512,7 @@ void spausdinam(char a) {
         oss.str("");
         oss.clear();
 
-        //geri mokiniai
+        //blogi mokiniai
         oss << left << setw(20) << "Vardas" << setw(15) << "Pavardė" << setw(20);
 
         if (a == 'v') {
@@ -496,8 +524,8 @@ void spausdinam(char a) {
         oss << "-------------------------------------------------------------" << endl;
 
         oss << fixed << setprecision(2);
-        for (int i = 0; i < GoodStudents.size(); i++) {
-            oss << left << setw(20) << GoodStudents[i].getSurn() << setw(16) << GoodStudents[i].getName() << GoodStudents[i].getVid() << endl;
+        for (const auto& student : GoodStudents) {
+            oss << student;
         }
         ofstream file3("alfos.txt");
         file3 << oss.str();

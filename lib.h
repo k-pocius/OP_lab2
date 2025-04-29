@@ -35,6 +35,7 @@ using std::list;
 using std::deque;
 using std::copy;
 using std::ostream;
+using std::istream;
 
 
 #endif
