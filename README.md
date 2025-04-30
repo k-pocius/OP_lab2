@@ -33,7 +33,7 @@ Perdengtų metodų paaiškinimas
 
 <br>
 
-![alt text](image-1.png)
+![alt text](test.png)
 
 <br>
 
