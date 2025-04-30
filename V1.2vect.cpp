@@ -198,7 +198,9 @@ int main() {
     cout << endl;
     cout << "--------------------------------------" << endl;
 
-//    testas(); // testas
+cout << endl;
+cout << endl;
+    testas(); // testas
 
     return 0;
 }

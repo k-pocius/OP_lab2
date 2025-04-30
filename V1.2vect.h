@@ -136,11 +136,11 @@ class Student {
         }
 
 
-        // isvesties operatorius 
-    friend ostream& operator<<(ostream& os, const Student& s){
-        os << left << setw(20) << s.name << setw(16) << s.surn << s.vid << endl;
-        return os;
-    }
+            // isvesties operatorius 
+        friend ostream& operator<<(ostream& os, const Student& s){
+            os << left << setw(20) << s.name << setw(16) << s.surn << s.vid << endl;
+            return os;
+        }
 };
 
 std::chrono::duration<double> generationTime; // generavimo laikas
