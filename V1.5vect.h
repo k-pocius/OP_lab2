@@ -11,7 +11,7 @@ class Zmogus{
         string name; // vardas
         string surn; // pavarde
     public:
-        virutal friend ostream& operator<<(ostream& os, const Student& s) = 0;
+        virtual ~Zmogus(){}
 };
 
 
