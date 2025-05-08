@@ -11,26 +11,45 @@ class Zmogus{
         string name; // vardas
         string surn; // pavarde
     public:
+        Zmogus() : name(""), surn("") {} // konstruktorius
         virtual ~Zmogus(){}
+
+        void setName(string& Name) {
+            name = Name;
+        }
+
+        void setSurn(string& Surn) {
+            surn = Surn;
+        }
+
+        string getName() const {
+            return name;
+        }
+
+        string getSurn() const {
+            return surn;
+        }
+        virtual void test() = 0;
 };
 
 
 class Student : public Zmogus {
     private:
-
         vector<int> nd; // nd rezultatai 
         int egz; // egzaminu rez
         double vid; // galutinis vidurkis
 
     public:
-        Student() : name(""), surn(""), egz(0), vid(0) {} // konstruktorius
+
+        void test(){}
+
+        Student() : egz(0), vid(0) {} // konstruktorius
 
         ~Student(){} // destruktorius
 
         // copy constructor dada
         Student(const Student& other)
-        : name(other.name), surn(other.surn), nd(other.nd), egz(other.egz), vid(other.vid){
-        }
+        : Zmogus(other), nd(other.nd), egz(other.egz), vid(other.vid){}
 
         // copy assignment operator
         Student& operator=(const Student& other){
@@ -46,8 +65,7 @@ class Student : public Zmogus {
 
        // move constructor
         Student(Student&& other)
-            : name(std::move(other.name)),
-            surn(std::move(other.surn)),
+            : Zmogus(std::move(other)),
             nd(std::move(other.nd)),
             egz(std::move(other.egz)),
             vid(std::move(other.vid))
@@ -86,14 +104,6 @@ class Student : public Zmogus {
             egz = Egz;
         }
 
-        void setName(string& Name) {
-            name = Name;
-        }
-
-        void setSurn(string& Surn) {
-            surn = Surn;
-        }
-
         void setNd(vector<int>& Nd) {
             nd = Nd;
         }
@@ -102,14 +112,6 @@ class Student : public Zmogus {
         //geteriai
         double getVid() const {
             return vid;
-        }
-
-        string getName() const {
-            return name;
-        }
-
-        string getSurn() const {
-            return surn;
         }
 
         int getEgz() const {
@@ -180,6 +182,9 @@ bool compareByVid(const Student& a, const Student& b) {
 }
 
 void testas() {
+
+//   Zmogus zmogus; testas kad negalima sukurti zmogaus objekto
+
     string v = "Jonas";
     string p = "Jonaitis";
     Student s1;
