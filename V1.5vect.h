@@ -7,14 +7,17 @@ std::uniform_int_distribution<int> dist(1, 10);
 
 
 class Zmogus{
-
+    protected:
+        string name; // vardas
+        string surn; // pavarde
+    public:
+        virutal friend ostream& operator<<(ostream& os, const Student& s) = 0;
 };
 
 
 class Student : public Zmogus {
     private:
-        string name; // vardas
-        string surn; // pavarde
+
         vector<int> nd; // nd rezultatai 
         int egz; // egzaminu rez
         double vid; // galutinis vidurkis
