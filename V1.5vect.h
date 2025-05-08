@@ -5,7 +5,13 @@ using hrClock = std::chrono::high_resolution_clock;
 std::mt19937 mt(static_cast<long unsigned int>(hrClock::now().time_since_epoch().count()));
 std::uniform_int_distribution<int> dist(1, 10);
 
-class Student {
+
+class Zmogus{
+
+};
+
+
+class Student : public Zmogus {
     private:
         string name; // vardas
         string surn; // pavarde
@@ -16,8 +22,56 @@ class Student {
     public:
         Student() : name(""), surn(""), egz(0), vid(0) {} // konstruktorius
 
-        ~Student() {
-            nd.clear(); 
+        ~Student(){} // destruktorius
+
+        // copy constructor dada
+        Student(const Student& other)
+        : name(other.name), surn(other.surn), nd(other.nd), egz(other.egz), vid(other.vid){
+        }
+
+        // copy assignment operator
+        Student& operator=(const Student& other){
+            if(this != &other) {
+                name = other.name;
+                surn = other.surn;
+                nd = other.nd;
+                egz = other.egz;
+                vid = other.vid;
+            }
+            return *this;
+        }
+
+       // move constructor
+        Student(Student&& other)
+            : name(std::move(other.name)),
+            surn(std::move(other.surn)),
+            nd(std::move(other.nd)),
+            egz(std::move(other.egz)),
+            vid(std::move(other.vid))
+        {
+            other.egz = 0;
+            other.vid = 0.0;
+            other.name = ""; 
+            other.surn = ""; 
+            other.nd.clear();
+        }
+
+        // move assignment operator
+        Student& operator=(Student&& other) {
+            if (this != &other) {
+                name = std::move(other.name);
+                surn = std::move(other.surn);
+                nd = std::move(other.nd);
+                egz = std::move(other.egz);
+                vid = std::move(other.vid);
+
+                other.egz = 0;
+                other.vid = 0.0;
+                other.name = ""; 
+                other.surn = ""; 
+                other.nd.clear();
+            }
+            return *this;
         }
 
         //seteriai
@@ -62,6 +116,37 @@ class Student {
         vector<int>& getNd(){
             return nd;
         }
+
+        friend istream& operator>>(std::istream& in, Student& s) {
+            std::string name, surname;
+            std::vector<int> nd;
+            int temp, egz;
+
+            in >> name >> surname;
+            s.setName(name);
+            s.setSurn(surname);
+
+            while (in >> temp) {
+                nd.push_back(temp);
+            }
+
+            if (!nd.empty()) {
+                egz = nd.back();
+                nd.pop_back();  // Remove last element, which is egz
+                s.setEgz(egz);
+                s.setNd(nd);
+            }
+
+            in.clear();  // Clear stream state if end of line or error
+            return in;
+        }
+
+
+            // isvesties operatorius 
+        friend ostream& operator<<(ostream& os, const Student& s){
+            os << left << setw(20) << s.name << setw(16) << s.surn << s.vid << endl;
+            return os;
+        }
 };
 
 std::chrono::duration<double> generationTime; // generavimo laikas
@@ -72,7 +157,6 @@ std::chrono::duration<double> rusiavimoLaikas; // rusiavimo laikas
 
 vector<Student> BadStudents;
 vector<Student> GoodStudents;
-vector<Student> BadStudents2; // studentai rusiuojam1 funkcijai
 
 void skaitom(int pasirinkimas, string A[], string B[]);
 void vidurkis();
@@ -92,21 +176,49 @@ bool compareByVid(const Student& a, const Student& b) {
     return a.getVid() < b.getVid();
 }
 
+void testas() {
+    string v = "Jonas";
+    string p = "Jonaitis";
+    Student s1;
+    s1.setName(v);
+    s1.setSurn(p);
+    s1.setEgz(8);
+    vector<int> nd = {7, 8, 9};
+    s1.setNd(nd);
+    s1.setVid(8.2);
+
+    // Test copy constructor
+    Student s2 = s1;
+    cout << "Student 2 (copied from Student 1):\n" << s2;
+
+    // Test copy assignment operator
+    Student s3;
+    s3 = s1; 
+    cout << "Student 3 (assigned from Student 1):\n" << s3;
+
+    // Test move constructor
+    Student s4 = std::move(s1); 
+    cout << "Student 4 (moved from Student 1):\n" << s4;
+
+    // Test move assignment operator
+    Student s5;
+    s5 = std::move(s2); 
+    cout << "Student 5 (moved from Student 2):\n" << s5;
+}
+
 
 void rusiuojam1(){
     // nukopijuojam visus elementus i atskira konteineri, kad nereiktu keist toliau esancios programos
-    BadStudents2.resize(BadStudents.size());
-    copy(BadStudents.begin(), BadStudents.end(), BadStudents2.begin()); 
+    vector<Student> BadStudents2(BadStudents);
     BadStudents.clear();
-
 
     auto startSort = std::chrono::high_resolution_clock::now();
     sort(BadStudents2.begin(), BadStudents2.end(), compareByVid);
     while(!BadStudents2.empty()){
         if(BadStudents2.back().getVid() >= 5){
-            GoodStudents.push_back(BadStudents2.back());
+            GoodStudents.push_back(std::move(BadStudents2.back()));
         } else {
-            BadStudents.push_back(BadStudents2.back());
+            BadStudents.push_back(std::move(BadStudents2.back()));
         }
         BadStudents2.pop_back(); // istrinam paskutini studenta
     }
@@ -121,7 +233,7 @@ void rusiuojam2(){
         auto startSort = std::chrono::high_resolution_clock::now();
         // iteruojam nuo galo
         while(BadStudents.back().getVid() >= 5) {
-            GoodStudents.push_back(BadStudents.back());
+            GoodStudents.push_back(std::move(BadStudents.back()));
             BadStudents.pop_back(); // istrinam paskutini studenta
         }
         auto endSort = std::chrono::high_resolution_clock::now();
@@ -374,11 +486,11 @@ void spausdinam(char a) {
 
         cout << fixed << setprecision(2);
 
-        for (int i = 0; i < BadStudents.size(); i++) {
-            cout << left << setw(20) << BadStudents[i].getSurn() << setw(14) << BadStudents[i].getName() << setw(20) << BadStudents[i].getVid() << endl;
+        for (const auto& student : BadStudents) {
+            cout << student << endl;
         }
-        for (int i = 0; i < GoodStudents.size(); i++) {
-            cout << left << setw(20) << GoodStudents[i].getSurn() << setw(14) << GoodStudents[i].getName() << setw(20) << GoodStudents[i].getVid() << endl;
+        for (const auto& student : GoodStudents) {
+            cout << student << endl;
         }
     } else {
 
@@ -396,8 +508,8 @@ void spausdinam(char a) {
 
         oss << "-------------------------------------------------------------" << endl;
         oss << fixed << setprecision(2);
-        for (int i = 0; i < BadStudents.size(); i++) {
-            oss << left << setw(20) << BadStudents[i].getSurn() << setw(16) << BadStudents[i].getName() << BadStudents[i].getVid() << endl;
+        for (const auto& student : BadStudents) {
+            oss << student;
         }
         ofstream file2("susmukeliai.txt");
         file2 << oss.str();
@@ -418,8 +530,8 @@ void spausdinam(char a) {
         oss << "-------------------------------------------------------------" << endl;
 
         oss << fixed << setprecision(2);
-        for (int i = 0; i < GoodStudents.size(); i++) {
-            oss << left << setw(20) << GoodStudents[i].getSurn() << setw(16) << GoodStudents[i].getName() << GoodStudents[i].getVid() << endl;
+        for (const auto& student : GoodStudents) {
+            oss << student;
         }
         ofstream file3("alfos.txt");
         file3 << oss.str();
