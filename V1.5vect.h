@@ -146,8 +146,7 @@ class Student : public Zmogus {
             return in;
         }
 
-
-            // isvesties operatorius 
+        // isvesties operatorius 
         friend ostream& operator<<(ostream& os, const Student& s){
             os << left << setw(20) << s.name << setw(16) << s.surn << s.vid << endl;
             return os;
@@ -183,7 +182,7 @@ bool compareByVid(const Student& a, const Student& b) {
 
 void testas() {
 
-//   Zmogus zmogus; testas kad negalima sukurti zmogaus objekto
+    //Zmogus zmogus; //testas kad negalima sukurti zmogaus objekto
 
     string v = "Jonas";
     string p = "Jonaitis";
@@ -196,21 +195,28 @@ void testas() {
     s1.setVid(8.2);
 
     // Test copy constructor
-    Student s2 = s1;
+    Student s2(s1);
+    cout << "Student 1:\n" << s1;
     cout << "Student 2 (copied from Student 1):\n" << s2;
 
     // Test copy assignment operator
     Student s3;
     s3 = s1; 
+    cout << "Student 1:\n" << s1;
     cout << "Student 3 (assigned from Student 1):\n" << s3;
 
     // Test move constructor
-    Student s4 = std::move(s1); 
+    cout << "Student 1 before:\n" << s1;    
+    Student s4(std::move(s1)); 
+    cout << "Student 1 after:\n" << s1;
     cout << "Student 4 (moved from Student 1):\n" << s4;
+
 
     // Test move assignment operator
     Student s5;
-    s5 = std::move(s2); 
+    cout << "Student 2 before:\n" << s2; 
+    s5 = std::move(s2);
+    cout << "Student 2 after:\n" << s2; 
     cout << "Student 5 (moved from Student 2):\n" << s5;
 }
 
