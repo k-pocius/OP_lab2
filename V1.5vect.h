@@ -6,6 +6,7 @@ std::mt19937 mt(static_cast<long unsigned int>(hrClock::now().time_since_epoch()
 std::uniform_int_distribution<int> dist(1, 10);
 
 
+
 class Zmogus{
     protected:
         string name; // vardas
