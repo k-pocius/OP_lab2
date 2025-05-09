@@ -6,6 +6,13 @@ Skirstyti studentus į dvi grupes: pažangius ir nepažangius pagal dvi strategi
 Rezultatus išvesti į ekraną arba į failus alfos.txt ir susmukeliai.txt
 Rūšiuoti studentus pagal vardą, pavardę arba galutinį rezultatą
 
+Programa naudoja dvi klases. Bazinę Žmogaus klasę, kuri aprašo bendrus žmogaus atributus
+(vardas, pavardė). Turi gryną virtualią funckiją test(), todėl iš jos negalima kurti objektų. Ir
+klasę Studentas, kuri yra paveldima iš Žmogaus klasės. Joje saugomi Studento pažymiai ir galutinis rezultatas. 
+Implementuoja test() metodą, galima kurti Studento tipo objektus.
+
+![alt text](baseClass.png)
+
 
 Perdengtų metodų paaiškinimas 
 
