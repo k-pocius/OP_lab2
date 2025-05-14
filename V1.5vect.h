@@ -7,8 +7,6 @@ using hrClock = std::chrono::high_resolution_clock;
 std::mt19937 mt(static_cast<long unsigned int>(hrClock::now().time_since_epoch().count()));
 std::uniform_int_distribution<int> dist(1, 10);
 
-
-
 class Zmogus{
     protected:
         string name; // vardas
@@ -162,16 +160,8 @@ extern std::chrono::duration<double> sortTime; // skirstymo laikas
 extern std::chrono::duration<double> writeTime; // rasymo laikas
 extern std::chrono::duration<double> rusiavimoLaikas; // rusiavimo laikas
 
-vector<Student> BadStudents;
-vector<Student> GoodStudents;
-
-void skaitom(int pasirinkimas, string A[], string B[]);
-void vidurkis();
-void mediana();
-void spausdinam(char a);
-void generuojam(string b, int n);
-void rusiuojam2(); // skaidymas per puse
-void rusiuojam1(); // skaidymas is vieno konteinerio i du
+extern vector<Student> BadStudents;
+extern vector<Student> GoodStudents;
 
 bool compareByName(const Student& a, const Student& b) {
     return a.getName() < b.getName();
