@@ -1,3 +1,5 @@
+#ifndef V1_5VECT_h
+#define V1_5VECT_h
 #include "lib.h"
 
 //random skaiciu generavimas
@@ -154,11 +156,11 @@ class Student : public Zmogus {
         }
 };
 
-std::chrono::duration<double> generationTime; // generavimo laikas
-std::chrono::duration<double> readTime; // skaitymo laikas
-std::chrono::duration<double> sortTime; // skirstymo laikas
-std::chrono::duration<double> writeTime; // rasymo laikas
-std::chrono::duration<double> rusiavimoLaikas; // rusiavimo laikas
+extern std::chrono::duration<double> generationTime; // generavimo laikas
+extern std::chrono::duration<double> readTime; // skaitymo laikas
+extern std::chrono::duration<double> sortTime; // skirstymo laikas
+extern std::chrono::duration<double> writeTime; // rasymo laikas
+extern std::chrono::duration<double> rusiavimoLaikas; // rusiavimo laikas
 
 vector<Student> BadStudents;
 vector<Student> GoodStudents;
@@ -555,3 +557,5 @@ void spausdinam(char a) {
         writeTime = endWrite - startWrite;
     }
 }
+
+#endif

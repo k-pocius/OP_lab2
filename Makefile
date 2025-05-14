@@ -34,7 +34,7 @@ $(TARGET): $(OBJS)
 	$(CXX) $(CXXFLAGS) -o $(TARGET) $(OBJS)
 
 # Rule to build unit test binary
-$(TEST_TARGET): $(OBJS) $(TEST_OBJS)
+$(TEST_TARGET): $(TEST_OBJS) $(OBJS)
 	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o $(TEST_TARGET) $(TEST_OBJS) $(OBJS) $(GTEST_LIBS)
 
 # Compile source files into .o
@@ -45,7 +45,7 @@ $(TEST_TARGET): $(OBJS) $(TEST_OBJS)
 run: $(TARGET)
 	./$(TARGET)
 
-test: $(TEST_TARGET)
+run_test: $(TEST_TARGET)
 	./$(TEST_TARGET)
 
 # Clean rule
