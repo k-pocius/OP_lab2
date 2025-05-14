@@ -15,11 +15,11 @@ class Zmogus{
         Zmogus() : name(""), surn("") {} // konstruktorius
         virtual ~Zmogus(){}
 
-        void setName(string& Name) {
+        void setName(const string& Name) {
             name = Name;
         }
 
-        void setSurn(string& Surn) {
+        void setSurn(const string& Surn) {
             surn = Surn;
         }
 
@@ -105,7 +105,7 @@ class Student : public Zmogus {
             egz = Egz;
         }
 
-        void setNd(vector<int>& Nd) {
+        void setNd(const vector<int>& Nd) {
             nd = Nd;
         }
 

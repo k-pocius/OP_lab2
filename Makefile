@@ -2,13 +2,13 @@
 CXX = g++
 
 # Compiler flags
-CXXFLAGS = -std=c++11 -Wall -g -I/opt/homebrew/include
+CXXFLAGS = -std=c++17 -Wall -g -I/opt/homebrew/include
 LDFLAGS = -L/opt/homebrew/lib
 GTEST_LIBS = -lgtest -lgtest_main -pthread
 
 # Target executables
 TARGET = V1.5vect
-TEST_TARGET = test
+TEST_TARGET = test_V1_5vect
 
 # For deleting the target
 TARGET_DEL = V1.5vect.exe

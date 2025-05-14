@@ -3,7 +3,8 @@
         {
             "name": "Mac",
             "includePath": [
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/**",
+                "/opt/homebrew/opt/googletest/include"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/clang",
@@ -13,4 +14,5 @@
         }
     ],
     "version": 4
+
 }
