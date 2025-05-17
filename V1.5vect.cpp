@@ -1,132 +1,213 @@
 #include "lib.h"
 #include "V1.5vect.h"
 
-int main() {
+//random skaiciu generavimas
+using hrClock = std::chrono::high_resolution_clock;
+std::mt19937 mt(static_cast<long unsigned int>(hrClock::now().time_since_epoch().count()));
+std::uniform_int_distribution<int> dist(1, 10);
 
-    string A[] = {"","Jonas", "Petras", "Antanas", "Kazys", "Juozas", "Tomas", "Mantas", "Marius", "Mindaugas", "Gintaras"};
-    string B[] = {"","Jonaitis", "Petraitis", "Antanaitis", "Kazaitis", "Ugninis", "Trumpulis", "Galiunas", "Gajusis", "Gandras", "Malūnas"};
+std::chrono::duration<double> generationTime; // generavimo laikas
+std::chrono::duration<double> readTime; // skaitymo laikas
+std::chrono::duration<double> sortTime; // skirstymo laikas
+std::chrono::duration<double> writeTime; // rasymo laikas
+std::chrono::duration<double> rusiavimoLaikas; // rusiavimo laikas
 
-    auto start = std::chrono::high_resolution_clock::now(); // Start timing
-    
-    char b; // ar nori skaityti is failo
-    char a; // ar vidurkis ar mediana
-    int pasirinkimas;
-    int file;
+vector<Student> BadStudents;
+vector<Student> GoodStudents;
 
-    while (true) {
-        try {
-            cout << "Ar norite duomenis skaityti iš failo? (t/n): ";
-            cin >> b;
-            if (b != 't' && b != 'n') {
-                throw std::invalid_argument("klaida, įveskite t arba n");
-            }
-            break; 
-        } catch (const std::invalid_argument& e) {
-            cout << e.what() << endl;
-            cin.clear();
-            cin.ignore(123, '\n');
+void skaitom(int pasirinkimas, string A[], string B[]);
+void vidurkis();
+void mediana();
+void spausdinam(char a);
+void generuojam(string b, int n);
+void rusiuojam2(); // skaidymas per puse
+void rusiuojam1(); // skaidymas is vieno konteinerio i du
+
+bool compareByName(const Student& a, const Student& b) {
+    return a.getName() < b.getName();
+}
+bool compareBySurname(const Student& a, const Student& b) {
+    return a.getSurn() < b.getSurn();
+}
+bool compareByVid(const Student& a, const Student& b) {
+    return a.getVid() < b.getVid();
+}
+
+void testas() {
+
+    //Zmogus zmogus; //testas kad negalima sukurti zmogaus objekto
+
+    string v = "Jonas";
+    string p = "Jonaitis";
+    Student s1;
+    s1.setName(v);
+    s1.setSurn(p);
+    s1.setEgz(8);
+    vector<int> nd = {7, 8, 9};
+    s1.setNd(nd);
+    s1.setVid(8.2);
+
+    // Test copy constructor
+    Student s2(s1);
+    cout << "Student 1:\n" << s1;
+    cout << "Student 2 (copied from Student 1):\n" << s2;
+
+    // Test copy assignment operator
+    Student s3;
+    s3 = s1; 
+    cout << "Student 1:\n" << s1;
+    cout << "Student 3 (assigned from Student 1):\n" << s3;
+
+    // Test move constructor
+    cout << "Student 1 before:\n" << s1;    
+    Student s4(std::move(s1)); 
+    cout << "Student 1 after:\n" << s1;
+    cout << "Student 4 (moved from Student 1):\n" << s4;
+
+
+    // Test move assignment operator
+    Student s5;
+    cout << "Student 2 before:\n" << s2; 
+    s5 = std::move(s2);
+    cout << "Student 2 after:\n" << s2; 
+    cout << "Student 5 (moved from Student 2):\n" << s5;
+}
+
+void rusiuojam1(){
+    // nukopijuojam visus elementus i atskira konteineri, kad nereiktu keist toliau esancios programos
+    vector<Student> BadStudents2(BadStudents);
+    BadStudents.clear();
+
+    auto startSort = std::chrono::high_resolution_clock::now();
+    sort(BadStudents2.begin(), BadStudents2.end(), compareByVid);
+    while(!BadStudents2.empty()){
+        if(BadStudents2.back().getVid() >= 5){
+            GoodStudents.push_back(std::move(BadStudents2.back()));
+        } else {
+            BadStudents.push_back(std::move(BadStudents2.back()));
         }
+        BadStudents2.pop_back(); // istrinam paskutini studenta
     }
 
-    string filename; // failo pavadinimas
-    if(b == 't'){ // skaitymas is failo
+    auto endSort = std::chrono::high_resolution_clock::now();
+    sortTime = endSort - startSort;  
+}
+
+void rusiuojam2(){
+    // surusiuojam studentus pagal galutini bala
+    sort(BadStudents.begin(), BadStudents.end(), compareByVid);
+        auto startSort = std::chrono::high_resolution_clock::now();
+        // iteruojam nuo galo
+        while(BadStudents.back().getVid() >= 5) {
+            GoodStudents.push_back(std::move(BadStudents.back()));
+            BadStudents.pop_back(); // istrinam paskutini studenta
+        }
+        auto endSort = std::chrono::high_resolution_clock::now();
+        sortTime = endSort - startSort;  
+}
+
+void skaitom(int pasirinkimas, string A[], string B[]){
+    bool testi = true;
+    int i = 0;    
+    string name, surn;
+    int egz;
+    vector <int> ND;
+    Student temp;
+    while(testi){
+        char teesti;
+
+        //mokinio vardas pavarde
+        if(pasirinkimas == 1 || pasirinkimas == 2){
+            cout << "įveskite mokinio vardą: ";
+            cin >> name;
+            cout << "įveskite mokinio pavardę: ";
+            cin >> surn; 
+        }else if(pasirinkimas == 3){
+            name = A[dist(mt)];
+            surn = B[dist(mt)];
+        }
+
+        //nd rezultatai
+        bool testi2 = true;
+        int j = 0;
+        while(testi2){
+            char teesti2;
+            int nd_result;
+            if(pasirinkimas == 1){
+                while (true){
+                    try{
+                        cout << "įveskite " << j+1 << " namų darbo rezultatą: ";
+                        cin >> nd_result;
+                        if(nd_result < 0 || nd_result > 10){
+                            throw std::invalid_argument ("klaida, įveskite skaičių nuo 0 iki 10");
+                        }
+                        break;
+                    }
+                    catch(const std::invalid_argument& e){
+                    cout << e.what() << endl;
+                    cin.clear();
+                    cin.ignore(123, '\n');
+                    }
+                }
+            }else if(pasirinkimas == 2 || pasirinkimas == 3) ND.push_back(dist(mt));
+
+            while(true){
+                try{
+                    cout << "ar norite pridėti daugiau namų darbų rezultatų? (t/n): ";
+                    cin >> teesti2; 
+                    if(!(teesti2 == 't' || teesti2 == 'n')){
+                        throw std::invalid_argument("klaida, pasirinkite taip(t) arba ne(n)");
+                    }
+                    break;
+                }
+                catch(const std::invalid_argument& e){
+                    cout << e.what() << endl;
+                    cin.clear();
+                    cin.ignore(123, '\n');
+                }
+            }
+
+            if(teesti2 == 'n'){
+                testi2 = false;
+            } else testi2 = true;
+            j++;
+            if(j == 20) break;
+        }
+
+
+        //egzamino rezultatas
+        if(pasirinkimas == 1){
+            while (true){
+                try{
+                    cout << "įveskite egzamino rezultatą: ";
+                    cin >> egz;
+                    if(egz < 0 || egz > 10){
+                        throw std::invalid_argument ("klaida, įveskite skaičių nuo 0 iki 10");
+                    }
+                    break;
+                }
+                catch(const std::invalid_argument& e){
+                    cout << e.what() << endl;
+                    cin.clear();
+                    cin.ignore(123, '\n');
+                }
+            }
+        }else if(pasirinkimas == 2 || pasirinkimas == 3) egz = dist(mt);   
+
+        temp.setName(name); // Set the name
+        temp.setSurn(surn); // Set the surname
+        temp.setEgz(egz);   // Set the exam result
+        temp.setNd(ND);     // Set the homework results (ND is a vector<int>)
+
+        // Add the Student object to the BadStudents vector
+        BadStudents.push_back(temp);
+        
         while(true){
             try{
-                cout << "pasirinkite failą: " << endl;
-                cout << "1 - kursiokai1000.txt" << endl;
-                cout << "2 - kursiokai10000.txt" << endl;
-                cout << "3 - kursiokai100000.txt" << endl; 
-                cout << "4 - kursiokai1000000.txt" << endl; 
-                cout << "5 - kursiokai10000000.txt" << endl; 
-                cin >> file;
-                if(file != 1 && file != 2 && file != 3 && file != 4 && file != 5){ 
-                    throw std::invalid_argument("klaida, įveskite skaičių 1, 2, 3, 4 arba 5");
-                }
-                break;
-            } catch (const std::invalid_argument& e){
-                cout << e.what() << endl;
-                cin.clear();
-                cin.ignore(123, '\n');
-            }
-        }
-        
-        int n = 0; // studentu skaicius
-
-        switch(file){
-            case 1:
-                filename = "kursiokai1000.txt";
-                n = 1000;
-                break;
-            case 2:
-                filename = "kursiokai10000.txt";
-                n = 10000;
-                break;
-            case 3:
-                filename = "kursiokai100000.txt";
-                n = 100000;
-                break;
-            case 4:
-                filename = "kursiokai1000000.txt";
-                n = 1000000;
-                break;
-            case 5:
-                filename = "kursiokai10000000.txt";
-                n = 10000000;   
-                break;             
-        }
-
-        
-        ifstream file1(filename); // bandoma atidaryti failą
-        if (!file1) { // jei nepavyksta, sukuriamas failas, ir atidaromas
-
-            auto startt = std::chrono::high_resolution_clock::now();
-            generuojam(filename, n); 
-            auto endd = std::chrono::high_resolution_clock::now();
-            generationTime = endd - startt;
-
-
-            file1.open(filename);
-        }
-
-        try { // tikrinam ar atsidare failas
-            if (!file1) {
-                throw std::invalid_argument("Failed to open file: " + filename);
-            }
-        
-        
-            string line;
-
-
-            auto startRead = std::chrono::high_resolution_clock::now();
-            getline(file1, line); // praleidziam primaja eilute
-            Student s;
-            while (getline(file1, line)) {
-                std::istringstream iss(line);
-                if (iss >> s) {
-                    BadStudents.push_back(s);
-                }
-            }
-            file1.close();
-            auto endRead = std::chrono::high_resolution_clock::now();
-            readTime = endRead - startRead;
-
-            
-        } catch (const std::runtime_error& e) {
-            cout << e.what() << endl;
-            return 1;
-        }
-
-
-    } else { // duomenu ivedimas ranka, ar automatiskai
-        while(true){
-            try{
-                cout << "Pasirinkite duomenų įvedimo būdą:" << endl;
-                cout << "1 - Įvesti visus duomenis ranka" << endl;
-                cout << "2 - Įvesti pažymių duomenis automatiškai" << endl;
-                cout << "3 - Įvesti visus duomenis automatiškai" << endl;
-                cin >> pasirinkimas; 
-                if(pasirinkimas != 1 && pasirinkimas != 2 && pasirinkimas != 3){
-                    throw std::invalid_argument("klaida, įveskite skaičių 1, 2 arba 3");
+                cout << "ar norite pridėti daugiau mokinių? (t/n): ";
+                cin >> teesti;
+                if(!(teesti == 't' || teesti == 'n')){
+                    throw std::invalid_argument("klaida, pasirinkite taip(t) arba ne(n)");
                 }
                 break;
             }
@@ -136,16 +217,84 @@ int main() {
                 cin.ignore(123, '\n');
             }
         }
-        skaitom(pasirinkimas, A, B); // skaitymas
+
+        if(teesti == 'n'){
+            testi = false;
+        }
+        i++;
+        if(i == 15) break;
+    }
+}
+
+
+void generuojam(string b, int n){
+
+    ostringstream oss;
+    oss << left << setw(20) << "Vardas" << setw(20) << "Pavardė";
+    for(int i = 1; i <= 15; i++){
+        oss << "ND" << setw(5) << i;
+    }
+    oss << "Egz." << endl;
+
+    for(int i = 0; i < n; i++){
+        oss << left << "Vardas" << setw(14) << i+1 << "Pavardė" << setw(12) << i+1;
+        for(int j = 0; j < 15; j++){
+            oss << setw(7) << dist(mt);
+        }
+        oss << dist(mt)<< endl;
+    }
+    ofstream fr(b);
+    fr << oss.str();
+    fr.close();  // Close file
+}
+
+
+void vidurkis(){
+    for(int i = 0; i < BadStudents.size(); i++){
+        double sum = 0;
+        for(int j = 0; j < BadStudents[i].getNd().size(); j++){
+            sum += BadStudents[i].getNd()[j];
+        }
+        double average;
+        average = (sum / BadStudents[i].getNd().size())*0.4 + (BadStudents[i].getEgz()*0.6);
+        BadStudents[i].setVid(average);
+    }
+}
+
+
+void mediana(){
+
+    //nd rezultatu rikiavimas didejimo tvarka
+    for (int i = 0; i < BadStudents.size(); i++) {
+        sort(BadStudents[i].getNd().begin(), BadStudents[i].getNd().end()); 
     }
 
+    //medianos skaiciavimas
+    for(int i = 0; i < BadStudents.size(); i++){
+        double average;
+        if(BadStudents[i].getNd().size() % 2 == 0){
+            average = ((BadStudents[i].getNd()[BadStudents[i].getNd().size()/2] + BadStudents[i].getNd()[BadStudents[i].getNd().size()/2 - 1]) / 2.0)*0.4 + (BadStudents[i].getEgz()*0.6);
+            BadStudents[i].setVid(average);
+        } 
+        else {
+            average = BadStudents[i].getNd()[BadStudents[i].getNd().size()/2]*0.4 + (BadStudents[i].getEgz()*0.6);
+            BadStudents[i].setVid(average);
+        }
+    }
+}
 
+
+void spausdinam(char a) {
+
+    int pasirinkimas;
     while(true){
         try{
-            cout << "pasirinkite skaičiavimo būdą vidurkis(v)/mediana(m): ";
-            cin >> a;
-            if(a != 'v' && a != 'm'){
-                throw std::invalid_argument("klaida, pasirinkite v arba m");
+            cout << "Kur norite matyti rezultatus?" << endl;
+            cout << "1 - ekrane" << endl;
+            cout << "2 - faile" << endl;
+            cin >> pasirinkimas;
+            if(pasirinkimas != 1 && pasirinkimas != 2){
+                throw std::invalid_argument("klaida, įveskite skaičių 1 arba 2");
             }
             break;
         }
@@ -156,51 +305,104 @@ int main() {
         }
     }
 
-
-    if (a == 'v') {
-        vidurkis();
-    } else {
-        mediana();
-    }
-    int p;
-    while (true) {
-        try {
-            cout << "Kuria rusiavimo strategija norite naudoti: dvieju konteineriu - 1, vieno konteinerio - 2: ";
-            cin >> p;
-            if (p != 1 && p != 2) {
-                throw std::invalid_argument("klaida, įveskite 1 arba 2");
+    int rusiavimas;
+    while(true){
+        try{
+            cout << "Kaip norite surūšiuoti rezultatus?" << endl;
+            cout << "1 - pagal vardą" << endl;
+            cout << "2 - pagal pavardę" << endl;
+            cout << "3 - pagal galutinį balą" << endl;
+            cin >> rusiavimas;
+            if(rusiavimas != 1 && rusiavimas != 2 && rusiavimas != 3){
+                throw std::invalid_argument("klaida, įveskite skaičių 1, 2 arba 3");
             }
-            break; 
-        } catch (const std::invalid_argument& e) {
+            break;
+        }
+        catch(const std::invalid_argument& e){
             cout << e.what() << endl;
             cin.clear();
             cin.ignore(123, '\n');
         }
     }
-    if(p == 2){
-        rusiuojam2();
-    } else rusiuojam1(); // studentu rusiavimas i skirtingus failus
-    spausdinam(a); // spausdinimas
 
+    auto startRusiavimas = std::chrono::high_resolution_clock::now();
+    if(rusiavimas == 1){
+        sort(BadStudents.begin(), BadStudents.end(), compareByName);
+        sort(GoodStudents.begin(), GoodStudents.end(), compareByName);
+    } else if(rusiavimas == 2){
+        sort(BadStudents.begin(), BadStudents.end(), compareBySurname);
+        sort(GoodStudents.begin(), GoodStudents.end(), compareBySurname);
+    } else{
+        sort(BadStudents.begin(), BadStudents.end(), compareByVid);
+        sort(GoodStudents.begin(), GoodStudents.end(), compareByVid);
+    }
+    auto endRusiavimas = std::chrono::high_resolution_clock::now();
+    rusiavimoLaikas = endRusiavimas - startRusiavimas;
 
-    auto end = std::chrono::high_resolution_clock::now(); // End timing
-    std::chrono::duration<double> programTime = end - start;
-    cout << fixed << setprecision(2);
-    cout << "--------------------------------------" << endl;
-    cout << endl;
-    cout << "failas: " << filename << endl;
-    cout << "Failo kūrimo laikas: " << generationTime.count() << "s" << endl;
-    cout << "Duomenų nuskaitymo laikas: " << readTime.count() << "s" << endl;     
-    cout << "Skirstymo laikas į blogus ir gerus: " << sortTime.count() << "s" << endl;
-    cout << "Rezultatų išvedimo laikas: " << writeTime.count() << "s" << endl;
-    cout << "Rusiavimo didejimo tvarka laikas:  " << rusiavimoLaikas.count() << "s" << endl;
-    cout << "Visos programos laikas: " << programTime.count() << "s" << endl;
-    cout << endl;
-    cout << "--------------------------------------" << endl;
+    if(pasirinkimas == 1){
+        cout << left << setw(20) << "Pavardė" << setw(15) << "Vardas" << setw(20);
 
-cout << endl;
-cout << endl;
-    testas(); // testas
+        if (a == 'v') {
+            cout << "Galutinis (Vid.)" << endl;
+        } else {
+            cout << "Galutinis (Med.)" << endl;
+        }
 
-    return 0;
+        cout << "-------------------------------------------------------------" << endl;
+
+        cout << fixed << setprecision(2);
+
+        for (const auto& student : BadStudents) {
+            cout << student << endl;
+        }
+        for (const auto& student : GoodStudents) {
+            cout << student << endl;
+        }
+    } else {
+
+        // geri mokiniai
+
+        auto startWrite = std::chrono::high_resolution_clock::now();        
+        ostringstream oss;
+        oss << left << setw(20) << "Vardas" << setw(15) << "Pavardė" << setw(20);
+
+        if (a == 'v') {
+            oss << "Galutinis (Vid.)" << endl;
+        } else {
+            oss << "Galutinis (Med.)" << endl;
+        }
+
+        oss << "-------------------------------------------------------------" << endl;
+        oss << fixed << setprecision(2);
+        for (const auto& student : BadStudents) {
+            oss << student;
+        }
+        ofstream file2("susmukeliai.txt");
+        file2 << oss.str();
+        file2.close();
+
+        oss.str("");
+        oss.clear();
+
+        //blogi mokiniai
+        oss << left << setw(20) << "Vardas" << setw(15) << "Pavardė" << setw(20);
+
+        if (a == 'v') {
+            oss << "Galutinis (Vid.)" << endl;
+        } else {
+            oss << "Galutinis (Med.)" << endl;
+        }
+
+        oss << "-------------------------------------------------------------" << endl;
+
+        oss << fixed << setprecision(2);
+        for (const auto& student : GoodStudents) {
+            oss << student;
+        }
+        ofstream file3("alfos.txt");
+        file3 << oss.str();
+        file3.close();
+        auto endWrite = std::chrono::high_resolution_clock::now();
+        writeTime = endWrite - startWrite;
+    }
 }

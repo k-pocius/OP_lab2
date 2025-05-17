@@ -33,16 +33,37 @@ TEST(StudentTest, SettersAndGetters) {
     EXPECT_EQ(s.getNd(), nd);
 }
 
-// Test copy constructor
+
+
+//test copy constructor test
 TEST(StudentTest, CopyConstructor) {
     Student s1;
-    s1.setName(std::string("Jonas"));
-    s1.setSurn(std::string("Jonaitis"));
+    s1.setName("Jonas");
+    s1.setSurn("Jonaitis");
     s1.setEgz(9);
-    s1.setNd(std::vector<int>{8, 7});
-    s1.setVid(8.5);
+    s1.setNd(std::vector<int>{10, 9});
+    s1.setVid(9.1);
 
-    Student s2(s1);
+    Student s2(s1); // Copy constructor
+
+    EXPECT_EQ(s2.getName(), s1.getName());
+    EXPECT_EQ(s2.getSurn(), s1.getSurn());
+    EXPECT_EQ(s2.getEgz(), s1.getEgz());
+    EXPECT_EQ(s2.getNd(), s1.getNd());
+    EXPECT_EQ(s2.getVid(), s1.getVid());
+}
+
+// Test copy assignment operator
+TEST(StudentTest, CopyAssignmentOperator) {
+    Student s1;
+    s1.setName("Jonas");
+    s1.setSurn("Jonaitis");
+    s1.setEgz(10);
+    s1.setNd(std::vector<int>{6, 7});
+    s1.setVid(7.6);
+
+    Student s2;
+    s2 = s1; // Copy assignment operator
 
     EXPECT_EQ(s2.getName(), s1.getName());
     EXPECT_EQ(s2.getSurn(), s1.getSurn());
@@ -54,36 +75,50 @@ TEST(StudentTest, CopyConstructor) {
 // Test move constructor
 TEST(StudentTest, MoveConstructor) {
     Student s1;
-    s1.setName(std::string("Jonas"));
-    s1.setSurn(std::string("Jonaitis"));
+    s1.setName("Jonas");
+    s1.setSurn("Jonaitis");
     s1.setEgz(9);
     s1.setNd(std::vector<int>{10, 9});
     s1.setVid(9.1);
 
-    Student s2(std::move(s1));
+    Student s2(std::move(s1)); // Move constructor
 
     EXPECT_EQ(s2.getName(), "Jonas");
     EXPECT_EQ(s2.getSurn(), "Jonaitis");
     EXPECT_EQ(s2.getEgz(), 9);
     EXPECT_EQ(s2.getNd(), std::vector<int>({10, 9}));
     EXPECT_EQ(s2.getVid(), 9.1);
+
+    // Ensure s1 is in a valid but unspecified state
+    EXPECT_EQ(s1.getName(), "");
+    EXPECT_EQ(s1.getSurn(), "");
+    EXPECT_EQ(s1.getEgz(), 0);
+    EXPECT_EQ(s1.getNd(), std::vector<int>());
+    EXPECT_EQ(s1.getVid(), 0.0);
 }
 
-// Test assignment operator
-TEST(StudentTest, AssignmentOperator) {
+//test move assignment operator
+TEST(StudentTest, MoveAssignmentOperator) {
     Student s1;
-    s1.setName(std::string("Jonas"));
-    s1.setSurn(std::string("Jonaitis"));
-    s1.setEgz(10);
-    s1.setNd(std::vector<int>{6, 7});
-    s1.setVid(7.6);
+    s1.setName("Jonas");
+    s1.setSurn("Jonaitis");
+    s1.setEgz(8);
+    s1.setNd(std::vector<int>{5, 6, 7});
+    s1.setVid(7.5);
 
     Student s2;
-    s2 = s1;
+    s2 = std::move(s1); // Move assignment operator
 
     EXPECT_EQ(s2.getName(), "Jonas");
     EXPECT_EQ(s2.getSurn(), "Jonaitis");
-    EXPECT_EQ(s2.getEgz(), 10);
-    EXPECT_EQ(s2.getNd(), std::vector<int>({6, 7}));
-    EXPECT_EQ(s2.getVid(), 7.6);
+    EXPECT_EQ(s2.getEgz(), 8);
+    EXPECT_EQ(s2.getNd(), std::vector<int>({5, 6, 7}));
+    EXPECT_EQ(s2.getVid(), 7.5);
+
+    // Ensure s1 is in a valid but unspecified state
+    EXPECT_EQ(s1.getName(), "");
+    EXPECT_EQ(s1.getSurn(), "");
+    EXPECT_EQ(s1.getEgz(), 0);
+    EXPECT_EQ(s1.getNd(), std::vector<int>());
+    EXPECT_EQ(s1.getVid(), 0.0);
 }
