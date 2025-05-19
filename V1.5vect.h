@@ -257,8 +257,8 @@ class Student : public Zmogus {
         }
 
         friend istream& operator>>(std::istream& in, Student& s) {
-            std::string name, surname;
-            std::vector<int> nd;
+            string name, surname;
+            Vector<int> nd;
             int temp, egz;
 
             in >> name >> surname;

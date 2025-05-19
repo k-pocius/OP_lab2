@@ -43,7 +43,10 @@ void testas() {
     s1.setName(v);
     s1.setSurn(p);
     s1.setEgz(8);
-    Vector<int> nd = {7, 8, 9};
+    Vector<int> nd;
+    nd.push_back(7);
+    nd.push_back(8);
+    nd.push_back(9);
     s1.setNd(nd);
     s1.setVid(8.2);
 
