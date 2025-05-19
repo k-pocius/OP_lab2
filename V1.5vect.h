@@ -15,11 +15,31 @@ class Vector{
         T* data; // duomenu masyvas
         size_t size; // masyvo dydis
         size_t capacity; // talpa
-        
+
     public:
         Vector() : data(nullptr), size(0), capacity(0) {} // konstruktorius;
 
-        ~Vector();
+        ~Vector(){
+            delete[] data;
+        }
+            
+
+        void push_back(const T& value) {
+            if (size == capacity) {
+                size_t new_capacity = (capacity == 0) ? 1 : capacity * 2;
+                T* new_data = new T[new_capacity];
+
+                for (size_t i = 0; i < size; ++i) {
+                    new_data[i] = data[i];
+                }
+
+                delete[] data;
+                data = new_data;
+                capacity = new_capacity;
+            }
+
+            data[size++] = value;
+        }
 };
 
 
