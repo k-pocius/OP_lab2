@@ -53,7 +53,23 @@ class Vector{
         }
 
 
+        // begin, end function
+        T* begin() {
+            return data;
+        }
 
+        const T* begin() const {
+            return data;
+        }
+
+
+        T* end() {
+            return data + size;
+        }
+
+        const T* end() const {
+            return data + size;
+        }
 
             
         // push_back funkcija
