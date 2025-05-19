@@ -42,6 +42,15 @@ class Vector{
             return data[size - 1];
         }
 
+        //empty function
+        bool empty() const {
+            return size == 0;
+        }
+
+        //clear function
+        void clear() {
+            size = 0;
+        }
 
 
 
