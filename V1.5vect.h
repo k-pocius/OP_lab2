@@ -39,6 +39,7 @@ class Vector{
             }
 
             data[size++] = value;
+            size++;
         }
 };
 
