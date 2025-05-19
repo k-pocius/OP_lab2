@@ -12,8 +12,8 @@ std::chrono::duration<double> sortTime; // skirstymo laikas
 std::chrono::duration<double> writeTime; // rasymo laikas
 std::chrono::duration<double> rusiavimoLaikas; // rusiavimo laikas
 
-vector<Student> BadStudents;
-vector<Student> GoodStudents;
+Vector<Student> BadStudents;
+Vector<Student> GoodStudents;
 
 void skaitom(int pasirinkimas, string A[], string B[]);
 void vidurkis();
@@ -43,7 +43,7 @@ void testas() {
     s1.setName(v);
     s1.setSurn(p);
     s1.setEgz(8);
-    vector<int> nd = {7, 8, 9};
+    Vector<int> nd = {7, 8, 9};
     s1.setNd(nd);
     s1.setVid(8.2);
 
@@ -75,7 +75,7 @@ void testas() {
 
 void rusiuojam1(){
     // nukopijuojam visus elementus i atskira konteineri, kad nereiktu keist toliau esancios programos
-    vector<Student> BadStudents2(BadStudents);
+    Vector<Student> BadStudents2(BadStudents);
     BadStudents.clear();
 
     auto startSort = std::chrono::high_resolution_clock::now();
@@ -111,7 +111,7 @@ void skaitom(int pasirinkimas, string A[], string B[]){
     int i = 0;    
     string name, surn;
     int egz;
-    vector <int> ND;
+    Vector <int> ND;
     Student temp;
     while(testi){
         char teesti;
@@ -250,13 +250,13 @@ void generuojam(string b, int n){
 
 
 void vidurkis(){
-    for(int i = 0; i < BadStudents.size(); i++){
+    for(int i = 0; i < BadStudents.getSize(); i++){
         double sum = 0;
-        for(int j = 0; j < BadStudents[i].getNd().size(); j++){
+        for(int j = 0; j < BadStudents[i].getNd().getSize(); j++){
             sum += BadStudents[i].getNd()[j];
         }
         double average;
-        average = (sum / BadStudents[i].getNd().size())*0.4 + (BadStudents[i].getEgz()*0.6);
+        average = (sum / BadStudents[i].getNd().getSize())*0.4 + (BadStudents[i].getEgz()*0.6);
         BadStudents[i].setVid(average);
     }
 }
@@ -265,19 +265,19 @@ void vidurkis(){
 void mediana(){
 
     //nd rezultatu rikiavimas didejimo tvarka
-    for (int i = 0; i < BadStudents.size(); i++) {
+    for (int i = 0; i < BadStudents.getSize(); i++) {
         sort(BadStudents[i].getNd().begin(), BadStudents[i].getNd().end()); 
     }
 
     //medianos skaiciavimas
-    for(int i = 0; i < BadStudents.size(); i++){
+    for(int i = 0; i < BadStudents.getSize(); i++){
         double average;
-        if(BadStudents[i].getNd().size() % 2 == 0){
-            average = ((BadStudents[i].getNd()[BadStudents[i].getNd().size()/2] + BadStudents[i].getNd()[BadStudents[i].getNd().size()/2 - 1]) / 2.0)*0.4 + (BadStudents[i].getEgz()*0.6);
+        if(BadStudents[i].getNd().getSize() % 2 == 0){
+            average = ((BadStudents[i].getNd()[BadStudents[i].getNd().getSize()/2] + BadStudents[i].getNd()[BadStudents[i].getNd().getSize()/2 - 1]) / 2.0)*0.4 + (BadStudents[i].getEgz()*0.6);
             BadStudents[i].setVid(average);
         } 
         else {
-            average = BadStudents[i].getNd()[BadStudents[i].getNd().size()/2]*0.4 + (BadStudents[i].getEgz()*0.6);
+            average = BadStudents[i].getNd()[BadStudents[i].getNd().getSize()/2]*0.4 + (BadStudents[i].getEgz()*0.6);
             BadStudents[i].setVid(average);
         }
     }

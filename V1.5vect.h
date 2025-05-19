@@ -10,7 +10,7 @@ extern std::chrono::duration<double> writeTime; // rasymo laikas
 extern std::chrono::duration<double> rusiavimoLaikas; // rusiavimo laikas
 
 template <typename T>
-class vector{
+class Vector{
     private:
         T* data; // duomenu masyvas
         size_t size; // masyvo dydis
@@ -22,6 +22,20 @@ class vector{
         ~Vector(){
             delete[] data;
         }
+
+
+        T& operator[](size_t index) {
+            return data[index];
+        }
+
+        const T& operator[](size_t index) const {
+            return data[index];
+        }
+
+
+
+
+
             
         // push_back funkcija
         void push_back(const T& value) {
@@ -51,9 +65,36 @@ class vector{
             --size;
         }
 
-        
+        void resize(size_t newSize) {
+            if (newSize < size) {
+                // Shrink: just reduce size, data remains
+                size = newSize;
+            } 
+            else if (newSize > size) {
+                if (newSize > capacity) {
+                    // Need to grow
+                    size_t new_capacity = newSize;
+                    T* new_data = new T[new_capacity];
 
+                    for (size_t i = 0; i < size; ++i) {
+                        new_data[i] = data[i];
+                    }
 
+                    delete[] data;
+                    data = new_data;
+                    capacity = new_capacity;
+                }
+
+                // Default-initialize new elements
+                for (size_t i = size; i < newSize; ++i) {
+                    data[i] = T();
+                }
+
+                size = newSize;
+            }
+        }
+
+        // getteriai
         size_t getSize() const {
             return size;
         }
@@ -93,7 +134,7 @@ class Zmogus{
 
 class Student : public Zmogus {
     private:
-        vector<int> nd; // nd rezultatai 
+        Vector<int> nd; // nd rezultatai 
         int egz; // egzaminu rez
         double vid; // galutinis vidurkis
 
@@ -162,7 +203,7 @@ class Student : public Zmogus {
             egz = Egz;
         }
 
-        void setNd(const vector<int>& Nd) {
+        void setNd(const Vector<int>& Nd) {
             nd = Nd;
         }
 
@@ -176,7 +217,7 @@ class Student : public Zmogus {
             return egz;
         }
 
-        vector<int>& getNd(){
+        Vector<int>& getNd(){
             return nd;
         }
 
@@ -211,8 +252,8 @@ class Student : public Zmogus {
         }
 };
 
-extern vector<Student> BadStudents;
-extern vector<Student> GoodStudents;
+extern Vector<Student> BadStudents;
+extern Vector<Student> GoodStudents;
 
 void skaitom(int pasirinkimas, string A[], string B[]);
 void vidurkis();
