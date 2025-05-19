@@ -23,13 +23,23 @@ class Vector{
             delete[] data;
         }
 
-
+        //index operator
         T& operator[](size_t index) {
             return data[index];
         }
 
         const T& operator[](size_t index) const {
             return data[index];
+        }
+
+
+        //back function
+        T& back() {
+            return data[size - 1];
+        }
+
+        const T& back() const {
+            return data[size - 1];
         }
 
 
