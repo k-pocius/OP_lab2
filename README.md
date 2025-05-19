@@ -1,3 +1,7 @@
+Naudojimosi instrukcijos:
+Norint paleisti programą, į terminalą įvesti "make run_test"
+Norint ištrinti sukompiliuotus failus, į terminalą  įvesti "make clean"
+
 Ši programa leidžia:
 
 Įvesti studentų duomenis rankiniu būdu, automatiškai arba iš failo
