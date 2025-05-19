@@ -9,6 +9,19 @@ extern std::chrono::duration<double> sortTime; // skirstymo laikas
 extern std::chrono::duration<double> writeTime; // rasymo laikas
 extern std::chrono::duration<double> rusiavimoLaikas; // rusiavimo laikas
 
+template <typename T>
+class Vector{
+    private:
+        T* data; // duomenu masyvas
+        size_t size; // masyvo dydis
+        size_t capacity; // talpa
+        
+    public:
+        Vector() : data(nullptr), size(0), capacity(0) {} // konstruktorius;
+
+        ~Vector();
+};
+
 
 class Zmogus{
     protected:
