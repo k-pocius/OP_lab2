@@ -10,7 +10,7 @@ extern std::chrono::duration<double> writeTime; // rasymo laikas
 extern std::chrono::duration<double> rusiavimoLaikas; // rusiavimo laikas
 
 template <typename T>
-class Vector{
+class vector{
     private:
         T* data; // duomenu masyvas
         size_t size; // masyvo dydis
@@ -23,7 +23,7 @@ class Vector{
             delete[] data;
         }
             
-
+        // push_back funkcija
         void push_back(const T& value) {
             if (size == capacity) {
                 size_t new_capacity = (capacity == 0) ? 1 : capacity * 2;
@@ -40,6 +40,19 @@ class Vector{
 
             data[size++] = value;
         }
+
+
+        //pop_back
+        void pop_back() {
+            if (size == 0) {
+                // Vector is already empty
+                return;
+            }
+            --size;
+        }
+
+        
+
 
         size_t getSize() const {
             return size;
