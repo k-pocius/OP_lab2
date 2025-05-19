@@ -39,7 +39,14 @@ class Vector{
             }
 
             data[size++] = value;
-            size++;
+        }
+
+        size_t getSize() const {
+            return size;
+        }
+
+        size_t getCapacity() const {
+            return capacity;
         }
 };
 
