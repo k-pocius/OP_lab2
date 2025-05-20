@@ -20,9 +20,7 @@ class Vector{
     public:
         Vector() : data(nullptr), size(0), capacity(0) {} // konstruktorius;
 
-        ~Vector(){
-            delete[] data;
-        }
+        ~Vector(){};
 
         //index operator
         T& operator[](size_t index) {

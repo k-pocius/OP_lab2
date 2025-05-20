@@ -82,6 +82,7 @@ int main() {
             pushTestas(n);
         auto pabaiga = std::chrono::high_resolution_clock::now();
         pushlaikas = pabaiga - startas;
+        BadStudents.clear(); // isvalom vektoriu
 
 
         
