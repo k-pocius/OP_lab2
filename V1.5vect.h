@@ -3,6 +3,7 @@
 
 #include "lib.h"
 
+extern std::chrono::duration<double> pushlaikas; // generavimo laikas
 extern std::chrono::duration<double> generationTime; // generavimo laikas
 extern std::chrono::duration<double> readTime; // skaitymo laikas
 extern std::chrono::duration<double> sortTime; // skirstymo laikas
@@ -137,6 +138,17 @@ class Vector{
         size_t getCapacity() const {
             return capacity;
         }
+
+        Vector(std::initializer_list<T> init) : data(nullptr), size(0), capacity(0) {
+    size = init.size();
+    capacity = size;
+    data = new T[capacity];
+    size_t i = 0;
+    for (const auto& elem : init) {
+        data[i++] = elem;
+    }
+}
+
 };
 
 
@@ -165,6 +177,15 @@ class Zmogus{
         }
         virtual void test() = 0;
 };
+
+    template <typename T>
+    bool operator==(const Vector<T>& lhs, const Vector<T>& rhs) {
+        if (lhs.getSize() != rhs.getSize()) return false;
+        for (size_t i = 0; i < lhs.getSize(); ++i) {
+            if (lhs[i] != rhs[i]) return false;
+        }
+        return true;
+}
 
 
 class Student : public Zmogus {
@@ -285,6 +306,7 @@ class Student : public Zmogus {
             os << left << setw(20) << s.name << setw(16) << s.surn << s.vid << endl;
             return os;
         }
+
 };
 
 extern Vector<Student> BadStudents;
@@ -295,6 +317,7 @@ void vidurkis();
 void mediana();
 void spausdinam(char a);
 void generuojam(string b, int n);
+void pushTestas(int n);
 void rusiuojam2(); // skaidymas per puse
 void rusiuojam1(); // skaidymas is vieno konteinerio i du
 bool compareByName(const Student& a, const Student& b);

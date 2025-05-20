@@ -36,6 +36,7 @@ using std::deque;
 using std::copy;
 using std::ostream;
 using std::istream;
+using std::to_string;
 
 
 #endif

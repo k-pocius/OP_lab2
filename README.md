@@ -37,9 +37,6 @@ Perdengtų metodų paaiškinimas
 
 
 
-
-
-
 ![alt text](image.png)
 
 <br>
@@ -47,6 +44,46 @@ Perdengtų metodų paaiškinimas
 ![alt text](test.png)
 
 <br>
+
+
+Vektoriaus funkcijų paaiškinimas:
+
+1. push_back funkcija
+Paskirtis: Prideda naują elementą į vektoriaus pabaigą.
+
+Veikimas: Jei nėra pakankamai vietos (t. y. talpa lygi dydžiui), talpa padvigubinama.
+Sukuriamas naujas masyvas su didesne talpa, į jį perkopijuojami esami elementai.
+Galiausiai pridedamas naujas elementas į galą.
+
+
+2. pop_back funkcija
+Paskirtis: Pašalina paskutinį vektoriaus elementą.
+
+Veikimas: Patikrina, ar vektorius nėra tuščias.
+Sumažina dydį vienetu.
+
+
+3. getSize funkcija
+Paskirtis: Grąžina šiuo metu esančių elementų skaičių vektoriuje.
+Veikimas: Tiesiogiai grąžina size reikšmę.
+
+
+4. resize funkcija
+Paskirtis: Keičia vektoriaus dydį į nurodytą.
+
+Veikimas: Jei naujas dydis didesnis nei esamas, pridedami numatytieji elementai.
+Jei mažesnis – vektoriaus dydis sumažinamas.
+Jei reikia – padidinama talpa.
+
+
+5. Konstruktorius ir destruktorius
+Paskirtis: Konstruktorius inicializuoja tuščią vektorių.
+Destruktorius atlaisvina užimtą atmintį.
+
+Veikimas: Konstruktorius nustato data = nullptr, size = 0, capacity = 0.
+Destruktorius naudoja delete[] atlaisvinti dinamiškai priskirtą atmintį.
+
+
 
 ==== REZULTATŲ LENTELĖ ====
 | Veiksmas                        | V1.0 (1M) | V1.1 (1M) |  V1.0 (10M) |  V1.1 (10M) |
@@ -61,7 +98,7 @@ Perdengtų metodų paaiškinimas
 
 
 
- ==== FLAGŲ PALYGINIMAS ====
+==== FLAGŲ PALYGINIMAS ====
 | Veiksmas                        |  V1 -O1 |  V1 -O2 |  V1 -O3 |  V1.1 -O1 |  V1.1 -O2 |  V1.1 -O3 |
 |---------------------------------|---------|---------|---------|-----------|-----------|-----------|
 | Failo kūrimo laikas             |  2.96s  |  2.99s  |  3.00s  |   2.97s   |   3.01s   |   2.97s   |

@@ -6,6 +6,7 @@ using hrClock = std::chrono::high_resolution_clock;
 std::mt19937 mt(static_cast<long unsigned int>(hrClock::now().time_since_epoch().count()));
 std::uniform_int_distribution<int> dist(1, 10);
 
+std::chrono::duration<double> pushlaikas; // generavimo laikas
 std::chrono::duration<double> generationTime; // generavimo laikas
 std::chrono::duration<double> readTime; // skaitymo laikas
 std::chrono::duration<double> sortTime; // skirstymo laikas
@@ -15,14 +16,6 @@ std::chrono::duration<double> rusiavimoLaikas; // rusiavimo laikas
 Vector<Student> BadStudents;
 Vector<Student> GoodStudents;
 
-void skaitom(int pasirinkimas, string A[], string B[]);
-void vidurkis();
-void mediana();
-void spausdinam(char a);
-void generuojam(string b, int n);
-void rusiuojam2(); // skaidymas per puse
-void rusiuojam1(); // skaidymas is vieno konteinerio i du
-
 bool compareByName(const Student& a, const Student& b) {
     return a.getName() < b.getName();
 }
@@ -31,6 +24,21 @@ bool compareBySurname(const Student& a, const Student& b) {
 }
 bool compareByVid(const Student& a, const Student& b) {
     return a.getVid() < b.getVid();
+}
+
+void pushTestas(int n){
+    Vector <int> ND;
+    Student temp;
+    for(int i = 0; i < n; i++){
+        temp.setName("vardas" + to_string(i+1));
+        temp.setSurn("pavarde" + to_string(i+1));
+
+        for(int j = 0; j < 15; j++){
+            ND.push_back(dist(mt));
+        }
+        temp.setEgz(dist(mt));
+        BadStudents.push_back(temp);
+    }
 }
 
 void testas() {
@@ -43,10 +51,7 @@ void testas() {
     s1.setName(v);
     s1.setSurn(p);
     s1.setEgz(8);
-    Vector<int> nd;
-    nd.push_back(7);
-    nd.push_back(8);
-    nd.push_back(9);
+    Vector<int> nd = {9, 8, 7};
     s1.setNd(nd);
     s1.setVid(8.2);
 
@@ -117,6 +122,7 @@ void skaitom(int pasirinkimas, string A[], string B[]){
     Vector <int> ND;
     Student temp;
     while(testi){
+        ND.clear();
         char teesti;
 
         //mokinio vardas pavarde

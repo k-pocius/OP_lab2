@@ -75,6 +75,15 @@ int main() {
                 break;             
         }
 
+
+
+        //push testas
+        auto startas = std::chrono::high_resolution_clock::now();
+            pushTestas(n);
+        auto pabaiga = std::chrono::high_resolution_clock::now();
+        pushlaikas = pabaiga - startas;
+
+
         
         ifstream file1(filename); // bandoma atidaryti failą
         if (!file1) { // jei nepavyksta, sukuriamas failas, ir atidaromas
@@ -183,6 +192,7 @@ int main() {
     spausdinam(a); // spausdinimas
 
 
+
     auto end = std::chrono::high_resolution_clock::now(); // End timing
     std::chrono::duration<double> programTime = end - start;
     cout << fixed << setprecision(2);
@@ -190,17 +200,18 @@ int main() {
     cout << endl;
     cout << "failas: " << filename << endl;
     cout << "Failo kūrimo laikas: " << generationTime.count() << "s" << endl;
+    cout << "Push_back laikas: " << pushlaikas.count() << "s" << endl;
     cout << "Duomenų nuskaitymo laikas: " << readTime.count() << "s" << endl;     
     cout << "Skirstymo laikas į blogus ir gerus: " << sortTime.count() << "s" << endl;
     cout << "Rezultatų išvedimo laikas: " << writeTime.count() << "s" << endl;
     cout << "Rusiavimo didejimo tvarka laikas:  " << rusiavimoLaikas.count() << "s" << endl;
     cout << "Visos programos laikas: " << programTime.count() << "s" << endl;
+    cout << "Push_back laikas: " << pushlaikas.count() << "s" << endl;
     cout << endl;
-    cout << "--------------------------------------" << endl;
 
-cout << endl;
-cout << endl;
-    testas(); // testas
+    cout << endl;
+    cout << endl;
+    testas(); // testas 
 
     return 0;
 }
