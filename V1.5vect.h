@@ -148,7 +148,14 @@ class Vector{
 }
 
 };
-
+    template <typename T>
+    bool operator==(const Vector<T>& lhs, const Vector<T>& rhs) {
+        if (lhs.getSize() != rhs.getSize()) return false;
+        for (size_t i = 0; i < lhs.getSize(); ++i) {
+            if (lhs[i] != rhs[i]) return false;
+        }
+        return true;
+}
 
 class Zmogus{
     protected:
@@ -176,14 +183,7 @@ class Zmogus{
         virtual void test() = 0;
 };
 
-    template <typename T>
-    bool operator==(const Vector<T>& lhs, const Vector<T>& rhs) {
-        if (lhs.getSize() != rhs.getSize()) return false;
-        for (size_t i = 0; i < lhs.getSize(); ++i) {
-            if (lhs[i] != rhs[i]) return false;
-        }
-        return true;
-}
+
 
 
 class Student : public Zmogus {
