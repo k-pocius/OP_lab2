@@ -250,9 +250,9 @@ void generuojam(string b, int n){
 
 
 void vidurkis(){
-    for(int i = 0; i < BadStudents.size(); i++){
+    for(size_t i = 0; i < BadStudents.size(); i++){
         double sum = 0;
-        for(int j = 0; j < BadStudents[i].getNd().size(); j++){
+        for(size_t j = 0; j < BadStudents[i].getNd().size(); j++){
             sum += BadStudents[i].getNd()[j];
         }
         double average;
@@ -265,12 +265,12 @@ void vidurkis(){
 void mediana(){
 
     //nd rezultatu rikiavimas didejimo tvarka
-    for (int i = 0; i < BadStudents.size(); i++) {
+    for (size_t i = 0; i < BadStudents.size(); i++) {
         sort(BadStudents[i].getNd().begin(), BadStudents[i].getNd().end()); 
     }
 
     //medianos skaiciavimas
-    for(int i = 0; i < BadStudents.size(); i++){
+    for(size_t i = 0; i < BadStudents.size(); i++){
         double average;
         if(BadStudents[i].getNd().size() % 2 == 0){
             average = ((BadStudents[i].getNd()[BadStudents[i].getNd().size()/2] + BadStudents[i].getNd()[BadStudents[i].getNd().size()/2 - 1]) / 2.0)*0.4 + (BadStudents[i].getEgz()*0.6);

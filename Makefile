@@ -1,51 +1,57 @@
-# Compiler
+# Makefile for V1.5 project with Google Test
+
 CXX = g++
+CXXFLAGS = -std=c++17 -Wall -Wextra
+TARGET = program
+TEST_TARGET = test_student
 
-# Compiler flags
-CXXFLAGS = -std=c++17 -Wall -g -I/opt/homebrew/include
-LDFLAGS = -L/opt/homebrew/lib
-GTEST_LIBS = -lgtest -lgtest_main -pthread
+# Main program source & object files
+MAIN_SRC = V1.5main.cpp V1.5vect.cpp
+MAIN_OBJ = V1.5main.o V1.5vect.o
 
-# Target executables
-TARGET = V1_5vect
-TEST_TARGET = test_V1_5vect
+# Test source & object files
+TEST_SRC = test_V1_5vect.cpp V1.5vect.cpp
+TEST_OBJ = test_V1_5vect.o V1.5vect_test.o
 
-# Source files
-SRCS = V1.5vect.cpp V1.5main.cpp
+# Default target
+all: $(TARGET)
 
-# Header files
-HEADERS = lib.h V1.5vect.h
+# Build main program
+$(TARGET): $(MAIN_OBJ)
+	$(CXX) $(CXXFLAGS) -o $(TARGET) $(MAIN_OBJ)
 
-# Object files
-OBJS = $(SRCS:.cpp=.o)
+V1.5main.o: V1.5main.cpp V1.5vect.h
+	$(CXX) $(CXXFLAGS) -c V1.5main.cpp
 
-# Test files
-TEST_SRCS = test_V1_5vect.cpp
-TEST_OBJS = $(TEST_SRCS:.cpp=.o)
+V1.5vect.o: V1.5vect.cpp V1.5vect.h
+	$(CXX) $(CXXFLAGS) -c V1.5vect.cpp
 
-# Default rule builds both app and test
-all: $(TARGET) $(TEST_TARGET)
+# Build test executable
+$(TEST_TARGET): $(TEST_OBJ)
+	$(CXX) $(CXXFLAGS) -o $(TEST_TARGET) $(TEST_OBJ) $(LDFLAGS)
 
-# Rule to build main app
-$(TARGET): $(OBJS)
-	$(CXX) $(CXXFLAGS) -o $@ $(OBJS)
 
-# Rule to build unit test binary
-$(TEST_TARGET): $(TEST_OBJS) $(OBJS)
-	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o $@ $(TEST_OBJS) $(OBJS) $(GTEST_LIBS)
+test_V1_5vect.o: test_V1_5vect.cpp V1.5vect.h
+	$(CXX) $(CXXFLAGS) -c test_V1_5vect.cpp -o test_V1_5vect.o
 
-# Compile source files into .o
-%.o: %.cpp $(HEADERS)
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+V1.5vect_test.o: V1.5vect.cpp V1.5vect.h
+	$(CXX) $(CXXFLAGS) -c V1.5vect.cpp -o V1.5vect_test.o
 
-# Run app
+# Add these paths if using Homebrew
+INCLUDES = -I/opt/homebrew/include
+LDFLAGS = -L/opt/homebrew/lib -lgtest -lgtest_main -pthread
+
+CXX = g++
+CXXFLAGS = -std=c++17 -Wall -Wextra $(INCLUDES)
+
+# Run main program
 run: $(TARGET)
 	./$(TARGET)
 
-# Run tests
+# Run test suite only
 run_test: $(TEST_TARGET)
 	./$(TEST_TARGET)
 
-# Clean build
+# Cleanup
 clean:
 	rm -f $(TARGET) $(TEST_TARGET) *.o
